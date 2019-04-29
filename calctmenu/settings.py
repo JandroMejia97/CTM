@@ -112,7 +112,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es-ar'
 
 TIME_ZONE = 'UTC'
 
@@ -122,6 +122,14 @@ USE_L10N = True
 
 USE_TZ = True
 
+# This URL is redirected to login.html when the user wants to identify himself
+LOGIN_URL = '/sign-in/'
+
+# This URL redirect to the home page after user is signin
+LOGIN_REDIRECT_URL = 'calculadora:home'
+
+# This URL redirect to the home paga after user is logout
+LOGOUT_REDIRECT_URL = 'calculadora:home'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/

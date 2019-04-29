@@ -19,7 +19,8 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls, name='admin'),
-    path('accounts/login/', auth_views.LoginView.as_view(), name='login'),
+    path('accounts/', auth_views.LoginView.as_view(), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('django-sb-admin/', include('django_sb_admin.urls'), name='sb-admin'),
     path('', include('apps.novedades.urls', 'novedades')),
     path('', include('apps.calculadora.urls', 'calculadora'))
