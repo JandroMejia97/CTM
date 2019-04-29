@@ -1,0 +1,61 @@
+<!-- Los elementos del menú de la barra lateral: se contraen al menú de navegación sensible en pantallas pequeñas -->
+<div class="collapse navbar-collapse navbar-ex1-collapse">
+    <ul class="nav navbar-nav side-nav color">
+        <li {% if nav_active == "home" %}class="active"{% endif %}>
+            <a href="{% url 'calculadora:home' %}">
+                <i class="fa fa-fw fa-home"></i> 
+                Inicio
+            </a>
+        </li>
+        {% if not user.is_authenticated %}
+            <li>
+                <a href="javascript:;" data-toggle="collapse" data-target="#restaurante">
+                    <i class="fa fa-fw fa-cutlery"></i> 
+                    Restaurante
+                    <i class="fa fa-fw fa-caret-down"></i>
+                </a>
+                <ul id="restaurante" class="collapse">
+                    <li {% if nav_active == "restaurante_gestionar" %}class="active"{% endif %}>
+                        <a href="">
+                            <i class="fa fa-fw fa-wrench"></i> 
+                            Gestionar
+                        </a>
+                    </li>
+                    <li {% if nav_active == "restaurante_nuevo" %}class="active"{% endif %}>
+                        <a href="">
+                            <i class="fa fa-fw fa-plus"></i> 
+                            Nuevo
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        {% endif %}
+        <li>
+            <a href="javascript:;" data-toggle="collapse" data-target="#mas">
+                <i class="fa fa-fw fa-info"></i> 
+                Más
+                <i class="fa fa-fw fa-caret-down"></i>
+            </a>
+            <ul id="mas" class="collapse">
+                <li {% if nav_active == "credit" %}class="active"{% endif %}>
+                    <a href="">
+                        <i class="fa fa-fw fa-star"></i> 
+                        Créditos
+                    </a>
+                </li>
+                <li {% if nav_active == "about" %}class="active"{% endif %}>
+                    <a href="{% url 'calculadora:about' %}">
+                        <i class="fa fa-fw fa-briefcase"></i> 
+                        Sobre Nosotros
+                    </a>
+                </li>
+                <li {% if nav_active == "contact" %}class="active"{% endif %}>
+                    <a href="">
+                        <i class="fa fa-fw fa-envelope"></i> 
+                        Contáctanos
+                    </a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>

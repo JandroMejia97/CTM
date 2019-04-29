@@ -1,0 +1,60 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    {% block head %}
+        {% block meta %}
+            <meta charset="UTF-8">
+            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta name="description" content="{% block description %}{% endblock description %}">
+            <meta name="author" content="{% block author %}{% endblock author %}">
+        {% endblock meta %}
+        <title>
+            {% block title %}{% endblock title %} - Calcula Tu Menú
+        </title>
+        {% block icon %}
+                <link rel="shortcut icon" type="image/x-icon" href="{% static 'calculadora/images/favicon.png' %}">
+        {% endblock icon %}
+
+        <!-- Styles -->
+        {% block custom_css %}
+
+        {% endblock custom_css %}
+
+        <!-- Bootstrap Core CSS -->
+        {% block bootstrap_css %}
+            <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+        {% endblock bootstrap_css %}
+
+        <!-- Custom CSS -->
+        {% block admin_css %}
+            <link href="{% static 'css/sb-admin.css' %}" rel="stylesheet">
+        {% endblock admin_css %}
+
+        <!-- Custom Fonts -->
+        {% block fontawesome_css %}
+            <link href="{% static 'font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
+        {% endblock fontawesome_css %}
+    {% endblock head %}
+</head>
+<body style="background-color: white !important">
+    <div id="wrapper">
+        <!-- Navegación -->
+        {% block navegation %}
+            {% include 'navegation.html' %}
+        {% endblock navegation %}
+        {% block content %}
+        
+        {% endblock content %}
+    </div>
+    <!-- jQuery -->
+    <script src="{% static 'js/jquery.js' %}"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    {% block sb_admin_custom_js %}
+
+    {% endblock sb_admin_custom_js %}
+</body>
+</html>

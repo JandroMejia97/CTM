@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    Sobre Nosotros
+{% endblock title %}
+{% block custom_css %}
+    <link href="{% static 'calculadora/css/style.css' %}" rel="stylesheet" type="text/css">
+{% endblock custom_css %}
+{% block title_body %}
+    Contáctanos
+{% endblock title_body %}
+{% block breadcrumb %}
+                  
+{% endblock breadcrumb %}
+{% block content %}
+    {% load static %}
+    <div>
+		<div class="image" style="background-image: url('/static/calculadora/images/about-page.jpg');">
+            <div class="row d-block over" >
+                <div class="col-md-9 col-sm-8 col-xs-6 float-left over-text">
+                    <h1 class="page-header text-uppercase font-weight-bold">Calcula tu menú</h1>
+                    <p>
+                        Es una plataforma interactiva que busca crear la conexión entre en el comensal potencial y el restaurante que más se adapta a sus preferencias.
+                    </p>
+                </div>
+                <div class="col-md-3 col-sm-4 col-xs-6 d-none d-sm-block">
+					<ul class="breadcrumb breadcrumb-light d-block float-right">
+						<li>
+                            <i class="fa fa-home"></i>
+                            <a href="{% url 'calculadora:home' %}">
+                                Inicio
+                            </a>
+                        </li>
+						<li class="active">Sobre Nosotros</li>
+					</ul>
+				</div>
+            </div>
+		</div>
+    </div>
+    <div>
+		<div class="image" style="background-image: url('/static/calculadora/images/about-page (2).jpg');">
+            <div class="d-block over">
+                <div class="text-right over-text">
+                    <h3 class="page-header h3 text-uppercase font-weight-bold">¿Cómo conectamos? ¿Cuál es nuestro valor de diferenciación?</h3>
+                    <p class="font-weight-light">
+                        Nuestro valor radica en ofrecer al cliente la libertad de escoger entre una lista de restaurantes añadiendo la capacidad de poder calcular su menú personalizado de manera exacta. 
+                        Así le ofrecemos un poder de decisión mayor. Sencillo y rápido. 
+                    </p>
+                </div>
+            </div>
+		</div>
+    </div>
+{% endblock content %}

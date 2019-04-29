@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% block title %}
+    Iniciar Sesión
+{% endblock title %}
+{% block content %}
+    {% load bootstrap %}
+    <div id="page-wrapper">
+        <div class="container-fluid">
+            {% block page-header %}
+                <div class="row">
+                    <!--Cabecera de página-->
+                    <div class="col-lg-12">
+                        <h1 class="page-header">
+                            {% block title_body %}
+                                Inicio de Sesión
+                            {% endblock title_body %}
+                        </h1>
+                        {% block breadcrumb %}
+                            <ol class="breadcrumb">
+                                <li>
+                                    <i class="fa fa-home"></i>
+                                    <a href="{% url 'calculadora:home' %}">
+                                        Inicio
+                                    </a>
+                                </li>
+                                <li class="active">
+                                    {% block breadcrumb_active %}
+                                        Iniciar Sesión
+                                    {% endblock breadcrumb_active %}
+                                </li>
+                            </ol>
+                        {% endblock breadcrumb %}
+                    </div>
+                </div>
+            {% endblock page-header %}
+            {% block form %}
+                <div class="row justify-content-lg-center">
+                    <div class="col-lg-12">
+                        <div class="card card-login mx-auto mt-5">
+                            <div class="panel panel-default">
+                                <div class="card-header">
+                                    <div class="text-center mb-4 page-header">
+                                        {% load static %}
+                                        <img style="max-width:200px; margin-top: -15px;" src="{% static 'calculadora/images/LogoCTM.png' %}">
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <form method="post" class="form-signin">
+                                        <div class="form-group">
+                                            {% csrf_token %}
+                                            {{ form|bootstrap_inline }}
+                                            <div class="text-center card-footer">
+                                                <button class="btn btn-primary btn-inline" type="submit">Iniciar Sesión</button>
+                                                <button class="btn btn-secondary btn-inline" onclick="window.history.back();">Cancelar</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <div class="text-center">
+                                        <a class="d-block small mt-3" href="register.html">Registrarse</a>
+                                        <a class="d-block small" href="forgot-password.html">¿Olvidaste tu contraseña?</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endblock form %}
+        </div>
+    </div>
+{% endblock content %}
