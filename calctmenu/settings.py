@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'apps.calculadora',
     'bootstrapform',
     'django_sb_admin',
+    'phonenumber_field',
+    'djmoney',
 ]
 
 MIDDLEWARE = [
@@ -69,6 +71,7 @@ TEMPLATES = [
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
+                'django.template.context_processors.media',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
@@ -122,6 +125,9 @@ USE_L10N = True
 
 USE_TZ = True
 
+# 
+AUTH_USER_MODEL = 'calculadora.User'
+
 # This URL is redirected to login.html when the user wants to identify himself
 LOGIN_URL = '/sign-in/'
 
@@ -146,8 +152,12 @@ STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'static')
 # will be served from)
 STATIC_URL = '/static/'
 
-# Media files
+# The URL to use when referring to media files (where they
+# will be served from)
 MEDIA_URL = '/media/'
+
+# The absolute path to the directory where will storage the media 
+# files
 MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'media')
 
 # Heroku: Update database configuration from $DATABASE_URL
