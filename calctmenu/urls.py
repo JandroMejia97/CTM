@@ -24,10 +24,14 @@ urlpatterns = [
     path('admin/', admin.site.urls, name='admin'),
     path('accounts/', auth_views.LoginView.as_view(), name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
-    path('django-sb-admin/', include('django_sb_admin.urls'), name='sb-admin'),
+    path('sbadmin/', include('django_sb_admin.urls'), name='sb-admin'),
     path('', include('apps.novedades.urls', 'novedades')),
     path('', include('apps.calculadora.urls', 'calculadora'))
 ]
 
 if settings.DEBUG:
+    import debug_toolbar
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += [ 
+        path('debug/', include(debug_toolbar.urls)),
+    ]

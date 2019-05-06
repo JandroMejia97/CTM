@@ -1,71 +1,80 @@
 body{
     background-color: #F0F0F0 !important;
 }
-/*.color{
-    background-color: #F0F0F0 !important;
-    border-color:#DEDEDE !important;
+
+.barra{
+  margin-left: 10% !important;
 }
-*/
+
+.barra-logo{
+  max-width:140px;
+  margin-top: -25px;
+  margin-left: 20px;
+}
 
 .image{
-    background-size: cover; 
-    background-attachment: fixed; 
-    background-repeat: no-repeat; 
-    overflow: hidden;
-    position: relative; 
-    right: 0; 
-    bottom:0;
-    width: 100%;
-    background-position: center;
-    transform: translate3d(0px, 0px, 0px);
-    padding-top:5%;
-    padding-bottom:5%;
-    color: #f2eeed;
+  background-size: cover; 
+  background-attachment: fixed; 
+  background-repeat: no-repeat; 
+  overflow: hidden;
+  position: relative; 
+  right: 0; 
+  bottom:0;
+  width: 100%;
+  background-position: center;
+  transform: translate3d(0px, 0px, 0px);
+  padding-top:5%;
+  padding-bottom:5%;
+  color: #f2eeed;
 }
 .carousel-image{
-    background-position: center !important;
+  background-position: center !important;
 }
 .over{
-    background-color: rgba(84, 84, 84, 0.5);
-    right: 0 !important;
-    left: 0 !important;
+  background-color: rgba(84, 84, 84, 0.5);
+  right: 0 !important;
+  left: 0 !important;
 }
 .over-text{
-    padding-left: 5% !important;
-    padding-right: 5% !important;
+  padding-left: 5% !important;
+  padding-right: 5% !important;
 }
 .footer{
-    background-color: #F0F0F0 !important;
-    border-color:#DEDEDE !important
+  background-color: #F0F0F0 !important;
+  border-color:#DEDEDE !important
 }
 .card-signin {
-    border: 0;
-    border-radius: 1rem;
-    box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.1);
-  }
+  border: 0;
+  border-radius: 1rem;
+  box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.1);
+}
   
-  .card-signin .card-title {
-    margin-bottom: 2rem;
-    font-weight: 300;
-    font-size: 1.5rem;
-  }
+.card-signin .card-title {
+  margin-bottom: 2rem;
+  font-weight: 300;
+  font-size: 1.5rem;
+}
   
-  .card-signin .card-body {
-    padding: 2rem;
-  }
+.card-signin .card-body {
+  padding: 2rem;
+}
   
-  .form-signin {
-    width: 100%;
-  }
+.form-signin {
+  width: 100%;
+}
   
-  .form-signi {
-    font-size: 80%;
-    border-radius: 5rem;
-    letter-spacing: .1rem;
-    font-weight: bold;
-    padding: 1rem;
-    transition: all 0.2s;
-  }
+.form-signin {
+  font-size: 80%;
+  border-radius: 5rem;
+  letter-spacing: .1rem;
+  font-weight: bold;
+  padding: 1rem;
+  transition: all 0.2s;
+}
+.d-none {
+  display: none !important;
+}
+
 @media (max-width: 576px) {
   .offset-xs-1 {
     margin-left: 8.333335%;
@@ -81,6 +90,35 @@ body{
 @media (min-width: 768px) { 
   .offset-md-3 {
     margin-left: 25%;
+  }
+  .d-md-none {
+    display: none !important;
+  }
+  .d-md-inline {
+    display: inline !important;
+  }
+  .d-md-inline-block {
+    display: inline-block !important;
+  }
+  .d-md-block {
+    display: block !important;
+  }
+  .d-md-table {
+    display: table !important;
+  }
+  .d-md-table-row {
+    display: table-row !important;
+  }
+  .d-md-table-cell {
+    display: table-cell !important;
+  }
+  .d-md-flex {
+    display: -ms-flexbox !important;
+    display: flex !important;
+  }
+  .d-md-inline-flex {
+    display: -ms-inline-flexbox !important;
+    display: inline-flex !important;
   }
 }
 
