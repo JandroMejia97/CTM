@@ -14,8 +14,76 @@
     </div>
     <!-- Menu superior -->
     {% block navbar_right %}
-        {% if user.is_authenticated %}
-            <ul class="nav navbar-right top-nav">
+        <ul class="nav navbar-right top-nav">
+            <!-- Mensajes -->
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle bold" data-toggle="dropdown">
+                    <i class="fa fa-envelope"></i>
+                    <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu message-dropdown">
+                    {% if messages %}
+                        {% block messages %}
+                            {% for message in messages %}
+                                <li class="message-preview">
+                                    <a href="">
+                                        <div class="media">
+                                            <div class="media-body">
+                                                <h5 class="media-heading">
+                                                    {% if user.is_athenticated %}
+                                                        {% if user.first_name and user.last_name %}
+                                                            {{ user.first_name }} {{ user.last_name }}
+                                                        {% elif user.first_name %}
+                                                            {{ user.first_name }} 
+                                                        {% else %}
+                                                            {{ user.username }} 
+                                                        {% endif %}
+                                                    {% else %}
+                                                        Anónimo
+                                                    {% endif %}
+                                                </h5>
+                                                <p class="small text-muted">
+                                                    <i class="fa fa-clock-o"></i>
+                                                    {% now "SHORT_DATETIME_FORMAT" %}
+                                                </p>
+                                                <p><i class="fa fa-info-circle"></i> {{ message }}</p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        {% endblock messages %}
+                    {% else %}
+                        <li class="message-preview">
+                            <a href="">
+                                <div class="media">
+                                    <div class="media-body">
+                                        <h5 class="media-heading">
+                                            {% if user.is_athenticated %}
+                                                {% if user.first_name and user.last_name %}
+                                                    {{ user.first_name }} {{ user.last_name }}
+                                                {% elif user.first_name %}
+                                                    {{ user.first_name }} 
+                                                {% else %}
+                                                    {{ user.username }} 
+                                                {% endif %}
+                                            {% else %}
+                                                Anónimo
+                                            {% endif %}
+                                        </h5>
+                                        <p class="small text-muted">
+                                            <i class="fa fa-clock-o"></i>
+                                            {% now "SHORT_DATETIME_FORMAT" %}
+                                        </p>
+                                        <p><i class="fas fa-heart-broken"></i> No tienes mensajes</p>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </li>
+            {% if user.is_authenticated %}
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle bold" data-toggle="dropdown">
                         <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
@@ -50,9 +118,7 @@
                         </li>
                     </ul>
                 </li>
-            </ul>
-        {% else %}
-            <ul class="nav navbar-right top-nav">
+            {% else %}
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle bold" data-toggle="dropdown">
                         <span class="glyphicon glyphicon-user" aria-hidden="true"></span> 
@@ -75,8 +141,8 @@
                         </li>
                     </ul>
                 </li>
-            </ul>
-        {% endif %}
+            {% endif %}
+        </ul>
     {% endblock navbar_right %}
     
     <!-- Barra Lateral -->

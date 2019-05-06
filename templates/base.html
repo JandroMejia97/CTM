@@ -34,7 +34,8 @@
 
         <!-- Custom Fonts -->
         {% block fontawesome_css %}
-            <link href="{% static 'font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
+            <link href="{% static 'calculadora/font-awesome/css/fontawesome.min.css' %}" rel="stylesheet" type="text/css">
+            <link href="{% static 'calculadora/font-awesome/css/all.min.css' %}" rel="stylesheet" type="text/css">
         {% endblock fontawesome_css %}
     {% endblock head %}
 </head>
@@ -44,6 +45,11 @@
         {% block navegation %}
             {% include 'navegation.html' %}
         {% endblock navegation %}
+        
+        {% block messages %}
+            
+        {% endblock messages %}
+
         {% block content %}
         
         {% endblock content %}

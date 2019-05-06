@@ -13,12 +13,13 @@ class Contacto(models.Model):
         blank=False,
         null=False,
         help_text='Ingrese su nombre',
-        verbose_name='Apellidos'
+        verbose_name='Nombre'
     )
     email = models.EmailField(
         blank=False,
         null=False,
-        help_text='Ingrese su correo electrónico'
+        help_text='Ingrese su correo electrónico',
+        verbose_name='Correo Electrónico'
     )
 
     def __str__(self):
@@ -33,13 +34,15 @@ class Motivo(models.Model):
         max_length=50,
         blank=False,
         null=False,
-        help_text='Ingrese el motivo de la consulta'
+        help_text='Ingrese el motivo de la consulta',
+        verbose_name='Motivo de consulta'
     )
     descripcion = models.TextField(
         max_length=200,
         blank=False,
         null=False,
-        help_text='Realice una breve descripción del motivo'
+        help_text='Realice una breve descripción del motivo',
+        verbose_name='Descripción del motivo'
     )
 
     def __str__(self):
@@ -54,17 +57,20 @@ class Consulta(models.Model):
         Contacto,
         on_delete=models.CASCADE,
         help_text='Datos del usuario',
+        verbose_name='Usuario'
     )
     tema = models.ForeignKey(
         Motivo,
         on_delete=models.CASCADE,
-        help_text='Seleccion un tema para su consulta'
+        help_text='Seleccion un tema relacionado a su consulta',
+        verbose_name='Tema de consulta'
     )
     mensaje = models.TextField(
         max_length=500,
         blank=False,
         null=False,
-        help_text='Ingrese su mensaje, no olvide detalles relevantes'
+        help_text='Ingrese su mensaje, no olvide detalles relevantes',
+        verbose_name='¿En qué podemos ayudarte?'
     )
 
     def __str__(self):
