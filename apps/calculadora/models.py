@@ -186,7 +186,7 @@ class Pais(models.Model):
         verbose_name='Nombre oficial',
     )
     iso_3166_1_2 = models.CharField(
-        max_length=2,
+        max_length=3,
         blank=True,
         null=True,
         help_text='Indique el código del país en formato ISO 3166-1 alpha-2. Por ejemplo, para la bandera de la República de El Salvador es SV',
