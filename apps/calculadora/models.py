@@ -175,6 +175,7 @@ class Continente(models.Model):
     class Meta:
         verbose_name = 'Continente'
         verbose_name_plural = 'Continentes'
+        ordering = ['nombre']
 
 
 class Pais(models.Model):
