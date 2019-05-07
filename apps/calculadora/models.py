@@ -163,7 +163,7 @@ class Continente(models.Model):
         verbose_name='Continente'
     )
     codigo = models.CharField(
-        max_length=2,
+        max_length=3,
         unique=True,
         blank=False,
         help_text='Codigo del continente'
