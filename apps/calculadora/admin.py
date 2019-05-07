@@ -86,6 +86,7 @@ admin.site.register(Continente, ContinenteAdmin)
 class PaisAdmin(admin.ModelAdmin):
     list_display = [
         'nombre',
+        'continente',
         'iso_3166_1_2',
         'iso_3166_1_3',
         'capital',
@@ -94,6 +95,7 @@ class PaisAdmin(admin.ModelAdmin):
     ]
     fields = [
         'nombre',
+        'continente',
         'iso_3166_1_2',
         'iso_3166_1_3',
         'capital',
@@ -115,7 +117,7 @@ class RestauranteAdmin(admin.ModelAdmin):
     ]
     fields = [ 
         'nombre',
-        'logo'
+        'logo',
         'administrador',
         'telefono',
         'ciudad',

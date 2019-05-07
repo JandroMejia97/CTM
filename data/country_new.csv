@@ -1,0 +1,195 @@
+﻿official_name_en,official_name_es,ISO3166_1_Alpha_2,ISO3166_1_Alpha_3,ISO3166_1_numeric,ISO4217_currency_numeric_code,Capital,Continent,Languages
+Afghanistan,Afganistan,AF,AFG,4.0,971,Kabul,AS,"fa-AF,ps,uz-AF,tk"
+Albania,Albania,AL,ALB,8.0,008,Tirana,EU,"sq,el"
+Algeria,Argelia,DZ,DZA,12.0,012,Algiers,AF,ar-DZ
+Andorra,Andorra,AD,AND,20.0,978,Andorra la Vella,EU,ca
+Angola,Angola,AO,AGO,24.0,973,Luanda,AF,pt-AO
+Antigua and Barbuda,Antigua y Barbuda,AG,ATG,28.0,951,St. John's,,en-AG
+Argentina,Argentina,AR,ARG,32.0,032,Buenos Aires,SA,"es-AR,en,it,de,fr,gn"
+Armenia,Armenia,AM,ARM,51.0,051,Yerevan,AS,hy
+Australia,Australia,AU,AUS,36.0,036,Canberra,OC,en-AU
+Austria,Austria,AT,AUT,40.0,978,Vienna,EU,"de-AT,hr,hu,sl"
+Azerbaijan,Azerbaiyan,AZ,AZE,31.0,944,Baku,AS,"az,ru,hy"
+Bahamas,Bahamas,BS,BHS,44.0,044,Nassau,,en-BS
+Bangladesh,Bangladesh,BD,BGD,50.0,050,Dhaka,AS,"bn-BD,en"
+Barbados,Barbados,BB,BRB,52.0,052,Bridgetown,,en-BB
+Belgium,Belgica,BE,BEL,56.0,978,Brussels,EU,"nl-BE,fr-BE,de-BE"
+Belize,Belice,BZ,BLZ,84.0,084,Belmopan,NA,"en-BZ"
+Benin,Benin,BJ,BEN,204.0,952,Porto-Novo,AF,fr-BJ
+Plurinational State of Bolivia,Estado Plurinacional de Bolivia,BO,BOL,68.0,068,Sucre,SA,"es-BO,qu,ay"
+Bosnia and Herzegovina,Bosnia y Herzegovina,BA,BIH,70.0,977,Sarajevo,EU,"bs,hr-BA,sr-BA"
+Botswana,Botswana,BW,BWA,72.0,072,Gaborone,AF,"en-BW,tn-BW"
+Brazil,Brasil,BR,BRA,76.0,986,Brasilia,SA,"pt-BR,es,en,fr"
+Brunei Darussalam,Brunei Darussalam,BN,BRN,96.0,096,Bandar Seri Begawan,AS,"ms-BN,en-BN"
+Bulgaria,Bulgaria,BG,BGR,100.0,975,Sofia,EU,"bg,tr-BG,rom"
+Burkina Faso,Burkina Faso,BF,BFA,854.0,952,Ouagadougou,AF,fr-BF
+Burundi,Burundi,BI,BDI,108.0,108,Bujumbura,AF,"fr-BI,rn"
+Cabo Verde,Cabo Verde,CV,CPV,132.0,132,Praia,AF,pt-CV
+Cambodia,Camboya,KH,KHM,116.0,116,Phnom Penh,AS,"km,fr,en"
+Cameroon,Cameron,CM,CMR,120.0,950,Yaounde,AF,"en-CM,fr-CM"
+Canada,Canada,CA,CAN,124.0,124,Ottawa,,"en-CA,fr-CA,iu"
+Central African Republic,Republica Centroafricana,CF,CAF,140.0,950,Bangui,AF,"fr-CF,sg,ln,kg"
+Chad,Chad,TD,TCD,148.0,950,N'Djamena,AF,"fr-TD,ar-TD,sre"
+Chile,Chile,CL,CHL,152.0,152,Santiago,SA,es-CL
+China,China,CN,CHN,156.0,156,Beijing,AS,"zh-CN,yue,wuu,dta,ug,za"
+Colombia,Colombia,CO,COL,170.0,170,Bogota,SA,es-CO
+Comoros,Comoras,KM,COM,174.0,174,Moroni,AF,"ar,fr-KM"
+Congo,Congo,CG,COG,178.0,950,Brazzaville,AF,"fr-CG,kg,ln-CG"
+Costa Rica,Costa Rica,CR,CRI,188.0,188,San Jose,NA,"es-CR"
+Croatia,Croacia,HR,HRV,191.0,191,Zagreb,EU,"hr-HR,sr"
+Cuba,Cuba,CU,CUB,192.0,"192,931",Havana,,es-CU"
+Cyprus,Chipre,CY,CYP,196.0,978,Nicosia,EU,"el-CY,tr-CY,en"
+Czechia,Republica Checa,CZ,CZE,203.0,203,Prague,EU,"cs,sk"
+Democratic People's Republic of Korea,Republica Popular Democratica de Corea,KP,PRK,408.0,408,Pyongyang,AS,ko-KP
+Democratic Republic of the Congo,Republica Democratica del Congo,CD,COD,180.0,976,Kinshasa,AF,"fr-CD,ln,kg"
+Denmark,Dinamarca,DK,DNK,208.0,208,Copenhagen,EU,"da-DK,en,fo,de-DK"
+Dominica,Dominica,DM,DMA,212.0,951,Roseau,,en-DM
+Dominican Republic,Republica Dominicana,DO,DOM,214.0,214,Santo Domingo,,es-DO
+Ecuador,Ecuador,EC,ECU,218.0,840,Quito,SA,es-EC
+Egypt,Egipto,EG,EGY,818.0,818,Cairo,AF,"ar-EG,en,fr"
+El Salvador,El Salvador,SV,SLV,222.0,"222,840",San Salvador,NA,es-SV"
+Equatorial Guinea,Guinea Ecuatorial,GQ,GNQ,226.0,950,Malabo,AF,"es-GQ,fr"
+Eritrea,Eritrea,ER,ERI,232.0,232,Asmara,AF,"aa-ER,ar,tig,kun,ti-ER"
+Estonia,Estonia,EE,EST,233.0,978,Tallinn,EU,"et,ru"
+Ethiopia,Etiopia,ET,ETH,231.0,230,Addis Ababa,AF,"am,en-ET,om-ET,ti-ET,so-ET,sid"
+Fiji,Fiji,FJ,FJI,242.0,242,Suva,OC,"en-FJ,fj"
+Finland,Finlandia,FI,FIN,246.0,978,Helsinki,EU,"fi-FI,sv-FI,smn"
+France,Francia,FR,FRA,250.0,978,Paris,EU,"fr-FR,frp,br,co,ca,eu,oc"
+French Guiana,Guayana Francesa,GF,GUF,254.0,978,Cayenne,SA,fr-GF
+French Polynesia,Polinesia Francesa,PF,PYF,258.0,953,Papeete,OC,"fr-PF,ty"
+Gabon,Gabon,GA,GAB,266.0,950,Libreville,AF,fr-GA
+Gambia,Gambia,GM,GMB,270.0,270,Banjul,AF,"en-GM,mnk,wof,wo,ff"
+Georgia,Georgia,GE,GEO,268.0,981,Tbilisi,AS,"ka,ru,hy,az"
+Germany,Alemania,DE,DEU,276.0,978,Berlin,EU,de
+Ghana,Ghana,GH,GHA,288.0,936,Accra,AF,"en-GH,ak,ee,tw"
+Gibraltar,Gibraltar,GI,GIB,292.0,292,Gibraltar,EU,"en-GI,es,it,pt"
+Greece,Grecia,GR,GRC,300.0,978,Athens,EU,"el-GR,en,fr"
+Grenada,Granada,GD,GRD,308.0,951,St. George's,,en-GD
+Guatemala,Guatemala,GT,GTM,320.0,320,Guatemala City,NA,es-GT
+Guinea,Guinea,GN,GIN,324.0,324,Conakry,AF,fr-GN
+Guinea-Bissau,Guinea-Bissau,GW,GNB,624.0,952,Bissau,AF,"pt-GW,pov"
+Guyana,Guyana,GY,GUY,328.0,328,Georgetown,SA,en-GY
+Haiti,Haiti,HT,HTI,332.0,"332,840",Port-au-Prince,,"ht,fr-HT"
+Holy See,Santa Sede,VA,VAT,336.0,978,Vatican City,EU,"la,it,fr"
+Honduras,Honduras,HN,HND,340.0,340,Tegucigalpa,NA,es-HN
+Hungary,Hungria,HU,HUN,348.0,348,Budapest,EU,hu-HU
+Iceland,Islandia,IS,ISL,352.0,352,Reykjavik,EU,"is,en,de,da,sv,no"
+India,India,IN,IND,356.0,356,New Delhi,AS,"en-IN,hi,bn,te,mr,ta,ur,gu,kn,ml,or,pa,as,bh,sat,ks,ne,sd,kok,doi,mni,sit,sa,fr,lus,inc"
+Indonesia,Indonesia,ID,IDN,360.0,360,Jakarta,AS,"id,en,nl,jv"
+Islamic Republic of Iran,Republica Islamica del Iran,IR,IRN,364.0,364,Tehran,AS,"fa-IR,ku"
+Irak,Irak,IQ,IRQ,368.0,368,Baghdad,AS,"ar-IQ,ku,hy"
+Ireland,Irlanda,IE,IRL,372.0,978,Dublin,EU,"en-IE,ga-IE"
+Israel,Israel,IL,ISR,376.0,376,Jerusalem,AS,"he,ar-IL,en-IL,"
+Italy,Italia,IT,ITA,380.0,978,Rome,EU,"it-IT,de-IT,fr-IT,sc,ca,co,sl"
+Jamaica,Jamaica,JM,JAM,388.0,388,Kingston,,en-JM
+Japan,Japon,JP,JPN,392.0,392,Tokyo,AS,ja
+Jordan,Jordania,JO,JOR,400.0,400,Amman,AS,"ar-JO,en"
+Kazakhstan,Kazajstan,KZ,KAZ,398.0,398,Astana,AS,"kk,ru"
+Kenya,Kenya,KE,KEN,404.0,404,Nairobi,AF,"en-KE,sw-KE"
+Kiribati,Kiribati,KI,KIR,296.0,036,Tarawa,OC,"en-KI,gil"
+Kuwait,Kuwait,KW,KWT,414.0,414,Kuwait City,AS,"ar-KW,en"
+Kyrgyzstan,Kirguistan,KG,KGZ,417.0,417,Bishkek,AS,"ky,uz,ru"
+Lao People's Democratic Republic,Republica Democratica Popular Lao,LA,LAO,418.0,418,Vientiane,AS,"lo,fr,en"
+Latvia,Letonia,LV,LVA,428.0,978,Riga,EU,"lv,ru,lt"
+Lebanon,Lebano,LB,LBN,422.0,422,Beirut,AS,"ar-LB,fr-LB,en,hy"
+Lesotho,Lesotho,LS,LSO,426.0,"426,710",Maseru,AF,"en-LS,st,zu,xh"
+Liberia,Liberia,LR,LBR,430.0,430,Monrovia,AF,en-LR
+Libya,Libia,LY,LBY,434.0,434,Tripoli,AF,"ar-LY,it,en"
+Liechtenstein,Liechtenstein,LI,LIE,438.0,756,Vaduz,EU,de-LI
+Lithuania,Lituania,LT,LTU,440.0,978,Vilnius,EU,"lt,ru,pl"
+Luxembourg,Luxemburgo,LU,LUX,442.0,978,Luxembourg,EU,"lb,de-LU,fr-LU"
+Madagascar,Madagascar,MG,MDG,450.0,969,Antananarivo,AF,"fr-MG,mg"
+Malawi,Malawi,MW,MWI,454.0,454,Lilongwe,AF,"ny,yao,tum,swk"
+Malaysia,Malasia,MY,MYS,458.0,458,Kuala Lumpur,AS,"ms-MY,en,zh,ta,te,ml,pa,th"
+Maldives,Maldivas,MV,MDV,462.0,462,Male,AS,"dv,en"
+Mali,Mali,ML,MLI,466.0,952,Bamako,AF,"fr-ML,bm"
+Malta,Malta,MT,MLT,470.0,978,Valletta,EU,"mt,en-MT"
+Marshall Islands,Islas Marshall,MH,MHL,584.0,840,Majuro,OC,"mh,en-MH"
+Mauritania,Mauritania,MR,MRT,478.0,478,Nouakchott,AF,"ar-MR,fuc,snk,fr,mey,wo"
+Mauritius,Mauricio,MU,MUS,480.0,480,Port Louis,AF,"en-MU,bho,fr"
+Mexico,Mexico,MX,MEX,484.0,484,Mexico City,,es-MX
+Federated States of Micronesia,Estados Federados de Micronesia,FM,FSM,583.0,840,Palikir,OC,"en-FM,chk,pon,yap,kos,uli,woe,nkr,kpg"
+Monaco,Monaco,MC,MCO,492.0,978,Monaco,EU,"fr-MC,en,it"
+Mongolia,Mongolia,MN,MNG,496.0,496,Ulan Bator,AS,"mn,ru"
+Montenegro,Montenegro,ME,MNE,499.0,978,Podgorica,EU,"sr,hu,bs,sq,hr,rom"
+Morocco,Marruecos,MA,MAR,504.0,504,Rabat,AF,"ar-MA,ber,fr"
+Mozambique,Mozambique,MZ,MOZ,508.0,943,Maputo,AF,"pt-MZ,vmw"
+Myanmar,Myanmar,MM,MMR,104.0,104,Nay Pyi Taw,AS,my
+Namibia,Namibia,,NAM,516.0,"516,710",Windhoek,AF,"en-NA,af,de,hz,naq"
+Nauru,Nauru,NR,NRU,520.0,036,Yaren,OC,"na,en-NR"
+Nepal,Nepal,NP,NPL,524.0,524,Kathmandu,AS,"ne,en"
+Netherlands,Paises Bajos,NL,NLD,528.0,978,Amsterdam,EU,"nl-NL,fy-NL"
+New Zealand,Nueva Zelandia,NZ,NZL,554.0,554,Wellington,OC,"en-NZ,mi"
+Nicaragua,Nicaragua,NI,NIC,558.0,558,Managua,NA,"es-NI"
+Niger,Niger,NE,NER,562.0,952,Niamey,AF,"fr-NE,ha,kr,dje"
+Nigeria,Nigeria,NG,NGA,566.0,566,Abuja,AF,"en-NG,ha,yo,ig,ff"
+Norway,Noruega,NO,NOR,578.0,578,Oslo,EU,"no,nb,nn,se,fi"
+Oman,Oman,OM,OMN,512.0,512,Muscat,AS,"ar-OM,en,bal,ur"
+Pakistan,Pakistan,PK,PAK,586.0,586,Islamabad,AS,"ur-PK,en-PK,pa,sd,ps,brh"
+Palau,Palaos,PW,PLW,585.0,840,Melekeok,OC,"pau,sov,en-PW,tox,ja,fil,zh"
+Panama,Panama,PA,PAN,591.0,"590,840",Panama City,NA,"es-PA"
+Papua New Guinea,Papua Nueva Guinea,PG,PNG,598.0,598,Port Moresby,OC,"en-PG,ho,meu,tpi"
+Paraguay,Paraguay,PY,PRY,600.0,600,Asuncion,SA,"es-PY,gn"
+Peru,Peru,PE,PER,604.0,604,Lima,SA,"es-PE"
+Philippines,Filipinas,PH,PHL,608.0,608,Manila,AS,"tl,en-PH,fil"
+Poland,Polonia,PL,POL,616.0,985,Warsaw,EU,pl
+Portugal,Portugal,PT,PRT,620.0,978,Lisbon,EU,"pt-PT,mwl"
+Puerto Rico,Puerto Rico,PR,PRI,630.0,840,San Juan,,"en-PR,es-PR"
+Qatar,Catar,QA,QAT,634.0,634,Doha,AS,"ar-QA,es"
+Republic of Korea,Republica de Corea,KR,KOR,410.0,410,Seoul,AS,"ko-KR,en"
+Republic of Moldavia,Republica de Moldova,MD,MDA,498.0,498,Chisinau,EU,"ro,ru,gag,tr"
+Romania,Rumania,RO,ROU,642.0,946,Bucharest,EU,"ro,hu,rom"
+Russian Federation,Federacion de Rusia,RU,RUS,643.0,643,Moscow,EU,"ru,tt,xal,cau,ady,kv,ce,tyv,cv,udm,tut,mns,bua,myv,mdf,chm,ba,inh,tut,kbd,krc,av,sah,nog"
+Rwanda,Ruanda,RW,RWA,646.0,646,Kigali,AF,"rw,en-RW,fr-RW,sw"
+Saint Kitts and Nevis,Saint Kitts y Nevis,KN,KNA,659.0,951,Basseterre,,en-KN
+Saint Lucia,Santa Lucia,LC,LCA,662.0,951,Castries,,en-LC
+Saint Vincent and the Grenadines,San Vicente y las Granadinas,VC,VCT,670.0,951,Kingstown,,"en-VC,fr"
+Samoa,Samoa,WS,WSM,882.0,882,Apia,OC,"sm,en-WS"
+San Marino,San Marino,SM,SMR,674.0,978,San Marino,EU,it-SM
+Sao Tome and Principe,Santo Tome y Principe,ST,STP,678.0,678,Sao Tome,AF,pt-ST
+Saudi Arabia,Arabia Saudita,SA,SAU,682.0,682,Riyadh,AS,ar-SA
+Senegal,Senegal,SN,SEN,686.0,952,Dakar,AF,"fr-SN,wo,fuc,mnk"
+Serbia,Serbia,RS,SRB,688.0,941,Belgrade,EU,"sr,hu,bs,rom"
+Seychelles,Seychelles,SC,SYC,690.0,690,Victoria,AF,"en-SC,fr-SC"
+Sierra Leone,Sierra Leona,SL,SLE,694.0,694,Freetown,AF,"en-SL,men,tem"
+Singapore,Singapur,SG,SGP,702.0,702,Singapore,AS,"cmn,en-SG,ms-SG,ta-SG,zh-SG"
+Slovakia,Eslovaquia,SK,SVK,703.0,978,Bratislava,EU,"sk,hu"
+Slovenia,Eslovenia,SI,SVN,705.0,978,Ljubljana,EU,"sl,sh"
+Solomon Islands,Islas Salomon,SB,SLB,90.0,090,Honiara,OC,"en-SB,tpi"
+Somalia,Somalia,SO,SOM,706.0,706,Mogadishu,AF,"so-SO,ar-SO,it,en-SO"
+South Africa,Sudafrica,ZA,ZAF,710.0,710,Pretoria,AF,"zu,xh,af,nso,en-ZA,tn,st,ts,ss,ve,nr"
+South Sudan,Sudan del Sur,SS,SSD,728.0,728,Juba,AF,en
+Spain,España,ES,ESP,724.0,978,Madrid,EU,"es-ES,ca,gl,eu,oc"
+Sri Lanka,Sri Lanka,LK,LKA,144.0,144,Colombo,AS,"si,ta,en"
+State of Palestine,Estado de Palestina,PS,PSE,275.0,,East Jerusalem,AS,ar-PS
+Sudan,Sudan,SD,SDN,729.0,938,Khartoum,AF,"ar-SD,en,fia"
+Suriname,Suriname,SR,SUR,740.0,968,Paramaribo,SA,"nl-SR,en,srn,hns,jv"
+Swaziland,Suazilandia,SZ,SWZ,748.0,748,Mbabane,AF,"en-SZ,ss-SZ"
+Sweden,Suecia,SE,SWE,752.0,752,Stockholm,EU,"sv-SE,se,sma,fi-SE"
+Switzerland,Suiza,CH,CHE,756.0,756,Bern,EU,"de-CH,fr-CH,it-CH,rm"
+Syrian Arab Republic,Republica Arabe Siria,SY,SYR,760.0,760,Damascus,AS,"ar-SY,ku,hy,arc,fr,en"
+Tajikistan,Tayikistan,TJ,TJK,762.0,972,Dushanbe,AS,"tg,ru"
+Thailand,Tailandia,TH,THA,764.0,764,Bangkok,AS,"th,en"
+The former Yugoslav Republic of Macedonia,ex Republica Yugoslava de Macedonia,MK,MKD,807.0,807,Skopje,EU,"mk,sq,tr,rmm,sr"
+Timor-Leste,Timor-Leste,TL,TLS,626.0,840,Dili,OC,"tet,pt-TL,id,en"
+Togo,Togo,TG,TGO,768.0,952,Lome,AF,"fr-TG,ee,hna,kbp,dag,ha"
+Tonga,Tonga,TO,TON,776.0,776,Nuku'alofa,OC,"to,en-TO"
+Trinidad and Tobago,Trinidad y Tabago,TT,TTO,780.0,780,Port of Spain,,"en-TT,hns,fr,es,zh"
+Tunisia,Tunez,TN,TUN,788.0,788,Tunis,AF,"ar-TN,fr"
+Turkey,Turquia,TR,TUR,792.0,949,Ankara,AS,"tr-TR,ku,diq,az,av"
+Turkmenistan,Turkmenistan,TM,TKM,795.0,934,Ashgabat,AS,"tk,ru,uz"
+Tuvalu,Tuvalu,TV,TUV,798.0,036,Funafuti,OC,"tvl,en,sm,gil"
+Uganda,Uganda,UG,UGA,800.0,800,Kampala,AF,"en-UG,lg,sw,ar"
+Ukraine,Ucrania,UA,UKR,804.0,980,Kiev,EU,"uk,ru-UA,rom,pl,hu"
+United Arab Emirates,Emiratos Arabes Unidos,AE,ARE,784.0,784,Abu Dhabi,AS,"ar-AE,fa,en,hi,ur"
+United Kingdom of Great Britain and Northern Ireland,Reino Unido de Gran Bretaña e Irlanda del Norte,GB,GBR,826.0,826,London,EU,"en-GB,cy-GB,gd"
+United Republic of Tanzania,Republica Unida de Tanzania,TZ,TZA,834.0,834,Dodoma,AF,"sw-TZ,en,ar"
+United States of America,Estados Unidos de America,US,USA,840.0,840,Washington,,"en-US,es-US,haw,fr"
+Uruguay,Uruguay,UY,URY,858.0,858,Montevideo,SA,es-UY
+Uzbekistan,Uzbekistan,UZ,UZB,860.0,860,Tashkent,AS,"uz,ru,tg"
+Vanuatu,Vanuatu,VU,VUT,548.0,548,Port Vila,OC,"bi,en-VU,fr-VU"
+Bolivarian Republic of Venezuela,Republica Bolivariana de Venezuela,VE,VEN,862.0,937,Caracas,SA,es-VE
+Viet Nam,Viet Nam,VN,VNM,704.0,704,Hanoi,AS,"vi,en,fr,zh,km"
+Yemen,Yemen,YE,YEM,887.0,886,Sanaa,AS,ar-YE
+Zambia,Zambia,ZM,ZMB,894.0,967,Lusaka,AF,"en-ZM,bem,loz,lun,lue,ny,toi"
+Zimbabwe,Zimbabwe,ZW,ZWE,716.0,932,Harare,AF,"en-ZW,sn,nr,nd"

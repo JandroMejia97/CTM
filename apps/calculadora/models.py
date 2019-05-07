@@ -2,6 +2,7 @@ from django.db import models
 from django.core.validators import RegexValidator, MinValueValidator, MaxValueValidator, MinLengthValidator, MaxLengthValidator
 from django.contrib.auth.models import AbstractUser
 from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
 from phonenumber_field.modelfields import PhoneNumberField
 
 
@@ -95,7 +96,7 @@ class MonedaOficial(models.Model):
     )
 
     def __str__(self):
-        return self.nombre_moneda
+        return self.nombre_divisa
 
     class Meta:
         verbose_name = 'Moneda Oficial'
@@ -146,7 +147,7 @@ class Ciudad(models.Model):
     )
     
     def __str__(self):
-        return self.nombre_ciudad
+        return self.nombre
 
     class Meta:
         verbose_name = 'Ciudad'
@@ -169,7 +170,7 @@ class Continente(models.Model):
     )
 
     def __str__(self):
-        return self.nombre
+        return str(self.nombre).upper()
 
     class Meta:
         verbose_name = 'Continente'
@@ -192,7 +193,7 @@ class Pais(models.Model):
         verbose_name='Codigo ISO 3166-1 alpha-2'
     )
     iso_3166_1_3 = models.CharField(
-        max_length=2,
+        max_length=3,
         blank=True,
         null=True,
         help_text='Indique el código del país en formato ISO 3166-1 alpha-3. Por ejemplo, para la bandera de la República de El Salvador es SLV',
@@ -206,6 +207,15 @@ class Pais(models.Model):
         on_delete=models.CASCADE,
         help_text='Capital del país',
         verbose_name='Capital',
+    )
+    continente = models.ForeignKey(
+        Continente,
+        related_name='continente',
+        blank=True,
+        null=True,
+        on_delete=models.CASCADE,
+        help_text='Contiente donde se ubica el país',
+        verbose_name='Continente',
     )
     moneda = models.ForeignKey(
         MonedaOficial,
@@ -225,11 +235,12 @@ class Pais(models.Model):
     )
 
     def __str__(self):
-        return self.nombre
+        return str(self.nombre).upper()
     
     class Meta:
         verbose_name = 'País'
         verbose_name_plural = 'Países'
+        ordering = ['continente','nombre']
 
 
 class Restaurante(models.Model):
@@ -308,7 +319,7 @@ class Restaurante(models.Model):
     )
 
     def __str__(self):
-        return self.nombre_restaurante
+        return self.nombre
 
     class Meta:
         verbose_name = 'Restaurante'
