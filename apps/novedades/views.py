@@ -54,7 +54,7 @@ import os
 
 def import_continent(request):
     url = os.getcwd()+'/data/continent.csv'
-    data = pd.read_csv(url)
+    data = pd.read_csv(url,  encoding="ISO-8859-1", engine='python')
     for row in data.itertuples(index=False):
         c = Continente.objects.update_or_create(
             nombre=row.Name,
