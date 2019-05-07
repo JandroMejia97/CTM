@@ -156,7 +156,7 @@ class Ciudad(models.Model):
 
 class Continente(models.Model):
     nombre =  models.CharField(
-        max_length=20,
+        max_length=25,
         blank=False,
         null=False,
         help_text='Nombre del continente',
