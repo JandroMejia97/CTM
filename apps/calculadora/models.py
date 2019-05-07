@@ -179,7 +179,7 @@ class Continente(models.Model):
 
 class Pais(models.Model):
     nombre = models.CharField(
-        max_length=50,
+        max_length=100,
         blank=False,
         null=False,
         help_text='Ingrese el nombre del país',
