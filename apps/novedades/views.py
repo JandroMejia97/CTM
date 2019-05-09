@@ -62,6 +62,26 @@ def import_continent(request):
         )
     return HttpResponse('Los datos de los continentes han sido importados exitosamente')
 
+def import_language(request):
+    url = os.getcwd()+'/data/idiomas.csv'
+    data = pd.read_csv(url,  encoding="ISO-8859-1", engine='python')
+    for row in data.itertuples(index=False):
+        i = IdiomaOficial.objects.update_or_create(
+            nombre=row.English,
+            iso_639_1=row.alpha2
+        )
+    return HttpResponse('Los datos de los idiomas han sido importados exitosamente')
+
+def import_currencies(request):
+    url = os.getcwd()+'/data/divisas.csv'
+    data = pd.read_csv(url,  encoding="ISO-8859-1", engine='python')
+    for row in data.itertuples(index=False):
+        m = MonedaOficial.objects.update_or_create(
+            nombre_divisa=row.CurrencyName,
+            iso_4217=row.CurrencyCode
+        )
+    return HttpResponse('Los datos de los divisas han sido importados exitosamente')
+
 def import_country(request):
     url = os.getcwd()+'/data/country_new.csv'
     data = pd.read_csv(url, encoding="ISO-8859-1", engine='python')
@@ -86,6 +106,6 @@ def import_country(request):
             iso_3166_1_3=row.ISO3166_1_Alpha_3,
             continente=c
         )
-    return HttpResponse('Los datos de los continentes han sido importados exitosamente')
+    return HttpResponse('Los datos de los países han sido importados exitosamente')
 
 

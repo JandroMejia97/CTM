@@ -10,19 +10,19 @@
         {% if user.is_authenticated %}
             <li>
                 <a href="javascript:;" data-toggle="collapse" data-target="#restaurante">
-                    <i class="fa fa-fw fa-cutlery"></i> 
+                    <i class="fa fa-fw fa-utensils"></i> 
                     Restaurante
                     <i class="fa fa-fw fa-caret-down"></i>
                 </a>
                 <ul id="restaurante" class="collapse">
                     <li {% if nav_active == "restaurante_gestionar" %}class="active"{% endif %}>
-                        <a href="">
+                        <a href="{% url 'calculadora:restaurantes' %}">
                             <i class="fa fa-fw fa-wrench"></i> 
                             Gestionar
                         </a>
                     </li>
                     <li {% if nav_active == "restaurante_nuevo" %}class="active"{% endif %}>
-                        <a href="">
+                        <a href="{% url 'calculadora:nuevo_restaurante' %}">
                             <i class="fa fa-fw fa-plus"></i> 
                             Nuevo
                         </a>
@@ -56,7 +56,7 @@
                     </li>
                     <li>
                         <a href="{% url 'logout' %}">
-                            <i class="fa fa-fw fa-sign-out" aria-hidden="true"></i> 
+                            <i class="fa fa-fw fa-sign-out-alt" aria-hidden="true"></i> 
                             Cerrar Sesión
                         </a>
                     </li>

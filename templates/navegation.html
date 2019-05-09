@@ -21,7 +21,7 @@
                     <i class="fa fa-envelope"></i>
                     <b class="caret"></b>
                 </a>
-                <ul class="dropdown-menu message-dropdown">
+                <ul id="messages" class="dropdown-menu message-dropdown">
                     {% if messages %}
                         {% block messages %}
                             {% for message in messages %}

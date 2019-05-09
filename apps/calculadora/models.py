@@ -1,8 +1,9 @@
 from django.db import models
-from django.core.validators import RegexValidator, MinValueValidator, MaxValueValidator, MinLengthValidator, MaxLengthValidator
+from django.core.validators import MinValueValidator, MaxValueValidator, MinLengthValidator, MaxLengthValidator
 from django.contrib.auth.models import AbstractUser
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
+
 from phonenumber_field.modelfields import PhoneNumberField
 
 
@@ -31,7 +32,7 @@ class User(AbstractUser):
 
 class IdiomaOficial(models.Model):
     nombre = models.CharField(
-        max_length=20,
+        max_length=100,
         blank=False,
         null=False,
         help_text='Nombre del idioma',
@@ -52,11 +53,12 @@ class IdiomaOficial(models.Model):
     class Meta:
         verbose_name = 'Idioma Oficial'
         verbose_name_plural = 'Idiomas Oficiales'
+        ordering = ['nombre']
 
 
 class MonedaOficial(models.Model):
     iso_4217 = models.CharField(
-        max_length=2,
+        max_length=3,
         blank=False,
         null=False,
         unique=True,
@@ -75,7 +77,7 @@ class MonedaOficial(models.Model):
         verbose_name='Codigo ISO 4217 Numérico'
     )
     nombre_divisa = models.CharField(
-        max_length=20,
+        max_length=100,
         blank=False,
         null=False,
         help_text='Indique el nombre de la moneda. Por ejemplo, la moneda de Argentina se llama "Peso argentino"',
@@ -101,6 +103,7 @@ class MonedaOficial(models.Model):
     class Meta:
         verbose_name = 'Moneda Oficial'
         verbose_name_plural = 'Monedas Oficiales'
+        ordering = ['nombre_divisa']
 
 
 class Ciudad(models.Model):
@@ -290,10 +293,6 @@ class Restaurante(models.Model):
         help_text='Ingrese la dirección física del restaurante',
         verbose_name='Dirección'
     )
-    telefono_regex = RegexValidator(
-        regex='^\+?1?\d{9,15}$', 
-        message='El número de teléfono se debe ingresar en el formato: "+999999999". Se admiten hasta 15 dígitos.'
-    )
     telefono = PhoneNumberField(
         null=False,
         help_text='Ingrese el número telefónico del restaurante en el formato +999999999',
@@ -321,6 +320,18 @@ class Restaurante(models.Model):
 
     def __str__(self):
         return self.nombre
+
+    """def path_and_rename(self, instance, filename):
+        ext = filename.split('.')[-1]
+        filename = 'logo{}.{}'.format(instance.nombre, ext)
+        return os.path.join(
+            self.ciudad.pais.continente.nombre,
+            self.ciudad.pais.nombre,
+            self.ciudad.nombre,
+            'restaurantes',
+            self.nombre,
+            filename
+        )"""
 
     class Meta:
         verbose_name = 'Restaurante'
@@ -385,7 +396,7 @@ class Carta(models.Model):
     )
 
     def __str__(self):
-        return self.tipo
+        return self.tipo.nombre
 
     class Meta:
         verbose_name = 'Carta'
