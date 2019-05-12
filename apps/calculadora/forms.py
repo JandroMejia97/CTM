@@ -3,14 +3,38 @@ from .models import *
 
 
 class RestauranteForm(forms.ModelForm):
-    continente = forms.ChoiceField()
     pais = forms.ChoiceField()
+    pais_input = forms.CharField(
+        label='Filtrar Países',
+        required=False,
+        widget=forms.TextInput(
+            attrs={
+                'class':'col-lg-6 col-md-6',
+                'placeholder':'Buscar...',
+                'id':'pais_input',
+            }
+        ),
+        help_text='Seleccione su continente'
+    )
+    ciudad_input = forms.CharField(
+        label='Filtrar Ciudades',
+        required=False,
+        widget=forms.TextInput(
+            attrs={
+                'class':'col-lg-6 col-md-6',
+                'placeholder':'Buscar...',
+                'id':'ciudad_input',
+            }
+        ),
+        help_text='Seleccione su continente'
+    )
 
     class Meta:
         model = Restaurante
         fields = [
-            'continente',
+            'pais_input',
             'pais',
+            'ciudad_input',
             'ciudad',
             'nombre',
             'logo',
@@ -30,21 +54,13 @@ class RestauranteForm(forms.ModelForm):
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['continente'] = forms.ModelChoiceField(
-            queryset=Continente.objects.all(),
-            widget=forms.Select(
-                attrs={
-                    'onchange':'getData("id_continente", "id_pais")',
-                }
-            ),
-            help_text='Seleccione su continente'
-        )
         self.fields['pais'] = forms.ModelChoiceField(
             queryset=Pais.objects.none(),
             widget=forms.Select(
                 attrs={
                     'onchange': 'getData("id_pais", "id_ciudad")',
-                    'disabled': 'true'
+                    'disabled': 'true',
+                    'class':'col-lg-6 col-md-6'
                 }
             ),
             help_text='Seleccione su país'
@@ -53,7 +69,8 @@ class RestauranteForm(forms.ModelForm):
             queryset=Ciudad.objects.none(),
             widget=forms.Select(
                 attrs={
-                    'disabled':'true'
+                    'disabled':'true',
+                    'class':'col-lg-6 col-md-6'
                 }
             ),
             help_text='Seleccione su ciudad'

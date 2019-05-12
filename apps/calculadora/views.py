@@ -29,6 +29,12 @@ class RestaurantesListView(ListView):
 
 class RestauranteCreateView(TemplateView):
     template_name = 'calculadora/restaurante.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['continentes'] = Continente.objects.all()
+        return context
+
     def get(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
         context['restaurante_form'] = RestauranteForm

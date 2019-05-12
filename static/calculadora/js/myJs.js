@@ -1,3 +1,15 @@
+function filterTable(idInput, idTable){
+    filter = document.getElementById(idInput).value.toUpperCase();
+    $("#"+idTable+" tr").filter(function(){
+        $(this).toggle($(this).text().toUpperCase().indexOf(filter)>-1)
+    });
+};
+function filterSelect(idInput, idSelect){
+    filter = document.getElementById(idInput).value.toUpperCase();
+    $("#"+idSelect+" li").filter(function(){
+        $(this).toggle($(this).text().toUpperCase().indexOf(filter)>-1)
+    });
+}
 function addMessage(message){
     if(message.user.first_name && message.user.last_name){
         var user=message.user.first_name+' '+message.user.last_name;
