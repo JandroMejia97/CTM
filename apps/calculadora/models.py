@@ -122,6 +122,31 @@ class Ciudad(models.Model):
         help_text='Seleccione el país al que pertenece esta ciudad',
         verbose_name='País',
     )
+    
+    def __str__(self):
+        return self.nombre
+
+    class Meta:
+        verbose_name = 'Ciudad'
+        verbose_name_plural = 'Ciudades'
+
+
+class Division(models.Model):
+    nombre = models.CharField(
+        max_length=50,
+        blank=False,
+        null=False,
+        help_text='Ingrese el nombre de la division',
+        verbose_name='Nombre',
+    )
+    ciudad = models.ForeignKey(
+        'Ciudad',
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+        help_text='Seleccione la ciudad a la que pertenece esta region',
+        verbose_name='Ciudad',
+    )
     latitud = models.DecimalField(
         blank=True,
         null=True,
@@ -153,8 +178,8 @@ class Ciudad(models.Model):
         return self.nombre
 
     class Meta:
-        verbose_name = 'Ciudad'
-        verbose_name_plural = 'Ciudades'
+        verbose_name = 'División política de la ciudad'
+        verbose_name_plural = 'División Política'
 
 
 class Continente(models.Model):
@@ -306,14 +331,14 @@ class Restaurante(models.Model):
         help_text='Si lo desea, puede generar el mapa de su ubicación en Google Maps. Vea el tutorial para más información',
         verbose_name='Mapa'
     )
-    ciudad = models.ForeignKey(
-        Ciudad,
+    barrio = models.ForeignKey(
+        Division,
         related_name='ubicado_en',
         on_delete=models.DO_NOTHING,
         blank=False,
         null=False,
-        help_text='Seleccione la ciudad en la que está ubicado el restaurante.',
-        verbose_name='Ciudad'
+        help_text='Seleccione el barrio o división política de su ciudad en la que está ubicado el restaurante.',
+        verbose_name='Barrio/Division'
     )
     administrador = models.ForeignKey(
         User,

@@ -57,17 +57,29 @@ class CiudadAdmin(admin.ModelAdmin):
     list_display = [
         'nombre',
         'pais',
+    ]
+    fields = [
+        'nombre',
+        'pais',
+    ]
+
+admin.site.register(Ciudad, CiudadAdmin)
+
+class DivisionAdmin(admin.ModelAdmin):
+    list_display = [
+        'nombre',
+        'ciudad',
         'latitud',
         'longitud'
     ]
     fields = [
         'nombre',
-        'pais',
+        'ciudad',
         'latitud',
         'longitud'
     ]
 
-admin.site.register(Ciudad, CiudadAdmin)
+admin.site.register(Division, DivisionAdmin)
 
 
 class ContinenteAdmin(admin.ModelAdmin):
@@ -111,7 +123,7 @@ class RestauranteAdmin(admin.ModelAdmin):
         'nombre',
         'administrador',
         'telefono',
-        'ciudad',
+        'barrio',
         'latitud',
         'longitud',
     ]
@@ -120,7 +132,7 @@ class RestauranteAdmin(admin.ModelAdmin):
         'logo',
         'administrador',
         'telefono',
-        'ciudad',
+        'barrio',
         'latitud',
         'longitud',
         'direccion'
