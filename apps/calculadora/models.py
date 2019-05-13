@@ -325,7 +325,7 @@ class Restaurante(models.Model):
         verbose_name='Número de Telefono'
     )
     mapa = models.CharField(
-        max_length=300,
+        max_length=600,
         blank=True,
         null=True,
         help_text='Si lo desea, puede generar el mapa de su ubicación en Google Maps. Vea el tutorial para más información',

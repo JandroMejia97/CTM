@@ -49,11 +49,11 @@ function addMessage(message){
 }
 
 function getCiudades(id, seleccion){
-    console.log('POST: PAISES');
+    console.log('GET: PAISES');
     console.log('AJAX: CIUDADES');
     $.ajax({
         url: '/ajax/ciudades/',
-        type: 'POST',
+        type: 'GET',
         data: {
             'id': id,
         },
@@ -65,9 +65,9 @@ function getCiudades(id, seleccion){
     $("#ciudades").empty();
         if(data.response != null){
             $.each(data.response, function(index, value){
-                $("#"+depData).append(
+                $("#ciudades").append(
                     "<li>"
-                        +"<a href=\"#\""
+                        +"<a href=\"#\">"
                         //+"<a href=\"#\" onclick=\"getRegion(\'id_pais\', \'id_ciudad\', "+value.id+", \'"+value.nombre.toUpperCase()+"\', \'"+anteriorFiltro+"\', \'"+nuevoFiltro+"\')\">"
                           + value.nombre.toUpperCase()
                         +"</a>"
@@ -78,6 +78,7 @@ function getCiudades(id, seleccion){
         }else{
             $("#ciudades").empty();
             $("#ciudades").append('<li><a href="#">Sin resultados</a></li>');
+            $("#pais_filtro").empty();
             $("#pais_filtro").val(seleccion);
             $("#ciudad_filtro").attr('disabled','disabled');
         }
@@ -91,11 +92,11 @@ function getCiudades(id, seleccion){
   }
 
   function getPaises(id, seleccion){
-    console.log('POST: PAISES');
+    console.log('GET: PAISES');
     console.log('AJAX: CIUDADES');
     $.ajax({
         url: '/ajax/paises/',
-        type: 'POST',
+        type: 'GET',
         data: {
             'id': id,
         },
@@ -104,10 +105,10 @@ function getCiudades(id, seleccion){
         },
         dataType: 'json'
     }).done(function(data){
-    $("#"+depData).empty();
+    $("#paises").empty();
         if(data.response != null){
             $.each(data.response, function(index, value){
-                $("#"+depData).append(
+                $("#paises").append(
                     "<li>"
                         +"<a href=\"#\" onclick=\"getCiudades("+value.id+", \'"+value.nombre.toUpperCase()+"\')\">"
                           + value.nombre.toUpperCase()
@@ -119,6 +120,7 @@ function getCiudades(id, seleccion){
         }else{
             $("#paises").empty();
             $("#paises").append('<li><a href="#">Sin resultados</a></li>');
+            $("#continente_filtro").empty();
             $("#continente_filtro").val(seleccion);
             $("#pais_filtro").attr('disabled','disabled');
         }

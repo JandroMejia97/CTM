@@ -1,5 +1,7 @@
 from django.shortcuts import render
-from django.views.generic import TemplateView, ListView
+from django.views.generic import TemplateView
+from django.views.generic.list import ListView
+from django.views.generic.detail import DetailView
 from django.http.response import JsonResponse
 
 from .forms import *
@@ -28,7 +30,7 @@ class RestaurantesListView(ListView):
 
 
 class RestauranteCreateView(TemplateView):
-    template_name = 'calculadora/restaurante.html'
+    template_name = 'calculadora/restaurante_create.html'
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -56,6 +58,21 @@ class RestauranteCreateView(TemplateView):
         else:
             context = {'errors': restaurante_form.errors}
         return self.render_to_response(context)
+
+
+class RestauranteDetailView(DetailView):
+    model = Restaurante
+    template_name = 'calculadora/restaurante_detail.html'
+    context_object_name = 'restaurante'
+
+    def get_queryset(self):
+        if self.request.user.is_authenticated:
+            return super(RestauranteDetailView, self).get_queryset().filter(
+                pk=self.kwargs['pk'],
+                administrador=self.request.user
+            )
+        else:
+            return Restaurante.objects.none()
     
 
 def home(request):

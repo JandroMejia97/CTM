@@ -149,9 +149,11 @@
             </div>
             <div class="panel-body">
                 <div class="form-group row">
-                    <div class="col-xs-3 pull-right">
+                    <div class="col-xs-4 pull-right">
                         <div class="input-group">
-                            <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
+                            <span class="input-group-addon">
+                                <i class="glyphicon glyphicon-search"></i>
+                            </span>
                             <input type="text" class="form-control" id="restaurante_filtro" placeholder="Buscar por..." onkeyup='filterTable("restaurante_filtro","restaurantes")'>
                         </div>
                     </div>
@@ -165,7 +167,7 @@
                                         Nombre
                                     </th>
                                     <th  class="text-center">
-                                        Ciudad
+                                        Barrio/Zona
                                     </th>
                                     <th  class="text-center">
                                         Dirección
@@ -185,10 +187,12 @@
                                 {% for restaurante in restaurantes %}
                                     <tr>
                                         <td>
-                                            {{ restaurante.nombre }}
+                                            <a href="/restaurantes/detalle/{{restaurante.pk}}/">
+                                                {{ restaurante.nombre }}
+                                            </a>
                                         </td>
                                         <td>
-                                            {{ restaurante.ciudad }}
+                                            {{ restaurante.zona }}
                                         </td>
                                         <td>
                                             {{ restaurante.direccion }}

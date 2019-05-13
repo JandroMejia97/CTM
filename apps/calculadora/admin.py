@@ -135,7 +135,8 @@ class RestauranteAdmin(admin.ModelAdmin):
         'barrio',
         'latitud',
         'longitud',
-        'direccion'
+        'direccion',
+        'mapa'
     ]
 
 admin.site.register(Restaurante, RestauranteAdmin)
