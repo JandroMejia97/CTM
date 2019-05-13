@@ -10,6 +10,10 @@ function filterSelect(idInput, idSelect){
         $(this).toggle($(this).text().toUpperCase().indexOf(filter)>-1)
     });
 }
+function deploySelect(select){
+    var event = new MouseEvent('mousedown');
+    select.dispatchEvent(event);
+}
 function addMessage(message){
     if(message.user.first_name && message.user.last_name){
         var user=message.user.first_name+' '+message.user.last_name;
@@ -44,16 +48,56 @@ function addMessage(message){
     );
 }
 
-function getData(sendData, depData){
-    console.log('GET: ', sendData);
-    var send = $("#"+sendData).val();
-    console.log('AJAX: '+sendData);
+function getCiudades(id, seleccion){
+    console.log('POST: PAISES');
+    console.log('AJAX: CIUDADES');
     $.ajax({
-        url: '/ajax/'+depData+'/',
-        type: 'GET',
+        url: '/ajax/ciudades/',
+        type: 'POST',
         data: {
-            'data': send,
-            'case': sendData,
+            'id': id,
+        },
+        success: function(data){
+            console.log("SUCCESS");
+        },
+        dataType: 'json'
+    }).done(function(data){
+    $("#ciudades").empty();
+        if(data.response != null){
+            $.each(data.response, function(index, value){
+                $("#"+depData).append(
+                    "<li>"
+                        +"<a href=\"#\""
+                        //+"<a href=\"#\" onclick=\"getRegion(\'id_pais\', \'id_ciudad\', "+value.id+", \'"+value.nombre.toUpperCase()+"\', \'"+anteriorFiltro+"\', \'"+nuevoFiltro+"\')\">"
+                          + value.nombre.toUpperCase()
+                        +"</a>"
+                    +"</li>");
+            });
+            $("#ciudad_filtro").removeAttr('disabled');
+            $("#pais_filtro").val(seleccion);
+        }else{
+            $("#ciudades").empty();
+            $("#ciudades").append('<li><a href="#">Sin resultados</a></li>');
+            $("#pais_filtro").val(seleccion);
+            $("#ciudad_filtro").attr('disabled','disabled');
+        }
+    }).fail(function(data) {
+        console.log("error");
+    }).always(function(data) {
+        addMessage(data.message);
+        console.log(data.message);
+        console.log("complete");
+    });
+  }
+
+  function getPaises(id, seleccion){
+    console.log('POST: PAISES');
+    console.log('AJAX: CIUDADES');
+    $.ajax({
+        url: '/ajax/paises/',
+        type: 'POST',
+        data: {
+            'id': id,
         },
         success: function(data){
             console.log("SUCCESS");
@@ -62,17 +106,21 @@ function getData(sendData, depData){
     }).done(function(data){
     $("#"+depData).empty();
         if(data.response != null){
-            $("#"+depData).append('<option value="" selected="">---------</option>');
             $.each(data.response, function(index, value){
                 $("#"+depData).append(
-                    "<option id='"+value.id + "' value='" + value.id + "'>"
-                        + value.nombre 
-                    + "</option>");
+                    "<li>"
+                        +"<a href=\"#\" onclick=\"getCiudades("+value.id+", \'"+value.nombre.toUpperCase()+"\')\">"
+                          + value.nombre.toUpperCase()
+                        +"</a>"
+                    +"</li>");
             });
-            $("#"+depData).removeAttr('disabled');
+            $("#pais_filtro").removeAttr('disabled');
+            $("#continente_filtro").val(seleccion);
         }else{
-            $("#"+depData).append('<option value="" selected="">---------</option>');
-            $("#"+depData).attr('disabled','disabled');
+            $("#paises").empty();
+            $("#paises").append('<li><a href="#">Sin resultados</a></li>');
+            $("#continente_filtro").val(seleccion);
+            $("#pais_filtro").attr('disabled','disabled');
         }
     }).fail(function(data) {
         console.log("error");

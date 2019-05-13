@@ -17,11 +17,6 @@
                 <link rel="shortcut icon" type="image/x-icon" href="{% static 'calculadora/images/favicon.png' %}">
         {% endblock icon %}
 
-        <!-- Styles -->
-        {% block custom_css %}
-
-        {% endblock custom_css %}
-
         <!-- Bootstrap Core CSS -->
         {% block bootstrap_css %}
             <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
@@ -37,6 +32,12 @@
             <link href="{% static 'calculadora/font-awesome/css/fontawesome.min.css' %}" rel="stylesheet" type="text/css">
             <link href="{% static 'calculadora/font-awesome/css/all.min.css' %}" rel="stylesheet" type="text/css">
         {% endblock fontawesome_css %}
+
+        <!-- Styles -->
+        {% block custom_css %}
+
+        {% endblock custom_css %}
+        
     {% endblock head %}
 </head>
 <body style="background-color: white !important">
@@ -62,5 +63,29 @@
     {% block sb_admin_custom_js %}
 
     {% endblock sb_admin_custom_js %}
+
+    {% block modals %}
+
+    {% endblock modals %}
+    <!--LOGOUT MODAL-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title">¿Seguro que quieres cerrar la sesión?</h4>
+                </div>
+                <div class="modal-body">
+                    Presione "Cerrar sesión" a continuación si está listo para finalizar su sesión actual
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                    <a class="btn btn-primary" href="{% url 'logout' %}">Cerrar Sesión</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

@@ -35,6 +35,17 @@
         </ol>
       </div>
     </div>
+    <!-- Alertas -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="alert bold alert-info">
+                <i class="fas fw fa-plus-circle"></i>
+                <a href="{% url 'calculadora:nuevo_restaurante' %}">
+                    <strong>¡Click Aquí para agregar un nuevo restaurante!</strong>
+                </a>
+            </div>
+        </div>
+    </div>
     <div class="row">
         <div class="col-lg-4 col-md-6">
             <div class="panel panel-green">
@@ -137,11 +148,12 @@
                 </h3>
             </div>
             <div class="panel-body">
-                <div class="row">
-                    <div class="col-3 pull-right">
-                        Filtrar:
-                        <input type="text" class="form-control" id="restaurante-filter" placeholder="Buscar por..." onkeyup='filterSelect("restaurante-filter","restaurantes")'>
-                        <br>
+                <div class="form-group row">
+                    <div class="col-xs-3 pull-right">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
+                            <input type="text" class="form-control" id="restaurante_filtro" placeholder="Buscar por..." onkeyup='filterTable("restaurante_filtro","restaurantes")'>
+                        </div>
                     </div>
                 </div>
                 <div class="table-responsive">
@@ -149,23 +161,23 @@
                         {% if restaurantes %}
                             <thead>
                                 <tr>
-                                    <th>
+                                    <th  class="text-center">
                                         Nombre
                                     </th>
-                                    <th>
+                                    <th  class="text-center">
                                         Ciudad
                                     </th>
-                                    <th>
+                                    <th  class="text-center">
                                         Dirección
                                     </th>
-                                    <th>
+                                    <th  class="text-center">
                                         Teléfono
                                     </th>
-                                    <th>
-                                        Latitud
+                                    <th  class="text-center">
+                                        ¿Tiene Mapa?
                                     </th>
-                                    <th>
-                                        Longitud
+                                    <th  class="text-center">
+                                        Operaciones
                                     </th>
                                 </tr>
                             </thead>
@@ -185,10 +197,16 @@
                                             {{ restaurante.telefono }}
                                         </td>
                                         <td>
-                                            {{ restaurante.latitud  }}
+                                            {% if restaurante.mapa %}
+                                                Sí
+                                            {% else %}
+                                                No
+                                            {% endif %}
                                         </td>
-                                        <td>
-                                            {{ restaurante.longitud }}
+                                        <td class="text-center">
+                                            <a class="fas fa-w fa-eye" name="ver" href="#"  data-toggle="modal" onclick="" style="color:gray !important"></a>
+                                            <a class="fas fa-w fa-edit" name="editar" href="#" onclick="" style="color:gray !important"></a>
+                                            <a class="fas fa-w fa fa-trash" name="eliminar" href="#" onclick="" style="color:gray !important"></a>
                                         </td>
                                     </tr>
                                 {% endfor %}

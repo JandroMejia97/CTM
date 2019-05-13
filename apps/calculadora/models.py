@@ -299,6 +299,13 @@ class Restaurante(models.Model):
         unique=True,
         verbose_name='Número de Telefono'
     )
+    mapa = models.CharField(
+        max_length=300,
+        blank=True,
+        null=True,
+        help_text='Si lo desea, puede generar el mapa de su ubicación en Google Maps. Vea el tutorial para más información',
+        verbose_name='Mapa'
+    )
     ciudad = models.ForeignKey(
         Ciudad,
         related_name='ubicado_en',

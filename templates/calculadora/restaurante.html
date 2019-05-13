@@ -31,7 +31,7 @@
           </li>
           <li>
             <i class="fa fa-utensils"></i>
-            <a href="{% url 'calculadora:home' %}">Restaurantes</a>
+            <a href="{% url 'calculadora:restaurantes' %}">Restaurantes</a>
           </li>
           <li class="active">
             <i class="fa fa-plus-circle"></i>
@@ -45,6 +45,40 @@
         <form method="post">
           <div class="form-group">
             {% csrf_token %}
+              <div class="form-group">
+                <label class="control-label col-sm-2 col-lg-2 " for="">Ubicacion</label>
+                <div class="col-sm-10 col-lg-10 ">
+                  <div class="input-group">
+                    <div class="dropdown">
+                      <input class="form-control" id="continente_filtro" type="text" placeholder="Buscar continente..." onkeyup='filterSelect("continente_filtro", "continentes")' data-toggle="dropdown">
+                      <ul class="dropdown-menu" id="continentes">
+                          {% for continente in continentes %}
+                            <li>
+                              <a href="#" onclick='getPaises({{ continente.pk }}, "{{ continente }}")'>
+                                {{ continente }}
+                              </a>
+                            </li>
+                          {% endfor %}
+                      </ul>
+                    </div>
+                    <span class="input-group-addon">/</span>
+                    <div class="dropdown">
+                      <input class="form-control" id="pais_filtro" type="text" placeholder="Buscar pais..." onkeyup='filterSelect("pais_filtro", "paises")' data-toggle="dropdown" disabled>
+                      <ul class="dropdown-menu" id="paises">
+                      </ul>
+                    </div>
+                    <span class="input-group-addon">/</span>
+                    <div class="dropdown">
+                      <input class="form-control" id="ciudad_filtro" type="text" placeholder="Buscar ciudad..." onkeyup='filterSelect("ciudad_filtro", "ciudades")' data-toggle="dropdown" disabled>
+                      <ul class="dropdown-menu" id="ciudades">
+                      </ul>
+                    </div>
+                  </div>
+                  <p class="help-block">
+                    Filtre la ubicacion de su restaurante
+                  </p>
+                </div>
+              </div>
             {{ restaurante_form|bootstrap_horizontal }}
             <div class="text-center">
               <button class="btn btn-primary" type="submit">Enviar</button>

@@ -78,71 +78,71 @@ def load_countries(request):
 		}
     return JsonResponse(data=data)
 
-def load_data(request):
+def get_paises(request):
     if request.method == 'GET':
-        sendData = request.GET['data']
-        case = request.GET['case']
-        if case == 'id_continente':
-            c = Continente.objects.get(pk=sendData)
-            paises = Pais.objects.filter(continente=c).values()
-            if paises:
-                data = {
-                    'message': {
-                        'user':{
-                            'first_name':request.user.first_name,
-                            'last_name':request.user.last_name,
-                            'username':request.user.username
-                        },
-                        'result': 'Países recuperados exitosamente del continente ' +str(c),
-                        'hora': timezone.now().strftime('%d/%m/%Y %H:%M'),
-                        'alert':'check',
-                        'paises': True,
+        sendData = request.GET['id']
+        c = Continente.objects.get(pk=sendData)
+        paises = Pais.objects.filter(continente=c).values()
+        if paises:
+            data = {
+                'message': {
+                    'user':{
+                        'first_name':request.user.first_name,
+                        'last_name':request.user.last_name,
+                        'username':request.user.username
                     },
-                    'response': list(paises),
-                }
-            else:
-                data = {
-                    'message': {
-                        'user':{
-                            'first_name':request.user.first_name,
-                            'last_name':request.user.last_name,
-                            'username':request.user.username
-                        },
-                        'result': 'Aún no se registran países para el continete '+str(c),
-                        'hora': timezone.now().strftime('%d/%m/%Y %H:%M'),
-                        'alert':'exclamation'
-                    }
-                }
-            return JsonResponse(data=data)
-        elif case == 'id_pais':
-            p = Pais.objects.get(pk=sendData)
-            ciudades = Ciudad.objects.filter(pais=p).values()
-            if ciudades:
-                data = {
-                    'message': {
-                        'user':{
-                            'first_name':request.user.first_name,
-                            'last_name':request.user.last_name,
-                            'username':request.user.username
-                        },
-                        'result': 'Ciudades recuperados exitosamente del país '+str(p),
-                        'hora': timezone.now().strftime('%d/%m/%Y %H:%M'),
-                        'alert':'check'
+                    'result': 'Países recuperados exitosamente del continente ' +str(c),
+                    'hora': timezone.now().strftime('%d/%m/%Y %H:%M'),
+                    'alert':'check',
+                    'paises': True,
+                },
+                'response': list(paises),
+            }
+        else:
+            data = {
+                'message': {
+                    'user':{
+                        'first_name':request.user.first_name,
+                        'last_name':request.user.last_name,
+                        'username':request.user.username
                     },
-                    'response': list(ciudades)
+                    'result': 'Aún no se registran países para el continete '+str(c),
+                    'hora': timezone.now().strftime('%d/%m/%Y %H:%M'),
+                    'alert':'exclamation'
                 }
-            else:
-                data = {
-                    'message': {
-                        'user':{
-                            'first_name':request.user.first_name,
-                            'last_name':request.user.last_name,
-                            'username':request.user.username
-                        },
-                        'result': 'Aún no se registran ciudades para el país '+str(p),
-                        'hora': timezone.now().strftime('%d/%m/%Y %H:%M'),
-                        'alert':'exclamation'
-                    }
-                }
-            return JsonResponse(data=data)
+            }
+        return JsonResponse(data=data)
 
+def get_ciudades(request):
+    if request.method == 'GET':
+        sendData = request.GET['id']
+        p = Pais.objects.get(pk=sendData)
+        ciudades = Ciudad.objects.filter(pais=p).values()
+        if ciudades:
+            data = {
+                'message': {
+                    'user':{
+                        'first_name':request.user.first_name,
+                        'last_name':request.user.last_name,
+                        'username':request.user.username
+                    },
+                    'result': 'Ciudades recuperados exitosamente del país '+str(p),
+                    'hora': timezone.now().strftime('%d/%m/%Y %H:%M'),
+                    'alert':'check'
+                },
+                'response': list(ciudades)
+            }
+        else:
+            data = {
+                'message': {
+                    'user':{
+                        'first_name':request.user.first_name,
+                        'last_name':request.user.last_name,
+                        'username':request.user.username
+                    },
+                    'result': 'Aún no se registran ciudades para el país '+str(p),
+                    'hora': timezone.now().strftime('%d/%m/%Y %H:%M'),
+                    'alert':'exclamation'
+                }
+            }
+        return JsonResponse(data=data)
