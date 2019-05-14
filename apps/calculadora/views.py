@@ -1,9 +1,11 @@
-from django.shortcuts import render
+from django.forms import formset_factory
+from django.shortcuts import render, HttpResponse
 from django.views.generic import TemplateView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
 from django.http.response import JsonResponse
+from django.template.loader import render_to_string
 
 from .forms import *
 from .models import *
@@ -41,6 +43,8 @@ class RestauranteCreateView(TemplateView):
     def get(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
         context['restaurante_form'] = RestauranteForm
+        context['cant_producto_formset'] = 1
+        ProductoFormSet = formset_factory(ProductoForm, extra=context['cant_producto_formset'])
         context['producto_formset'] = ProductoFormSet(request.GET or None)
         context['carta_formset'] = CartaFormSet(request.GET or None)
         return self.render_to_response(context)
@@ -115,6 +119,17 @@ def load_countries(request):
 			'message': 'Aún no se registran países para el continete seleccionado'
 		}
     return JsonResponse(data=data)
+
+def get_producto_form(request):
+    if request.is_ajax():
+        cantidad = int(request.GET['cantidad'])
+        ProductoFormSet = formset_factory(ProductoForm, extra=cantidad)
+        context = {
+            'producto_formset': ProductoFormSet(),
+            'cant_producto_formset': cantidad,
+        }
+        html = render_to_string('calculadora/restaurante_producto_add.html', context=context)
+        return HttpResponse(html)
 
 def get_paises(request):
     if request.method == 'GET':

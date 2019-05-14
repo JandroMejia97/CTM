@@ -1,0 +1,29 @@
+{{ producto_formset.management_form }}
+{% for form in producto_formset %}
+    <div class="row productos">
+        <label class="control-label col-sm-2 col-lg-2 " for="">Producto {{forloop.counter}}</label>
+        <div class="col-sm-10 col-lg-10">
+            <div class="input-group mb-3">
+                <div>
+                    {{ form.nombre }}
+                </div>
+                <div class="input-group-addon">
+                    $
+                </div>
+                <div>
+                    {{ form.precio_fijo }}
+                </div>
+                {% if forloop.last %}
+                    <div class="input-group-addon">
+                        <i class="fa fa-plus" id="addProducto" onclick="addProducto({{cant_producto_formset}})" title="Click aquí para añadir más productos"></i>
+                    </div>
+                {% else %}
+                    <div class="input-group-addon">
+                        <i class="fa fa-minus" id="addProducto" onclick="deleteProducto(({{cant_producto_formset }}))" title="Click aquí para borar producto"></i>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <br>
+{% endfor %}

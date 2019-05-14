@@ -143,3 +143,52 @@ function reloadIframe(inputId){
     $("#iframe").empty();
     $("#iframe").append(input);
 }
+
+function addProducto(cantidad){
+    $.ajax({
+        type: "GET",
+        url: '/ajax/formset/producto/',
+        data: {
+            'cantidad': cantidad+1,
+        },
+        success: function(data){
+            console.log("SUCCES");
+            $("#productosAdd").empty();
+            $("#productosAdd").append(data);
+            $("#productosAdd input").prop("class", "form-control");
+        },
+        fail: function(){
+            console.log("FAIL");
+        }
+    })
+}
+function deleteProducto(cantidad){
+    $.ajax({
+        type: "GET",
+        url: '/ajax/formset/producto/',
+        data: {
+            'cantidad': cantidad-1,
+        },
+        success: function(data){
+            console.log("SUCCES");
+            $("#productosAdd").empty();
+            $("#productosAdd").append(data);
+            $("#productosAdd input").prop("class", "form-control");
+        },
+        fail: function(){
+            console.log("FAIL");
+        }
+    })
+}
+
+function addFieldSet(contenderClass, blockClass){
+    var numero = $("."+contenderClass+" ."+blockClass).length; 
+    var newClone = $("."+contenderClass).clone("."+blockClass);
+    newClone.prop('id', 'Add'+numero+1);
+    newClone.prop('onclick', "addFieldSet(contenderClass, blockClass, numero)");
+    $("."+contenderClass).append(clone);
+}
+$('.add-more-btn').click(function() {
+    var clone = $('.form-main').clone('.form-block');
+    $('.form-main').append(clone);
+  });
