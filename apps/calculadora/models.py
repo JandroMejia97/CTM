@@ -445,8 +445,8 @@ class Producto(models.Model):
     )
     descripcion = models.TextField(
         max_length=300,
-        blank=False,
-        null=False,
+        blank=True,
+        null=True,
         validators=[
             MinLengthValidator(50)
         ],
@@ -455,8 +455,8 @@ class Producto(models.Model):
     )
     imagen = models.ImageField(
         upload_to='Productos/',
-        blank=False,
-        null=False,
+        blank=True,
+        null=True,
         help_text='Cargue una foto representativa de su producto',
         verbose_name='Foto del producto'
     )

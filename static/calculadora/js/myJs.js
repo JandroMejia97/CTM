@@ -132,3 +132,14 @@ function getCiudades(id, seleccion){
         console.log("complete");
     });
   }
+function enabledInputs(formId, buttonsId){
+    $("#"+formId+" input").prop('disabled', !$("#"+formId+" input").prop('disabled'));
+    $("#"+buttonsId).prop('hidden', !$("#"+buttonsId).prop('hidden'));
+}
+function reloadIframe(inputId){
+    console.log("RELOAD IFRAME");
+    var input = document.getElementById(inputId).value;
+    console.log(input)
+    $("#iframe").empty();
+    $("#iframe").append(input);
+}

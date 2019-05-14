@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView
-from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
+from django.views.generic.edit import UpdateView
+from django.views.generic.list import ListView
 from django.http.response import JsonResponse
 
 from .forms import *
@@ -30,7 +31,7 @@ class RestaurantesListView(ListView):
 
 
 class RestauranteCreateView(TemplateView):
-    template_name = 'calculadora/restaurante_create.html'
+    template_name = 'calculadora/restaurante.html'
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -40,6 +41,8 @@ class RestauranteCreateView(TemplateView):
     def get(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
         context['restaurante_form'] = RestauranteForm
+        context['producto_formset'] = ProductoFormSet(request.GET or None)
+        context['carta_formset'] = CartaFormSet(request.GET or None)
         return self.render_to_response(context)
     
     def post(self, request, *args, **kwargs):
@@ -47,12 +50,8 @@ class RestauranteCreateView(TemplateView):
         if restaurante_form.is_valid():
             restaurante = Restaurante(
                 nombre=restaurante_form['nombre'].value(),
-                logo=restaurante_form['logo'].value(),
-                latitud=restaurante_form['latitud'].value(),
-                longitud=restaurante_form['longitud'].value(),
                 direccion=restaurante_form['direccion'].value(),
                 telefono=restaurante_form['telefono'].value(),
-                ciudad=restaurante_form['ciudad'].value(),
                 administrador=request.user
             )
         else:
@@ -60,20 +59,42 @@ class RestauranteCreateView(TemplateView):
         return self.render_to_response(context)
 
 
-class RestauranteDetailView(DetailView):
-    model = Restaurante
-    template_name = 'calculadora/restaurante_detail.html'
-    context_object_name = 'restaurante'
+class RestauranteUpdateView(TemplateView):
+    template_name = 'calculadora/restaurante_update.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['restaurante'] = Restaurante.objects.get(
+            pk=self.kwargs['pk'],
+            administrador=self.request.user
+        )
+        context['cartas'] = Carta.objects.filter(restaurante=restaurante)
+        for carta in context['cartas']:
+            context['productos'].append(
+                Producto.objects.filter(carta=carta)
+            )
+        return context
 
-    def get_queryset(self):
-        if self.request.user.is_authenticated:
-            return super(RestauranteDetailView, self).get_queryset().filter(
-                pk=self.kwargs['pk'],
-                administrador=self.request.user
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        context['restaurante_form'] = RestauranteForm(instance=context['restaurante'])
+        context['producto_formset'] = ProductoForm(instance=context['producto'])
+        context['tipo_carta'] = TipoCartaForm
+        return self.render_to_response(context)
+    
+    def post(self, request, *args, **kwargs):
+        restaurante_form = RestauranteForm(data=request.POST)
+        if restaurante_form.is_valid():
+            restaurante = Restaurante(
+                nombre=restaurante_form['nombre'].value(),
+                direccion=restaurante_form['direccion'].value(),
+                telefono=restaurante_form['telefono'].value(),
+                administrador=request.user
             )
         else:
-            return Restaurante.objects.none()
-    
+            context = {'errors': restaurante_form.errors}
+        return self.render_to_response(context)
+        
 
 def home(request):
     return render(request, 'general/home.html', {'nav_active': 'home'})
