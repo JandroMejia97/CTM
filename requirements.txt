@@ -5,6 +5,8 @@ django-angular==2.2
 django-bootstrap-form==3.4
 django-debug-toolbar==1.11
 django-file-resubmit==0.5.2
+django-formset-js==0.5.0
+django-jquery-js==3.1.1
 django-money==0.14.4
 django-phonenumber-field==2.3.1
 django-sb-admin==0.3.7

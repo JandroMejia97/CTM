@@ -399,7 +399,7 @@ class TipoCarta(models.Model):
     )
 
     def __str__(self):
-        return self.nombre
+        return 'Carta de '+self.nombre
 
     class Meta:
         verbose_name = 'Tipo de Carta'

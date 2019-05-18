@@ -68,7 +68,6 @@ function getCiudades(id, seleccion){
                 $("#ciudades").append(
                     "<li>"
                         +"<a href=\"#\">"
-                        //+"<a href=\"#\" onclick=\"getRegion(\'id_pais\', \'id_ciudad\', "+value.id+", \'"+value.nombre.toUpperCase()+"\', \'"+anteriorFiltro+"\', \'"+nuevoFiltro+"\')\">"
                           + value.nombre.toUpperCase()
                         +"</a>"
                     +"</li>");
@@ -91,11 +90,11 @@ function getCiudades(id, seleccion){
     });
   }
 
-  function getPaises(id, seleccion){
-    console.log('GET: PAISES');
-    console.log('AJAX: CIUDADES');
+  function getLocalidades(id, seleccion){
+    console.log('GET: CIUDADES');
+    console.log('AJAX: LOCALIDADES');
     $.ajax({
-        url: '/ajax/paises/',
+        url: '/ajax/localidades/',
         type: 'GET',
         data: {
             'id': id,
@@ -105,24 +104,24 @@ function getCiudades(id, seleccion){
         },
         dataType: 'json'
     }).done(function(data){
-    $("#paises").empty();
+    $("#localidades").empty();
         if(data.response != null){
             $.each(data.response, function(index, value){
-                $("#paises").append(
+                $("#localidades").append(
                     "<li>"
-                        +"<a href=\"#\" onclick=\"getCiudades("+value.id+", \'"+value.nombre.toUpperCase()+"\')\">"
+                        +"<a href=\"#\">"
                           + value.nombre.toUpperCase()
                         +"</a>"
                     +"</li>");
             });
-            $("#pais_filtro").removeAttr('disabled');
-            $("#continente_filtro").val(seleccion);
+            $("#localidad_filtro").removeAttr('disabled');
+            $("#ciudad_filtro").val(seleccion);
         }else{
-            $("#paises").empty();
-            $("#paises").append('<li><a href="#">Sin resultados</a></li>');
-            $("#continente_filtro").empty();
-            $("#continente_filtro").val(seleccion);
-            $("#pais_filtro").attr('disabled','disabled');
+            $("#localidades").empty();
+            $("#localidades").append('<li><a href="#">Sin resultados</a></li>');
+            $("#ciudad_filtro").empty();
+            $("#ciudad_filtro").val(seleccion);
+            $("#localidad_filtro").attr('disabled','disabled');
         }
     }).fail(function(data) {
         console.log("error");
@@ -155,7 +154,6 @@ function addProducto(cantidad){
             console.log("SUCCES");
             $("#productosAdd").empty();
             $("#productosAdd").append(data);
-            $("#productosAdd input").prop("class", "form-control");
         },
         fail: function(){
             console.log("FAIL");
@@ -173,7 +171,6 @@ function deleteProducto(cantidad){
             console.log("SUCCES");
             $("#productosAdd").empty();
             $("#productosAdd").append(data);
-            $("#productosAdd input").prop("class", "form-control");
         },
         fail: function(){
             console.log("FAIL");

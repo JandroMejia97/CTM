@@ -33,7 +33,7 @@
                         <a href="{% url 'calculadora:restaurantes' %}">Restaurantes</a>
                     </li>
                     <li class="active">
-                        <i class="fa fa-eye"></i>
+                        <i class="fa fa-plus-circle"></i>
                         Nuevo Restaurante
                     </li>
                 </ol>
@@ -56,13 +56,69 @@
                                         <div class="col-lg-12">
                                             <div class="form-group">
                                                 {% csrf_token %}
-                                                {{ restaurante_form.nombre|bootstrap_horizontal }}
-                                                {{ restaurante_form.telefono|bootstrap_horizontal }}
-                                                {{ restaurante_form.direccion|bootstrap_horizontal }}
+                                                <div class="row">
+                                                    <label class="control-label col-sm-2 col-lg-2 " for="">Ubicacion</label>
+                                                    <div class="col-sm-10 col-lg-10 ">
+                                                        <div class="row">
+                                                            <div class="col-sm-12 col-lg-12">
+                                                                <div class="input-group">
+                                                                    <div class="dropdown">
+                                                                        <input class="form-control dropdown-toggle" id="ciudad_filtro" type="text" placeholder="Buscar Ciudad..." onkeyup='filterSelect("ciudad_filtro", "ciudades")' data-toggle="dropdown">
+                                                                        <ul class="dropdown-menu" id="ciudades">
+                                                                            {% for ciudad in ciudades %}
+                                                                                <li>
+                                                                                    <a href="#" onclick='getLocalidades({{ ciudad.pk }}, "{{ ciudad }}")'>
+                                                                                        {{ ciudad }}
+                                                                                    </a>
+                                                                                </li>
+                                                                            {% endfor %}
+                                                                        </ul>
+                                                                    </div>
+                                                                    <span class="input-group-addon">
+                                                                        <i class="glyphicon glyphicon-search"></i>
+                                                                    </span>
+                                                                    <div class="dropdown">
+                                                                        <input class="form-control" id="localidad_filtro" type="text" placeholder="Buscar Localidad..." onkeyup='filterSelect("localidad_filtro", "localidades")' data-toggle="dropdown" disabled>
+                                                                        <ul class="dropdown-menu" id="localidades">
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <p class="help-block">
+                                                            Filtre la ubicacion de su restaurante
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <label class="control-label col-sm-2 col-lg-2 ">
+                                                        {{ form.nombre.label }}
+                                                    </label>
+                                                    <div class="col-sm-10 col-lg-10">
+                                                        {{ form.nombre }}
+                                                        <p class="help-block">
+                                                            {{ form.nombre.help_text }}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <label for="" class="control-label col-sm-2 col-lg-2">{{ form.telefono.label }}</label>
+                                                    <div class="col-sm-10 col-lg-10">
+                                                        {{ form.telefono }}
+                                                        <p class="help-block">{{ form.telefono.help_text }}</p>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <label for="" class="control-label col-sm-2 col-lg-2">{{ form.direccion.label }}</label>
+                                                    <div class="col-sm-10 col-lg-10">
+                                                        {{ form.direccion }}
+                                                        <p class="help-block">{{ form.direccion.help_text }}</p>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div id="CartasAdd">
+                                    <div id="carta_formset">
                                         {% include 'calculadora/restaurante_carta_add.html' %}
                                     </div>
                                     <div class="row">
@@ -72,6 +128,7 @@
                                                     <h3 class="panel-title">
                                                         <i class="fa fa-map-marked-alt fw"></i>
                                                         Mapa
+
                                                     </h3>
                                                 </div>
                                                 <div class="panel-body">
@@ -79,7 +136,11 @@
                                                         <div class="col-lg-12">
                                                             <div class="form-group">
                                                                 {% csrf_token %}
-                                                                {{ restaurante_form.mapa|bootstrap_horizontal }}
+                                                                <label for="" class="control-label col-sm-2 col-lg-2">{{ form.mapa.label }}</label>
+                                                                <div class="col-sm-10 col-lg-10">
+                                                                    {{ form.mapa }}
+                                                                    <p class="help-block">{{ form.mapa.help_text }}</p>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -93,6 +154,10 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div id="datos_buttons" class="text-center">
+                                        <button class="btn btn-success" type="submit">Enviar</button>
+                                        <button class="btn btn-danger" type="submit">Cancelar</button>
+                                    </div>
                                 </form>
                             </div>
                         </div>
@@ -105,10 +170,29 @@
 
 {% block sb_admin_custom_js %}
     <script src="{% static 'calculadora/js/myJs.js' %}"></script>
+    <script src="{% static 'calculadora/js/jquery.dinamic.formset.js' %}"></script>
     <script>
+        $(document).on('click', '.add-producto-row', function(e){
+        e.preventDefault();
+            cloneMore('.producto-row:last', '{{ producto_formset.prefix }}', 'producto-row');
+                return false;
+            });
+        $(document).on('click', '.remove-producto-row', function(e){
+            e.preventDefault();
+            deleteForm('{{ producto_formset.prefix }}', $(this), 'producto-row');
+                return false;
+        });
+        $(document).on('click', '.add-carta-row', function(e){
+        e.preventDefault();
+            cloneMore('.carta-row:last', '{{ carta_formset.prefix }}', 'carta-row');
+                return false;
+            });
+        $(document).on('click', '.remove-carta-row', function(e){
+            e.preventDefault();
+            deleteForm('{{ carta_formset.prefix }}', $(this), 'carta-row');
+                return false;
+        });
         $(document).ready(function(){
-            $("input").prop("class", "form-control");
-            $("select").prop("class", "form-control");
             $("#id_mapa").attr("onkeyup", "reloadIframe(\"id_mapa\")");
         });
     </script>

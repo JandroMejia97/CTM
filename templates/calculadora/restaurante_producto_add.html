@@ -1,29 +1,75 @@
-{{ producto_formset.management_form }}
-{% for form in producto_formset %}
-    <div class="row productos">
-        <label class="control-label col-sm-2 col-lg-2 " for="">Producto {{forloop.counter}}</label>
-        <div class="col-sm-10 col-lg-10">
-            <div class="input-group mb-3">
-                <div>
-                    {{ form.nombre }}
-                </div>
-                <div class="input-group-addon">
-                    $
-                </div>
-                <div>
-                    {{ form.precio_fijo }}
-                </div>
-                {% if forloop.last %}
-                    <div class="input-group-addon">
-                        <i class="fa fa-plus" id="addProducto" onclick="addProducto({{cant_producto_formset}})" title="Click aquí para añadir más productos"></i>
+{% load formset_tags %}
+<div id="producto_formset" data-formset-prefix="{{ producto_formset.prefix }}">
+    {{ producto_formset.management_form }}
+    <div class="row">
+        <div class="col-lg-12">
+            {% if producto_formset.non_form_errors %}
+                {% for error in producto_formset.non_form_errors %}
+                    <div class="alert alert-danger alert-dismissable">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        <i class="fa fa-exclamation-triangle"></i> 
+                        {{ error|escape }}
                     </div>
-                {% else %}
-                    <div class="input-group-addon">
-                        <i class="fa fa-minus" id="addProducto" onclick="deleteProducto(({{cant_producto_formset }}))" title="Click aquí para borar producto"></i>
-                    </div>
-                {% endif %}
-            </div>
+                {% endfor %}
+            {% endif %}
         </div>
     </div>
-    <br>
-{% endfor %}
+    <div id="id_forms_table" class="row">
+        {% load bootstrap %}
+        {% for producto_form in producto_formset %}
+            <div id="{{ producto_form.prefix }}-row" class="row producto-row">
+                <div class="col-sm-5 col-lg-5">
+                    {% if producto_form.nombre.errors %}
+                        {% for error in producto_form.nombre.errors %}
+                            <div class="alert alert-danger alert-dismissable">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                <i class="fa fa-exclamation-triangle"></i> 
+                                {{ error|escape }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    <div class="form-group">    
+                        <label class="control-label col-sm-3 col-lg-3 ">{{ producto_form.nombre.label }}</label>
+                        <div class=" col-sm-9 col-lg-9 ">
+                            {{ producto_form.nombre }}
+                            <p class="help-block">
+                                {{ producto_form.nombre.help_text }}
+                            </p>        
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-5 col-lg-5">
+                    {% if producto_form.precio_fijo.errors %}
+                        {% for error in producto_form.precio_fijo.errors %}
+                            <div class="alert alert-danger alert-dismissable">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                <i class="fa fa-exclamation-triangle"></i> 
+                                {{ error|escape }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    <div class="form-group">    
+                        <label class="control-label col-sm-3 col-lg-3 ">{{ producto_form.precio_fijo.label }}</label>
+                        <div class=" col-sm-9 col-lg-9 ">
+                            {{ producto_form.precio_fijo }}
+                            <p class="help-block">
+                                {{ producto_form.precio_fijo.help_text }}
+                            </p>        
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-2 col-lg-2 text-center btn-side">
+                    {% if forloop.last %}
+                        <button type="button"  class="add-producto-row btn btn-primary">
+                            <i class="fa fa-plus fw"></i>
+                        </button>
+                    {% else %}
+                        <button type="button"  class="delete-producto-row btn btn-danger">
+                            <i class="fa fa-trash-alt fw"></i>
+                        </button>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>

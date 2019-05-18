@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'djmoney',
     'file_resubmit',
     'debug_toolbar',
+    'djangoformsetjs',
 ]
 
 MIDDLEWARE = [

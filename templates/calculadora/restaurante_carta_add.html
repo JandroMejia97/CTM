@@ -1,6 +1,6 @@
 {{ carta_formset.management_form }}
 {% for carta_form in carta_formset %}
-    <div class="row">
+    <div id="{{ carta_form.prefix }}-row" class="row carta-row">
         <div class="col-lg-12">
             <fieldset>
                 <div class="panel panel-default">
@@ -8,8 +8,8 @@
                         <h3 class="panel-title">
                             <i class="fa fa-puzzle-piece fw"></i>
                             Sección
-                            <a href="">
-                                <i class="pull-right fa fa-plus fw"></i>
+                            <a href="" type="button"  class="pull-right add-carta-row">
+                                <i class="fa fa-plus fw"></i>
                             </a>
                         </h3>
                 </div>
@@ -29,20 +29,11 @@
                     </div>
                     <div class="row">
                         <div class="col-lg-12">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h3 class="panel-title">
-                                        <i class="fa fa-hotdog fw"></i>
-                                        Productos de la sección
-                                    </h3>
-                                </div>
-                                <div class="panel-body" id="productosAdd">
-                                    {% include 'calculadora/restaurante_producto_add.html' %}                                            
-                                    <div id="datos_buttons" class="text-center" hidden>
-                                        <button class="btn btn-primary" type="submit">Enviar</button>
-                                        <button class="btn btn-secondary" type="submit">Cancelar</button>
-                                    </div>
-                                </div>
+                            <legend>Productos de la sección</legend>
+                            {% include 'calculadora/restaurante_producto_add.html' %}                                            
+                            <div id="datos_buttons" class="text-center" hidden>
+                                <button class="btn btn-primary" type="submit">Enviar</button>
+                                <button class="btn btn-secondary" type="submit">Cancelar</button>
                             </div>
                         </div>
                     </div>

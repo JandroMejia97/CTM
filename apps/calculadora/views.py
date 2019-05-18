@@ -1,9 +1,11 @@
-from django.forms import formset_factory
-from django.shortcuts import render, HttpResponse
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.forms import formset_factory, inlineformset_factory
+from django.shortcuts import render, HttpResponse, reverse
 from django.views.generic import TemplateView
 from django.views.generic.detail import DetailView
-from django.views.generic.edit import UpdateView
+from django.views.generic.edit import UpdateView, CreateView
 from django.views.generic.list import ListView
+from django.urls import reverse_lazy
 from django.http.response import JsonResponse
 from django.template.loader import render_to_string
 
@@ -11,7 +13,7 @@ from .forms import *
 from .models import *
 
 
-class RestaurantesListView(ListView):
+class RestaurantesListView(ListView, LoginRequiredMixin):
     model = Restaurante
     context_object_name = 'restaurantes'
     template_name = 'calculadora/restaurantes.html'
@@ -20,7 +22,7 @@ class RestaurantesListView(ListView):
         return Restaurante.objects.filter(administrador=self.request.user)
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+        context = super(RestaurantesListView, self).get_context_data(**kwargs)
         context['cant_restaurantes'] = context['restaurantes'].count()
         context['cant_cartas'] = 0
         context['cant_productos'] = 0
@@ -32,21 +34,23 @@ class RestaurantesListView(ListView):
         return context
 
 
-class RestauranteCreateView(TemplateView):
+class RestauranteCreateView(CreateView, LoginRequiredMixin):
+    model = Restaurante
     template_name = 'calculadora/restaurante.html'
+    form_class = RestauranteForm
+    success_url = reverse_lazy('calculadora:restaurantes')
+
     
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['continentes'] = Continente.objects.all()
+        context = super(RestauranteCreateView, self).get_context_data(**kwargs)
+        context['ciudades'] = Ciudad.objects.all()
         return context
 
     def get(self, request, *args, **kwargs):
+        super(RestauranteCreateView, self).get(self, request, *args, **kwargs)
         context = self.get_context_data(**kwargs)
-        context['restaurante_form'] = RestauranteForm
-        context['cant_producto_formset'] = 1
-        ProductoFormSet = formset_factory(ProductoForm, extra=context['cant_producto_formset'])
-        context['producto_formset'] = ProductoFormSet(request.GET or None)
-        context['carta_formset'] = CartaFormSet(request.GET or None)
+        context['carta_formset'] = CartaFormSet(request.GET or None, prefix='carta')
+        context['producto_formset'] = ProductoFormSet(request.GET or None, prefix='producto')
         return self.render_to_response(context)
     
     def post(self, request, *args, **kwargs):
@@ -87,6 +91,7 @@ class RestauranteUpdateView(TemplateView):
         return self.render_to_response(context)
     
     def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
         restaurante_form = RestauranteForm(data=request.POST)
         if restaurante_form.is_valid():
             restaurante = Restaurante(
