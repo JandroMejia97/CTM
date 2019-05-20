@@ -1,6 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 from django.forms import formset_factory, inlineformset_factory
-from django.shortcuts import render, HttpResponse, reverse
+from django.shortcuts import render, reverse, HttpResponse, HttpResponseRedirect
 from django.views.generic import TemplateView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import UpdateView, CreateView
@@ -54,17 +55,64 @@ class RestauranteCreateView(CreateView, LoginRequiredMixin):
         return self.render_to_response(context)
     
     def post(self, request, *args, **kwargs):
-        restaurante_form = RestauranteForm(data=request.POST)
-        if restaurante_form.is_valid():
-            restaurante = Restaurante(
+        form_class = self.get_form_class()
+        restaurante_form = self.get_form(form_class)
+        carta_formset = CartaFormSet(request.POST, prefix='carta')
+        producto_formset = ProductoFormSet(request.POST, prefix='producto')
+        if restaurante_form.is_valid() and carta_formset.is_valid() and producto_formset.is_valid():
+            restaurante = Restaurante.objects.update_or_create(
                 nombre=restaurante_form['nombre'].value(),
                 direccion=restaurante_form['direccion'].value(),
                 telefono=restaurante_form['telefono'].value(),
-                administrador=request.user
+                mapa=restaurante_form['mapa'].value(),
+                administrador=request.user,
+                barrio=restaurante_form['localidad'].value()
             )
+            for carta_form in carta_formset:
+                carta = Carta.objects.update_or_create(
+                    tipo=carta_form['tipo'],
+                    restaurante=int(restaurante)
+                )
+                carta.save()
+                for producto_form in producto_formset:
+                    producto = Producto.objects.update_or_create(
+                        carta=carta,
+                        nombre=producto_form['nombre'],
+                        precio_fijo=producto_form['precio_fijo']
+                    )
+                    producto.save()
+            context = {
+                'messages': ['El restaurante ha sido registrado exitosamente.']
+            }
+            return HttpResponseRedirect(self.success_url, context=context)
         else:
-            context = {'errors': restaurante_form.errors}
+            context = {
+                'form': restaurante_form,
+                'carta_formset': carta_formset,
+                'producto_formset': producto_formset,
+            }
         return self.render_to_response(context)
+
+    def form_valid(self, form, carta_formset, producto_formset):
+        self.object = form.save()
+        self.object.administrador = self.request.user
+        carta_formset.instance = self.object
+        carta_formset.save()
+        producto_formset.instance = self.object
+        producto_formset.save()
+        context = {
+            'message': 'El restaurante ha sido registrado exitosamente.'
+        }
+        return HttpResponseRedirect(self.success_url, context=context)
+    
+    def form_invalid(self, form, carta_formset, producto_formset):
+        return self.render_to_response(
+            self.get_context_data(
+                form=form,
+                carta_formset=carta_formset,
+                producto_formset=producto_formset
+            )
+        )
 
 
 class RestauranteUpdateView(TemplateView):
@@ -76,7 +124,7 @@ class RestauranteUpdateView(TemplateView):
             pk=self.kwargs['pk'],
             administrador=self.request.user
         )
-        context['cartas'] = Carta.objects.filter(restaurante=restaurante)
+        context['cartas'] = Carta.objects.filter(restaurante=context['restaurante'])
         for carta in context['cartas']:
             context['productos'].append(
                 Producto.objects.filter(carta=carta)
@@ -204,3 +252,39 @@ def get_ciudades(request):
                 }
             }
         return JsonResponse(data=data)
+
+@login_required(login_url='/sign-in/')
+def get_localidades(request):
+    if request.method == 'GET':
+        sendData = request.GET['id']
+        c = Ciudad.objects.get(pk=int(sendData))
+        localidades = Division.objects.filter(ciudad=c).values()
+        if localidades:
+            data = {
+                'message': {
+                    'user':{
+                        'first_name':request.user.first_name,
+                        'last_name':request.user.last_name,
+                        'username':request.user.username
+                    },
+                    'result': 'Localidades recuperadas exitosamente de la ciudad '+str(c),
+                    'hora': timezone.now().strftime('%d/%m/%Y %H:%M'),
+                    'alert':'check'
+                },
+                'response': list(localidades)
+            }
+        else:
+            data = {
+                'message': {
+                    'user':{
+                        'first_name':request.user.first_name,
+                        'last_name':request.user.last_name,
+                        'username':request.user.username
+                    },
+                    'result': 'Aún no se registran localidades para la ciudad '+str(c),
+                    'hora': timezone.now().strftime('%d/%m/%Y %H:%M'),
+                    'alert':'exclamation'
+                }
+            }
+        return JsonResponse(data=data)
+

@@ -335,8 +335,8 @@ class Restaurante(models.Model):
         Division,
         related_name='ubicado_en',
         on_delete=models.DO_NOTHING,
-        blank=False,
-        null=False,
+        blank=True,
+        null=True,
         help_text='Seleccione el barrio o división política de su ciudad en la que está ubicado el restaurante.',
         verbose_name='Barrio/Division'
     )

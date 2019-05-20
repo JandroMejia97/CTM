@@ -6,6 +6,8 @@ from .models import *
 
 
 class RestauranteForm(forms.ModelForm):
+    ciudad = forms.ChoiceField()
+    localidad = forms.ChoiceField()
 
     class Meta:
         model = Restaurante
@@ -13,7 +15,9 @@ class RestauranteForm(forms.ModelForm):
             'nombre',
             'telefono',
             'direccion',
-            'mapa'
+            'mapa',
+            'ciudad',
+            'localidad'
         ]
 
     def __init__(self, *args, **kwargs):
@@ -25,6 +29,26 @@ class RestauranteForm(forms.ModelForm):
                 'class': 'form-control'
                 }
             )
+        self.fields['ciudad'] = forms.ModelChoiceField(
+            queryset=Ciudad.objects.all(),
+            widget=forms.Select(
+                attrs={
+                    'onchange':'getLocalidades("id_ciudad", "id_localidad")',
+                    'class': 'form-control'
+                }
+            ),
+            help_text='Seleccione su ciudad'
+        )
+        self.fields['localidad'] = forms.ModelChoiceField(
+            queryset=Division.objects.none(),
+            widget=forms.Select(
+                attrs={
+                    'class': 'form-control',
+                    'disabled': 'disabled'
+                }
+            ),
+            help_text='Seleccione su ciudad'
+        )
     
 
 class TipoCartaForm(forms.ModelForm):

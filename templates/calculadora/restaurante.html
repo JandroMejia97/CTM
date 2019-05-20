@@ -6,39 +6,40 @@
 {% block custom_css %}
     <link href="{% static 'calculadora/css/style.css' %}" rel="stylesheet" type="text/css">  
 {% endblock custom_css %}
-{% block messages %}
-    {% for error in errors %}
-      <div class="alert alert-danger alert-dismissable">
-        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-        <i class="fa fa-exclamation-triangle"></i>  {{ error }}
-      </div>
-    {% endfor %}
-{% endblock messages %}
 {% block content %}
     {% load bootstrap %}
     <!-- Cabecera de página -->
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-12">
-                <h1 class="page-header">
-                    Nuevo estaurante
-                </h1>
-                <ol class="breadcrumb">
-                    <li>
-                        <i class="fa fa-home"></i>
-                        <a href="{% url 'calculadora:home' %}">Inicio</a>
-                    </li>
-                    <li>
-                        <i class="fa fa-utensils"></i>
-                        <a href="{% url 'calculadora:restaurantes' %}">Restaurantes</a>
-                    </li>
-                    <li class="active">
-                        <i class="fa fa-plus-circle"></i>
-                        Nuevo Restaurante
-                    </li>
-                </ol>
+        {% block title_page %}
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">
+                        Nuevo estaurante
+                    </h1>
+                    <ol class="breadcrumb">
+                        <li>
+                            <i class="fa fa-home"></i>
+                            <a href="{% url 'calculadora:home' %}">Inicio</a>
+                        </li>
+                        <li>
+                            <i class="fa fa-utensils"></i>
+                            <a href="{% url 'calculadora:restaurantes' %}">Restaurantes</a>
+                        </li>
+                        <li class="active">
+                            <i class="fa fa-plus-circle"></i>
+                            Nuevo Restaurante
+                        </li>
+                    </ol>
+                </div>
             </div>
-        </div>
+        {% endblock title_page %}
+        {% block messages %}
+            <div class="row">
+                <div class="col-lg-12 messages">
+                    {% include 'messages.html' %}
+                </div>
+            </div>
+        {% endblock messages %}
         <div class="row">
             <div class="col-lg-12">
                 <div class="panel panel-default">
@@ -62,26 +63,11 @@
                                                         <div class="row">
                                                             <div class="col-sm-12 col-lg-12">
                                                                 <div class="input-group">
-                                                                    <div class="dropdown">
-                                                                        <input class="form-control dropdown-toggle" id="ciudad_filtro" type="text" placeholder="Buscar Ciudad..." onkeyup='filterSelect("ciudad_filtro", "ciudades")' data-toggle="dropdown">
-                                                                        <ul class="dropdown-menu" id="ciudades">
-                                                                            {% for ciudad in ciudades %}
-                                                                                <li>
-                                                                                    <a href="#" onclick='getLocalidades({{ ciudad.pk }}, "{{ ciudad }}")'>
-                                                                                        {{ ciudad }}
-                                                                                    </a>
-                                                                                </li>
-                                                                            {% endfor %}
-                                                                        </ul>
-                                                                    </div>
+                                                                    {{form.ciudad}}
                                                                     <span class="input-group-addon">
                                                                         <i class="glyphicon glyphicon-search"></i>
                                                                     </span>
-                                                                    <div class="dropdown">
-                                                                        <input class="form-control" id="localidad_filtro" type="text" placeholder="Buscar Localidad..." onkeyup='filterSelect("localidad_filtro", "localidades")' data-toggle="dropdown" disabled>
-                                                                        <ul class="dropdown-menu" id="localidades">
-                                                                        </ul>
-                                                                    </div>
+                                                                    {{form.localidad}}
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -173,27 +159,28 @@
     <script src="{% static 'calculadora/js/jquery.dinamic.formset.js' %}"></script>
     <script>
         $(document).on('click', '.add-producto-row', function(e){
-        e.preventDefault();
+            e.preventDefault();
             cloneMore('.producto-row:last', '{{ producto_formset.prefix }}', 'producto-row');
-                return false;
-            });
+            return false;
+        });
         $(document).on('click', '.remove-producto-row', function(e){
             e.preventDefault();
             deleteForm('{{ producto_formset.prefix }}', $(this), 'producto-row');
-                return false;
+            return false;
         });
         $(document).on('click', '.add-carta-row', function(e){
-        e.preventDefault();
+            e.preventDefault();
             cloneMore('.carta-row:last', '{{ carta_formset.prefix }}', 'carta-row');
-                return false;
-            });
+            return false;
+        });
         $(document).on('click', '.remove-carta-row', function(e){
             e.preventDefault();
             deleteForm('{{ carta_formset.prefix }}', $(this), 'carta-row');
-                return false;
+            return false;
         });
         $(document).ready(function(){
             $("#id_mapa").attr("onkeyup", "reloadIframe(\"id_mapa\")");
+            //$('select').selectpicker();
         });
     </script>
 {% endblock sb_admin_custom_js %}

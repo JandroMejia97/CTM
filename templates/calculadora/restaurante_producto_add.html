@@ -1,9 +1,9 @@
 {% load formset_tags %}
-<div id="producto_formset" data-formset-prefix="{{ producto_formset.prefix }}">
+<div id="producto_formset">
     {{ producto_formset.management_form }}
-    <div class="row">
-        <div class="col-lg-12">
-            {% if producto_formset.non_form_errors %}
+    {% if producto_formset.non_form_errors %}
+        <div class="row">
+            <div class="col-lg-12">
                 {% for error in producto_formset.non_form_errors %}
                     <div class="alert alert-danger alert-dismissable">
                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
@@ -11,9 +11,9 @@
                         {{ error|escape }}
                     </div>
                 {% endfor %}
-            {% endif %}
+            </div>
         </div>
-    </div>
+    {% endif %}
     <div id="id_forms_table" class="row">
         {% load bootstrap %}
         {% for producto_form in producto_formset %}
