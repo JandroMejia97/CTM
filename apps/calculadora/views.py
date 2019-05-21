@@ -16,7 +16,7 @@ from .forms import *
 from .models import *
 
 
-class RestaurantesListView(ListView, LoginRequiredMixin):
+class RestaurantesListView(LoginRequiredMixin, ListView):
     model = Restaurante
     context_object_name = 'restaurantes'
     template_name = 'calculadora/restaurantes.html'
@@ -37,7 +37,7 @@ class RestaurantesListView(ListView, LoginRequiredMixin):
         return context
 
 
-class RestauranteCreateView(CreateView, LoginRequiredMixin):
+class RestauranteCreateView(LoginRequiredMixin, CreateView):
     model = Restaurante
     template_name = 'calculadora/restaurante.html'
     form_class = RestauranteForm

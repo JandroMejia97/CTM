@@ -113,11 +113,12 @@
                                                 <div class="panel-heading">
                                                     <h3 class="panel-title">
                                                         <i class="fa fa-map-marked-alt fw"></i>
-                                                        Mapa
-
+                                                        <a role="button" data-toggle="collapse" href="#mapa-row" aria-expanded="false" aria-controls="mapa-row" title="Añade un mapa a este restaurante">
+                                                            Mapa
+                                                        </a>
                                                     </h3>
                                                 </div>
-                                                <div class="panel-body">
+                                                <div id="mapa-row" class="panel-body collapse">
                                                     <div class="row">
                                                         <div class="col-lg-12">
                                                             <div class="form-group">
@@ -156,31 +157,9 @@
 
 {% block sb_admin_custom_js %}
     <script src="{% static 'calculadora/js/myJs.js' %}"></script>
-    
     <script>
-        /*$(document).on('click', '.add-producto-row', function(e){
-            e.preventDefault();
-            cloneMore('.producto-row:last', '{{ producto_formset.prefix }}', 'producto-row');
-            return false;
-        });
-        $(document).on('click', '.remove-producto-row', function(e){
-            e.preventDefault();
-            deleteForm('{{ producto_formset.prefix }}', $(this), 'producto-row');
-            return false;
-        });
-        $(document).on('click', '.add-carta-row', function(e){
-            e.preventDefault();
-            cloneMore('.carta-row:last', '{{ carta_formset.prefix }}', 'carta-row');
-            return false;
-        });
-        $(document).on('click', '.remove-carta-row', function(e){
-            e.preventDefault();
-            deleteForm('{{ carta_formset.prefix }}', $(this), 'carta-row');
-            return false;
-        });*/
         $(document).ready(function(){
             $("#id_mapa").attr("onkeyup", "reloadIframe(\"id_mapa\")");
-            //$('select').selectpicker();
         });
     </script>
 {% endblock sb_admin_custom_js %}
