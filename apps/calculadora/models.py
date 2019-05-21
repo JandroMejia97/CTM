@@ -418,7 +418,7 @@ class Carta(models.Model):
     )
     restaurante = models.ForeignKey(
         Restaurante,
-        related_name='perteneciente_a',
+        related_name='restaurante',
         on_delete=models.CASCADE,
         blank=False,
         null=False,
@@ -473,7 +473,7 @@ class Producto(models.Model):
     )
     carta = models.ForeignKey(
         Carta,
-        related_name='pertenece_a',
+        related_name='producto',
         on_delete=models.CASCADE,
         blank=False,
         null=False,

@@ -156,9 +156,9 @@
 
 {% block sb_admin_custom_js %}
     <script src="{% static 'calculadora/js/myJs.js' %}"></script>
-    <script src="{% static 'calculadora/js/jquery.dinamic.formset.js' %}"></script>
+    
     <script>
-        $(document).on('click', '.add-producto-row', function(e){
+        /*$(document).on('click', '.add-producto-row', function(e){
             e.preventDefault();
             cloneMore('.producto-row:last', '{{ producto_formset.prefix }}', 'producto-row');
             return false;
@@ -177,7 +177,7 @@
             e.preventDefault();
             deleteForm('{{ carta_formset.prefix }}', $(this), 'carta-row');
             return false;
-        });
+        });*/
         $(document).ready(function(){
             $("#id_mapa").attr("onkeyup", "reloadIframe(\"id_mapa\")");
             //$('select').selectpicker();

@@ -10,6 +10,8 @@ from django.urls import reverse_lazy
 from django.http.response import JsonResponse
 from django.template.loader import render_to_string
 
+from nested_formset import nestedformset_factory
+
 from .forms import *
 from .models import *
 
@@ -41,17 +43,29 @@ class RestauranteCreateView(CreateView, LoginRequiredMixin):
     form_class = RestauranteForm
     success_url = reverse_lazy('calculadora:restaurantes')
 
-    
-    def get_context_data(self, **kwargs):
-        context = super(RestauranteCreateView, self).get_context_data(**kwargs)
-        context['ciudades'] = Ciudad.objects.all()
-        return context
-
     def get(self, request, *args, **kwargs):
         super(RestauranteCreateView, self).get(self, request, *args, **kwargs)
         context = self.get_context_data(**kwargs)
-        context['carta_formset'] = CartaFormSet(request.GET or None, prefix='carta')
-        context['producto_formset'] = ProductoFormSet(request.GET or None, prefix='producto')
+        context['carta_formset'] = nestedformset_factory(
+            Restaurante,
+            Carta,
+            form=CartaForm,
+            min_num=1,
+            max_num=5,
+            extra=1,
+            can_delete=True,
+            nested_formset=inlineformset_factory(
+                parent_model=Carta,
+                model=Producto,
+                form=ProductoForm,
+                min_num=1,
+                max_num=20,
+                extra=1,
+                can_delete=True
+            )
+        )
+        # context['carta_formset'] = CartaFormSet(request.GET or None, prefix='carta')
+        # context['producto_formset'] = ProductoFormSet(request.GET or None, prefix='producto')
         return self.render_to_response(context)
     
     def post(self, request, *args, **kwargs):

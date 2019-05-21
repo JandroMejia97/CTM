@@ -1,72 +1,24 @@
-{% load formset_tags %}
 <div id="producto_formset">
-    {{ producto_formset.management_form }}
-    {% if producto_formset.non_form_errors %}
-        <div class="row">
-            <div class="col-lg-12">
-                {% for error in producto_formset.non_form_errors %}
-                    <div class="alert alert-danger alert-dismissable">
-                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                        <i class="fa fa-exclamation-triangle"></i> 
-                        {{ error|escape }}
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
-    {% endif %}
-    <div id="id_forms_table" class="row">
+    {{ carta_form.nested.management_form }}
+    <div  class="row">
         {% load bootstrap %}
-        {% for producto_form in producto_formset %}
-            <div id="{{ producto_form.prefix }}-row" class="row producto-row">
+        {% for producto_form in carta_form.nested %}
+            <div id="{{ producto_form.prefix }}-row" class="row {{ carta_form.nested.prefix }}">
                 <div class="col-sm-5 col-lg-5">
-                    {% if producto_form.nombre.errors %}
-                        {% for error in producto_form.nombre.errors %}
-                            <div class="alert alert-danger alert-dismissable">
-                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                                <i class="fa fa-exclamation-triangle"></i> 
-                                {{ error|escape }}
-                            </div>
-                        {% endfor %}
-                    {% endif %}
-                    <div class="form-group">    
-                        <label class="control-label col-sm-3 col-lg-3 ">{{ producto_form.nombre.label }}</label>
-                        <div class=" col-sm-9 col-lg-9 ">
-                            {{ producto_form.nombre }}
-                            <p class="help-block">
-                                {{ producto_form.nombre.help_text }}
-                            </p>        
-                        </div>
-                    </div>
+                    {{ producto_form.nombre|bootstrap_horizontal }}
                 </div>
                 <div class="col-sm-5 col-lg-5">
-                    {% if producto_form.precio_fijo.errors %}
-                        {% for error in producto_form.precio_fijo.errors %}
-                            <div class="alert alert-danger alert-dismissable">
-                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                                <i class="fa fa-exclamation-triangle"></i> 
-                                {{ error|escape }}
-                            </div>
-                        {% endfor %}
-                    {% endif %}
-                    <div class="form-group">    
-                        <label class="control-label col-sm-3 col-lg-3 ">{{ producto_form.precio_fijo.label }}</label>
-                        <div class=" col-sm-9 col-lg-9 ">
-                            {{ producto_form.precio_fijo }}
-                            <p class="help-block">
-                                {{ producto_form.precio_fijo.help_text }}
-                            </p>        
-                        </div>
-                    </div>
+                    {{ producto_form.precio_fijo|bootstrap_horizontal }}
                 </div>
                 <div class="col-sm-2 col-lg-2 text-center btn-side">
                     {% if forloop.last %}
-                        <button type="button"  class="add-producto-row btn btn-primary">
+                        <span id="add-{{ producto_form.prefix }}-btn" type="button"  class="btn btn-primary" onclick="cloneMore('{{ producto_form.prefix }}', '{{ carta_form.nested.prefix }}', true)">
                             <i class="fa fa-plus fw"></i>
-                        </button>
+                        </span>
                     {% else %}
-                        <button type="button"  class="delete-producto-row btn btn-danger">
+                        <span id="remove-{{ producto_form.prefix }}-btn" type="button"  class="btn btn-danger" onclick="deleteForm('{{ producto_form.prefix }}', '{{ carta_form.nested.prefix }}')">
                             <i class="fa fa-trash-alt fw"></i>
-                        </button>
+                        </span>
                     {% endif %}
                 </div>
             </div>

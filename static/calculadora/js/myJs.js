@@ -4,16 +4,14 @@ function filterTable(idInput, idTable){
         $(this).toggle($(this).text().toUpperCase().indexOf(filter)>-1)
     });
 };
+
 function filterSelect(idInput, idSelect){
     filter = document.getElementById(idInput).value.toUpperCase();
     $("#"+idSelect+" li").filter(function(){
         $(this).toggle($(this).text().toUpperCase().indexOf(filter)>-1)
     });
-}
-function deploySelect(select){
-    var event = new MouseEvent('mousedown');
-    select.dispatchEvent(event);
-}
+};
+
 function addMessage(message){
     if(message.user.first_name && message.user.last_name){
         var user=message.user.first_name+' '+message.user.last_name;
@@ -64,7 +62,7 @@ function addMessage(message){
         );
     }
     
-}
+};
 
 function getLocalidades(id, seleccion){
     console.log('GET: CIUDADES');
@@ -84,6 +82,7 @@ function getLocalidades(id, seleccion){
     }).done(function(data){
     $("#"+seleccion).empty();
         if(data.response != null){
+            $("#"+seleccion).append('<option value="" selected="">---------</option>');
             $.each(data.response, function(index, value){
                 $("#"+seleccion).append(
                     "<option id='"+value.pk + "' value='" +
@@ -150,14 +149,96 @@ function deleteProducto(cantidad){
     })
 }
 
-function addFieldSet(contenderClass, blockClass){
-    var numero = $("."+contenderClass+" ."+blockClass).length; 
-    var newClone = $("."+contenderClass).clone("."+blockClass);
-    newClone.prop('id', 'Add'+numero+1);
-    newClone.prop('onclick', "addFieldSet(contenderClass, blockClass, numero)");
-    $("."+contenderClass).append(clone);
+function updateElementIndex(elemento, prefijoForm, indice){
+    var id_regex = new RegExp('(' + prefijoForm + '-\\d+)');
+    var reemplazo = prefijoForm + '-' + indice;
+    if($(elemento).attr("for")){
+        $(elemento).attr("for", $(elemento).attr("for").replace(id_regex, reemplazo));
+    }
+    if($(elemento).attr("id")){
+        $(elemento).attr("id", $(elemento).attr("id").replace(id_regex, reemplazo));
+    }
+    if(elemento.id){
+        elemento.id = elemento.id.replace(id_regex, reemplazo);
+    }
+    if(elemento.name){
+        elemento.name = elemento.name.replace(id_regex, reemplazo);
+    }
+    if($(elemento).attr('onclick')){
+        $(elemento).attr("onclick", $(elemento).attr("onclick").replace(id_regex, reemplazo));
+    }
 }
-$('.add-more-btn').click(function() {
-    var clone = $('.form-main').clone('.form-block');
-    $('.form-main').append(clone);
-  });
+
+function cloneMore(prefijoFila, classFormSet, isRow){
+    var idFilaOriginal = '#'+prefijoFila+'-row';
+    var nuevaFila = $(idFilaOriginal).clone(true);
+    var total = parseInt($('#id_'+classFormSet+'-TOTAL_FORMS').val()); // Obteniendo la cantidad actual de formularios
+    nuevaFila.find(':input:not([type=button]):not([type=submit]):not([type=reset])').each(function(){
+        var nombre = $(this).attr('name').replace('-' + (total-1) + '-', '-' + total + '-');
+        var id = 'id_' + nombre;
+        $(this).attr({'name': nombre, 'id': id}).val('').removeAttr('checked');
+    });
+    nuevaFila.find('label').each(function(){
+        var valor = $(this).attr('for');
+        if(valor){
+            valor = valor.replace('-' + (total-1) + '-', '-' + total + '-');
+            $(this).attr({'for': valor});
+        }
+    });
+    var anteriorFila = $(idFilaOriginal);
+    idFilaNueva = prefijoFila.replace('-' + (total-1), '-' + total)+'-row';
+    prefijoFilaNueva = prefijoFila.replace('-' + (total-1) , '-' + total);
+    nuevaFila.find('span').each(function(){
+        var id = $(this).attr('id');
+        if(id){
+            id = id.replace('-' + (total-1) + '-', '-' + total + '-');
+            $(this).attr({
+                'id': id,
+                'onclick': "cloneMore('"+prefijoFilaNueva+"', '"+classFormSet+"', true)"
+            });
+        }
+    })
+    nuevaFila.prop('id', idFilaNueva);
+    anteriorFila.find('#add-' + prefijoFila + '-btn').each(function(){
+        var id = $(this).attr('id');
+        if(id){
+            id = id.replace('add', 'remove');
+            $(this).attr({
+                'id': id,
+                'onclick': 'deleteForm("'+prefijoFila+'", "'+classFormSet+'")'
+            });
+        }
+    })
+    .empty().append('<i class="fa fa-trash-alt fw"></i>');
+    if(isRow){
+        anteriorFila.find('span').removeClass('btn-primary').addClass('btn-danger')
+    }
+    total++;
+    $('#id_'+classFormSet+'-TOTAL_FORMS').val(total);
+    $(idFilaOriginal).after(nuevaFila);
+    return false;
+}
+
+function deleteForm(prefijoFila, classFormSet){
+    var idFilaOriginal = '#'+prefijoFila+'-row';
+    var totalAnterior = parseInt($('#id_' + classFormSet + '-TOTAL_FORMS').val());
+    if(totalAnterior > 1){
+        var btn = document.getElementById('remove-'+prefijoFila+'-btn')
+        btn.closest(idFilaOriginal).remove();
+        var forms = $('.'+classFormSet);
+        $('#id_' + classFormSet + '-TOTAL_FORMS').val(totalAnterior-1);
+        var totalActual = parseInt($('#id_' + classFormSet + '-TOTAL_FORMS').val());
+        for(var i=0, formCount=forms.length; i<formCount;i++){
+            $(forms.get(i)).find(':input').each(function(){
+                updateElementIndex(this, classFormSet, i);
+            });
+            $(forms.get(i)).find('label').each(function(){
+                updateElementIndex(this, classFormSet, i);
+            });
+            $(forms.get(i)).find('span').each(function(){
+                updateElementIndex(this, classFormSet, i, (i+1));
+            });
+            updateElementIndex($(forms.get(i)), classFormSet, i);
+        }
+    }
+}

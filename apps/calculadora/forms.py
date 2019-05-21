@@ -10,6 +10,7 @@ class RestauranteForm(forms.ModelForm):
     localidad = forms.ChoiceField()
 
     class Meta:
+        prefix = 'restaurante'
         model = Restaurante
         fields = [
             'nombre',
@@ -65,6 +66,7 @@ class CartaForm(forms.ModelForm):
 
     class Meta:
         model = Carta
+        prefix = 'carta'
         fields = [
             'tipo'
         ]
@@ -84,6 +86,7 @@ class ProductoForm(forms.ModelForm):
 
     class Meta:
         model = Producto
+        prefix = 'producto'
         fields = [
             'nombre',
             'precio_fijo'
@@ -145,18 +148,23 @@ class BaseProductoFormSet(BaseFormSet):
                     )
 
 
-"""ProductoFormSet = inlineformset_factory(
-    parent_model=Carta,
-    model=Producto,
-    form=ProductoForm,
-    extra=1
-)"""
+"""
 ProductoFormSet = formset_factory(
     ProductoForm,
     formset=BaseProductoFormSet,
     min_num=1,
     max_num=20,
     extra=0
+)"""
+
+ProductoFormSet = inlineformset_factory(
+    parent_model=Carta,
+    model=Producto,
+    form=ProductoForm,
+    min_num=1,
+    max_num=5,
+    extra=0,
+    can_delete=True
 )
 CartaFormSet = inlineformset_factory(
     parent_model=Restaurante,
@@ -164,5 +172,6 @@ CartaFormSet = inlineformset_factory(
     form=CartaForm,
     min_num=1,
     max_num=5,
-    extra=0
+    extra=0,
+    can_delete=True
 )

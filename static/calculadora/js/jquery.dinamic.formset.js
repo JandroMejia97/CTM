@@ -10,7 +10,9 @@ function cloneMore(selector, prefix, clase) {
     var total = $('#id_' + prefix + '-TOTAL_FORMS').val();
     newElement.find(':input:not([type=button]):not([type=submit]):not([type=reset])').each(function() {
         var name = $(this).attr('name').replace('-' + (total-1) + '-', '-' + total + '-');
+        console.log('NAME: ', name);
         var id = 'id_' + name;
+        console.log('ID: ', id);
         $(this).attr({'name': name, 'id': id}).val('').removeAttr('checked');
     });
     newElement.find('label').each(function() {
