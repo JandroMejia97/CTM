@@ -1,4 +1,7 @@
-{{ carta_formset.management_form }}
+<div class="row" id="carta-management-form">
+    {{ carta_formset.management_form }}
+</div>
+{% load bootstrap %}
 {% for carta_form in carta_formset %}
     <div id="{{ carta_form.prefix }}-row" class="row {{ carta_formset.prefix }}">
         <div class="col-lg-12">
@@ -29,15 +32,7 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-lg-12">
-                            <label class="control-label col-sm-2 col-lg-2 ">
-                                {{ carta_form.tipo.label }}
-                            </label>
-                            <div class="col-sm-10 col-lg-10">
-                                {{ carta_form.tipo }}
-                                <p class="help-block">
-                                    {{ carta_form.tipo.help_text }}
-                                </p>
-                            </div>
+                            {{ carta_form|bootstrap_horizontal }}
                         </div>
                     </div>
                     <div id="{{ carta_form.prefix }}" class="row collapse">

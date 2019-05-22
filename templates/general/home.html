@@ -8,6 +8,20 @@
     <link href="{% static 'calculadora/css/carousel.css' %}" rel="stylesheet" type="text/css">
 {% endblock custom_css %}
 {% block content %}
+    <!-- Ciudades -->
+    {% for ciudad in ciudades %}
+      <div>
+        {% if ciudad.foto %}
+          <div class="image image-fluid" style="background-image: url('{{ ciudad.foto.url }}'); width:100%;" onclick="redirect('ciudades/{{ciudad.pk}}/restaurantes/')">
+            <div class="d-block over" >
+              <div class="text-left over-text">
+                <h1 class="page-header text-uppercase font-weight-bold">{{ ciudad }}</h1>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    {% endfor %}
     <div id="carousel-home-steps" class="carousel slide" data-ride="carousel">
       <!-- Indicadores -->
       <ol class="carousel-indicators">
@@ -16,7 +30,6 @@
         <li data-target="#carousel-home-steps" data-slide-to="2"></li>
         <li data-target="#carousel-home-steps" data-slide-to="3"></li>
       </ol>
-
       <!-- Slides -->
       <div class="carousel-inner" role="listbox">
         <div class="item active">
@@ -80,4 +93,9 @@
         <span class="sr-only">Siguiente</span>
       </a>
     </div>
+    <script>
+      function redirect(url){
+        window.location = url;
+      }
+    </script>
 {% endblock content %}

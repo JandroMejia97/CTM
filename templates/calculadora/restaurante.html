@@ -77,29 +77,16 @@
                                                     </div>
                                                 </div>
                                                 <div class="row">
-                                                    <label class="control-label col-sm-2 col-lg-2 ">
-                                                        {{ form.nombre.label }}
-                                                    </label>
-                                                    <div class="col-sm-10 col-lg-10">
-                                                        {{ form.nombre }}
-                                                        <p class="help-block">
-                                                            {{ form.nombre.help_text }}
-                                                        </p>
-                                                    </div>
+                                                    {{ form.nombre|bootstrap_horizontal }}
                                                 </div>
                                                 <div class="row">
-                                                    <label for="" class="control-label col-sm-2 col-lg-2">{{ form.telefono.label }}</label>
-                                                    <div class="col-sm-10 col-lg-10">
-                                                        {{ form.telefono }}
-                                                        <p class="help-block">{{ form.telefono.help_text }}</p>
-                                                    </div>
+                                                    {{ form.telefono|bootstrap_horizontal }}
                                                 </div>
                                                 <div class="row">
-                                                    <label for="" class="control-label col-sm-2 col-lg-2">{{ form.direccion.label }}</label>
-                                                    <div class="col-sm-10 col-lg-10">
-                                                        {{ form.direccion }}
-                                                        <p class="help-block">{{ form.direccion.help_text }}</p>
-                                                    </div>
+                                                    {{ form.direccion|bootstrap_horizontal }}
+                                                </div>
+                                                <div class="row">
+                                                    {{ form.tipo_comida|bootstrap_horizontal }}
                                                 </div>
                                             </div>
                                         </div>
@@ -121,14 +108,7 @@
                                                 <div id="mapa-row" class="panel-body collapse">
                                                     <div class="row">
                                                         <div class="col-lg-12">
-                                                            <div class="form-group">
-                                                                {% csrf_token %}
-                                                                <label for="" class="control-label col-sm-2 col-lg-2">{{ form.mapa.label }}</label>
-                                                                <div class="col-sm-10 col-lg-10">
-                                                                    {{ form.mapa }}
-                                                                    <p class="help-block">{{ form.mapa.help_text }}</p>
-                                                                </div>
-                                                            </div>
+                                                            {{ form.mapa|bootstrap_horizontal }}
                                                         </div>
                                                     </div>
                                                     <div class="row">
@@ -142,7 +122,7 @@
                                         </div>
                                     </div>
                                     <div id="datos_buttons" class="text-center">
-                                        <button class="btn btn-success" type="submit">Enviar</button>
+                                        <button class="btn btn-primary" type="submit">Enviar</button>
                                         <button class="btn btn-danger" type="submit">Cancelar</button>
                                     </div>
                                 </form>

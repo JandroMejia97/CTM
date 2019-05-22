@@ -61,6 +61,7 @@ class CiudadAdmin(admin.ModelAdmin):
     fields = [
         'nombre',
         'pais',
+        'foto',
     ]
 
 admin.site.register(Ciudad, CiudadAdmin)
@@ -117,6 +118,17 @@ class PaisAdmin(admin.ModelAdmin):
 
 admin.site.register(Pais, PaisAdmin)
 
+class TipoComidaAdmin(admin.ModelAdmin):
+    list_display = [ 
+        'nombre',
+        'descripcion',
+    ]
+    fields = [ 
+        'nombre',
+        'descripcion',
+    ]
+
+admin.site.register(TipoComida, TipoComidaAdmin)
 
 class RestauranteAdmin(admin.ModelAdmin):
     list_display = [ 
@@ -132,6 +144,7 @@ class RestauranteAdmin(admin.ModelAdmin):
         'logo',
         'administrador',
         'telefono',
+        'tipo_comida',
         'barrio',
         'latitud',
         'longitud',

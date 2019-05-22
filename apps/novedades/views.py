@@ -107,5 +107,3 @@ def import_country(request):
             continente=c
         )
     return HttpResponse('Los datos de los países han sido importados exitosamente')
-
-

@@ -53,7 +53,7 @@ class RestauranteCreateView(LoginRequiredMixin, CreateView):
             min_num=1,
             max_num=5,
             extra=1,
-            can_delete=True,
+            can_delete=False,
             nested_formset=inlineformset_factory(
                 parent_model=Carta,
                 model=Producto,
@@ -61,7 +61,7 @@ class RestauranteCreateView(LoginRequiredMixin, CreateView):
                 min_num=1,
                 max_num=20,
                 extra=1,
-                can_delete=True
+                can_delete=False
             )
         )
         # context['carta_formset'] = CartaFormSet(request.GET or None, prefix='carta')
@@ -168,7 +168,12 @@ class RestauranteUpdateView(TemplateView):
         
 
 def home(request):
-    return render(request, 'general/home.html', {'nav_active': 'home'})
+    ciudades = Ciudad.objects.all()
+    context ={
+        'ciudades': ciudades,
+        'nav_active': 'home'
+    }
+    return render(request, 'general/home.html', context)
 
 def about(request):
     return render(request, 'general/about.html', {'nav_active': 'about'})

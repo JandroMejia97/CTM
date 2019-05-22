@@ -18,6 +18,21 @@ body{
     border-radius: 0;
     background: #f1f1f1;
 }
+.anchor{
+  color:#FFFFFF !important;
+}
+.anchor:visited{
+  color:#FFFFFF !important;
+}
+.anchor:visited {
+  color:#FFFFFF !important;
+} 
+.anchor:active {
+  color:#FFFFFF !important;
+} 
+.anchor:hover {
+  color:#FFFFFF !important;
+} 
 
 .image{
   background-size: cover; 

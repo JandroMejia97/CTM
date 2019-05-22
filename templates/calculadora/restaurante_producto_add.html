@@ -1,5 +1,7 @@
 <div>
-    {{ carta_form.nested.management_form }}
+    <div class="row" id="producto-management-form">
+        {{ carta_form.nested.management_form }}
+    </div>
     <div  class="row">
         {% load bootstrap %}
         {% for producto_form in carta_form.nested %}

@@ -114,6 +114,13 @@ class Ciudad(models.Model):
         help_text='Ingrese el nombre de la ciudad',
         verbose_name='Nombre',
     )
+    foto = models.ImageField(
+        upload_to='ciudades',
+        blank=True,
+        null=True,
+        help_text='Cargue una imagen representativa de la ciudad',
+        verbose_name='Fotografía de la ciudad'
+    )
     pais = models.ForeignKey(
         'Pais',
         on_delete=models.CASCADE,
@@ -272,6 +279,31 @@ class Pais(models.Model):
         ordering = ['continente','nombre']
 
 
+class TipoComida(models.Model):
+    nombre = models.CharField(
+        max_length=150,
+        blank=False,
+        null=False,
+        help_text='Ingrese el nombre del tipo de comida',
+        verbose_name='Nombre'
+    )
+    descripcion = models.CharField(
+        max_length=250,
+        blank=False,
+        null=False,
+        help_text='Ingrese una breve descripción de este tipo de comida',
+        verbose_name='Descripción'
+    )
+
+    def __str__(self):
+        return self.nombre
+
+    class Meta:
+        verbose_name = 'Tipo de Comida'
+        verbose_name_plural = 'Tipos de Comida'
+        ordering = ['nombre']
+
+
 class Restaurante(models.Model):
     nombre = models.CharField(
         max_length=50,
@@ -348,6 +380,14 @@ class Restaurante(models.Model):
         null=False,
         help_text='Usuario que añadió este restaurante',
         verbose_name='¿Quién lo registró?'
+    )
+    tipo_comida = models.ManyToManyField(
+        TipoComida,
+        help_text='Seleccione el/los tipos de comida servidos en este restaurante',
+        related_name='restaurantes',
+        verbose_name='Tipo de comida',
+        blank=False,
+        null=False
     )
 
     def __str__(self):
