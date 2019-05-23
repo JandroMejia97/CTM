@@ -18,32 +18,22 @@ body{
     border-radius: 0;
     background: #f1f1f1;
 }
-.anchor{
-  color:#FFFFFF !important;
+.fondo-izquierda{
+  position: absolute;
+  top: 65%;
 }
-.anchor:visited{
-  color:#FFFFFF !important;
-}
-.anchor:visited {
-  color:#FFFFFF !important;
-} 
-.anchor:active {
-  color:#FFFFFF !important;
-} 
-.anchor:hover {
-  color:#FFFFFF !important;
-} 
 
 .image{
-  background-size: cover; 
-  background-attachment: fixed; 
   background-repeat: no-repeat; 
   overflow: hidden;
   position: relative; 
   right: 0; 
   bottom:0;
-  width: 100%;
-  background-position: center;
+  width: 100% !important;
+  height: auto;
+  min-height: 280px;
+  background-size: 100% 100%; 
+  background-position: bottom !important;
   transform: translate3d(0px, 0px, 0px);
   padding-top:5%;
   padding-bottom:5%;
@@ -57,6 +47,10 @@ body{
   background-color: rgba(84, 84, 84, 0.5);
   right: 0 !important;
   left: 0 !important;
+}
+.over-border{
+  border: 0.5px solid;
+  border-color: rgba(84, 84, 84, 0.6);
 }
 .over-text{
   padding-left: 5% !important;

@@ -136,6 +136,7 @@ class Ciudad(models.Model):
     class Meta:
         verbose_name = 'Ciudad'
         verbose_name_plural = 'Ciudades'
+        ordering = ['nombre']
 
 
 class Division(models.Model):
