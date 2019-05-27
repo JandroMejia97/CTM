@@ -1,5 +1,5 @@
 from django import forms
-from django.forms import formset_factory, inlineformset_factory
+from django.forms import modelformset_factory, inlineformset_factory
 from django.forms.formsets import BaseFormSet
 
 from .models import *
@@ -19,7 +19,8 @@ class RestauranteForm(forms.ModelForm):
             'mapa',
             'tipo_comida',
             'ciudad',
-            'localidad'
+            'localidad',
+            'background'
         ]
 
     def __init__(self, *args, **kwargs):
@@ -31,6 +32,12 @@ class RestauranteForm(forms.ModelForm):
                 'class': 'form-control'
                 }
             )
+        self.fields['background'].widget.attrs.update({
+            'placeholder': self.fields[field].label,
+            'title': self.fields[field].help_text,
+            'class': ''
+            }
+        )
         self.fields['ciudad'] = forms.ModelChoiceField(
             queryset=Ciudad.objects.all(),
             widget=forms.Select(
@@ -79,8 +86,7 @@ class CartaForm(forms.ModelForm):
                 'placeholder': self.fields[field].label,
                 'title': self.fields[field].help_text,
                 'class': 'form-control'
-                }
-            )
+            })
         
 
 class ProductoForm(forms.ModelForm):
@@ -105,8 +111,7 @@ class ProductoForm(forms.ModelForm):
                 'placeholder': self.fields[field].label,
                 'title': self.fields[field].help_text,
                 'class': 'form-control'
-                }
-            )
+            })
         
         self.fields['precio_fijo'].widget.attrs.update({'min': '0.01'})
 
@@ -148,31 +153,36 @@ class BaseProductoFormSet(BaseFormSet):
                         code='missing_nombre'
                     )
 
-
-"""
-ProductoFormSet = formset_factory(
-    ProductoForm,
-    formset=BaseProductoFormSet,
-    min_num=1,
-    max_num=20,
-    extra=0
-)"""
-
-ProductoFormSet = inlineformset_factory(
-    parent_model=Carta,
-    model=Producto,
-    form=ProductoForm,
-    min_num=1,
-    max_num=5,
-    extra=0,
-    can_delete=True
-)
-CartaFormSet = inlineformset_factory(
-    parent_model=Restaurante,
+CartaFormSet = modelformset_factory(
     model=Carta,
     form=CartaForm,
     min_num=1,
     max_num=5,
-    extra=0,
-    can_delete=True
+    extra=2,
+)
+CartaInlineFormSet = inlineformset_factory(
+    parent_model=Restaurante,
+    model=Carta,
+    extra=1,
+    fields=('tipo',),
+    formset=CartaFormSet,
+    can_delete=False,
+    min_num=1,
+)
+ProductoFormSet = modelformset_factory(
+    model=Producto,
+    form=ProductoForm,
+    formset=BaseProductoFormSet,
+    min_num=1,
+    max_num=20,
+    extra=2,
+)
+ProductoInlineFormSet = inlineformset_factory(
+    parent_model=Carta,
+    model=Producto,
+    extra=2,
+    fields=('nombre', 'precio_fijo',),
+    formset=ProductoFormSet,
+    can_delete=False,
+    min_num=1
 )

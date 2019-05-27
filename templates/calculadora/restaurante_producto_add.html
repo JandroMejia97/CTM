@@ -6,22 +6,36 @@
         {% load bootstrap %}
         {% for producto_form in carta_form.nested %}
             <div id="{{ producto_form.prefix }}-row" class="row {{ carta_form.nested.prefix }}">
-                <div class="col-sm-5 col-lg-5">
-                    {{ producto_form.nombre|bootstrap_horizontal }}
-                </div>
-                <div class="col-sm-5 col-lg-5">
-                    {{ producto_form.precio_fijo|bootstrap_horizontal }}
-                </div>
-                <div class="col-sm-2 col-lg-2 text-center btn-side">
-                    {% if forloop.last %}
-                        <span id="add-{{ producto_form.prefix }}-btn" type="button"  class="btn btn-primary" onclick="cloneMore('{{ producto_form.prefix }}', '{{ carta_form.nested.prefix }}', true)">
-                            <i class="fa fa-plus fw"></i>
-                        </span>
-                    {% else %}
-                        <span id="remove-{{ producto_form.prefix }}-btn" type="button"  class="btn btn-danger" onclick="deleteForm('{{ producto_form.prefix }}', '{{ carta_form.nested.prefix }}')">
-                            <i class="fa fa-trash-alt fw"></i>
-                        </span>
-                    {% endif %}
+                <div class="col-lg-12">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2 col-lg-2 ">Producto</label>
+                        <div class="col-sm-10 col-lg-10">
+                            <div class="input-group mb-3">
+                                <div>
+                                    {{ producto_form.nombre }}
+                                </div>
+                                <div class="input-group-addon">
+                                    /
+                                </div>
+                                <div>
+                                    {{ producto_form.precio_fijo }}
+                                </div>
+                                {% if forloop.last %}
+                                    <div class="input-group-addon">
+                                        <span id="add-{{ producto_form.prefix }}-btn" type="button" onclick="cloneMore('{{ producto_form.prefix }}', '{{ carta_form.nested.prefix }}')">
+                                            <i class="fa fa-plus fw"></i>
+                                        </span>
+                                    </div>
+                                {% else %}
+                                    <div class="input-group-addon">
+                                        <span id="remove-{{ producto_form.prefix }}-btn" type="button" onclick="deleteForm('{{ producto_form.prefix }}', '{{ carta_form.nested.prefix }}')">
+                                            <i class="fa fa-trash-alt fw"></i>
+                                        </span>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         {% endfor %}

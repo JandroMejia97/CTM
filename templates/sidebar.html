@@ -22,7 +22,7 @@
                         </a>
                     </li>
                     <li {% if nav_active == "restaurante_nuevo" %}class="active"{% endif %}>
-                        <a href="{% url 'calculadora:nuevo_restaurante' %}">
+                        <a href="{% url 'calculadora:nuevo-restaurante' %}">
                             <i class="fa fa-fw fa-plus"></i> 
                             Nuevo
                         </a>
@@ -55,7 +55,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{% url 'logout' %}">
+                        <a href="#" data-toggle="modal" data-target="#logoutModal">
                             <i class="fa fa-fw fa-sign-out-alt" aria-hidden="true"></i> 
                             Cerrar Sesión
                         </a>

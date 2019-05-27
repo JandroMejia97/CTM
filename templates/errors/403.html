@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    Error 403
+{% endblock title %}
+{% block custom_css %}
+    <link href="{% static 'calculadora/css/style.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'calculadora/css/carousel.css' %}" rel="stylesheet" type="text/css">
+{% endblock custom_css %}
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">
+                    ERROR 403: Permiso denegado
+                </h1>
+                <ol class="breadcrumb alert-info">
+                    <li>
+                        <i class="fa fa-home"></i>
+                        <a href="{% url 'calculadora:home' %}">Inicio</a>
+                    </li>
+                    <li class="active">
+                        <i class="fa fa-eye-slash"></i>
+                        Error 403
+                    </li>
+                </ol>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <!-- Page Content -->
+                <h1 class="display-2">
+                    <i class="fa fa-eye-slash"></i>
+                    ¡403!
+                </h1>
+                <p class="lead">
+                    No tienes permiso para visualizar este contenido. Puedes
+                    <a href="javascript:history.back()">
+                        regresar
+                    </a>
+                    a la página anterior, o sí lo prefieres, puedes
+                    <a href="{% url 'calculadora:home' %}">
+                        regresar a la página inicial
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

@@ -1,7 +1,8 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.forms import formset_factory, inlineformset_factory
-from django.shortcuts import render, reverse, HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, render_to_response, reverse, HttpResponse, HttpResponseRedirect
+from django.views.defaults import page_not_found
 from django.views.generic import TemplateView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import UpdateView, CreateView
@@ -22,18 +23,19 @@ class RestaurantesListView(LoginRequiredMixin, ListView):
     template_name = 'calculadora/restaurantes.html'
 
     def get_queryset(self):
-        return Restaurante.objects.filter(administrador=self.request.user)
+        if('pk' in self.kwargs):
+            barrios =  Division.objects.filter(ciudad=self.kwargs['pk'])
+            return Restaurante.objects.filter(pk__in=barrios)
+        else:
+            return Restaurante.objects.filter(administrador=self.request.user)
 
     def get_context_data(self, **kwargs):
         context = super(RestaurantesListView, self).get_context_data(**kwargs)
+        cartas = Carta.objects.filter(restaurante__in=context['restaurantes'])
+        productos = Producto.objects.filter(carta__in=cartas)
         context['cant_restaurantes'] = context['restaurantes'].count()
-        context['cant_cartas'] = 0
-        context['cant_productos'] = 0
-        for restaurante in context['restaurantes']:
-            cartas = Carta.objects.filter(restaurante=restaurante)
-            context['cant_cartas'] += cartas.count()
-            for carta in cartas:
-                context['cant_productos'] += Producto.objects.filter(carta=carta).count()
+        context['cant_cartas'] = cartas.count()
+        context['cant_productos'] = productos.count()
         return context
 
 
@@ -47,12 +49,12 @@ class RestauranteCreateView(LoginRequiredMixin, CreateView):
         super(RestauranteCreateView, self).get(self, request, *args, **kwargs)
         context = self.get_context_data(**kwargs)
         context['carta_formset'] = nestedformset_factory(
-            Restaurante,
-            Carta,
+            parent_model=Restaurante,
+            model=Carta,
             form=CartaForm,
             min_num=1,
             max_num=5,
-            extra=1,
+            extra=0,
             can_delete=False,
             nested_formset=inlineformset_factory(
                 parent_model=Carta,
@@ -60,18 +62,18 @@ class RestauranteCreateView(LoginRequiredMixin, CreateView):
                 form=ProductoForm,
                 min_num=1,
                 max_num=20,
-                extra=1,
-                can_delete=False
+                extra=2,
+                can_delete=False,
             )
         )
-        # context['carta_formset'] = CartaFormSet(request.GET or None, prefix='carta')
-        # context['producto_formset'] = ProductoFormSet(request.GET or None, prefix='producto')
+        # context['carta_formset'] = CartaInlineFormSet(request.GET or None, prefix='carta', queryset=Carta.objects.all())
+        # context['producto_formset'] = ProductoInlineFormSet(request.GET or None, prefix='producto')
         return self.render_to_response(context)
     
     def post(self, request, *args, **kwargs):
         form_class = self.get_form_class()
         restaurante_form = self.get_form(form_class)
-        carta_formset = CartaFormSet(request.POST, prefix='carta')
+        carta_formset = CartaFormSet(request.POST, prefix='seccion')
         producto_formset = ProductoFormSet(request.POST, prefix='producto')
         if restaurante_form.is_valid() and carta_formset.is_valid() and producto_formset.is_valid():
             restaurante = Restaurante.objects.update_or_create(
@@ -80,7 +82,8 @@ class RestauranteCreateView(LoginRequiredMixin, CreateView):
                 telefono=restaurante_form['telefono'].value(),
                 mapa=restaurante_form['mapa'].value(),
                 administrador=request.user,
-                barrio=restaurante_form['localidad'].value()
+                barrio=restaurante_form['localidad'].value(),
+                tipo_comida=restaurante_form['tipo_comida'].value()
             )
             for carta_form in carta_formset:
                 carta = Carta.objects.update_or_create(
@@ -177,6 +180,14 @@ def home(request):
 
 def about(request):
     return render(request, 'general/about.html', {'nav_active': 'about'})
+
+def get_403(request):
+    template_name = 'errors/403.html'
+    return render(request, template_name, {})
+
+def get_404(request):
+    template_name = 'errors/404.html'
+    return render(request, template_name, {})
 
 def load_countries(request):
     continente = request.GET['continente']

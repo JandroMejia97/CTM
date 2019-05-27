@@ -313,12 +313,12 @@ class Restaurante(models.Model):
         help_text='Ingrese el nombre del restaurante',
         verbose_name='Nombre del Restaurante',
     )
-    logo = models.ImageField(
+    background = models.ImageField(
         upload_to='restaurantes/',
         blank=True,
         null=True,
-        help_text='Cargue el logotipo que identifica a su restaurante',
-        verbose_name='Logotipo'
+        help_text='Cargue una fotografía de su restaurante. Esta se usará como background',
+        verbose_name='Fotografía'
     )
     latitud = models.DecimalField(
         blank=True,
@@ -387,12 +387,15 @@ class Restaurante(models.Model):
         help_text='Seleccione el/los tipos de comida servidos en este restaurante',
         related_name='restaurantes',
         verbose_name='Tipo de comida',
-        blank=False,
-        null=False
+        blank=False
     )
 
     def __str__(self):
         return self.nombre
+
+    def save_restaurante(self, request, *args, **kwargs):
+        self.administrador = request.user
+        super(Restaurante, self).save(*args, **kwargs)
 
     """def path_and_rename(self, instance, filename):
         ext = filename.split('.')[-1]
@@ -470,6 +473,9 @@ class Carta(models.Model):
 
     def __str__(self):
         return self.tipo.nombre
+
+    def save(self, *args, **kwargs):
+        super(Carta, self).save(*args, **kwargs)
 
     class Meta:
         verbose_name = 'Carta'

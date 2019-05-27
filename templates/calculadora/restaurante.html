@@ -52,22 +52,22 @@
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-lg-12">
-                                <form method="post" id="datos_form">
+                                <form method="POST" id="datos_form">
+                                    {% csrf_token %}
                                     <div class="row">
                                         <div class="col-lg-12">
                                             <div class="form-group">
-                                                {% csrf_token %}
                                                 <div class="row">
-                                                    <label class="control-label col-sm-2 col-lg-2 " for="">Ubicacion</label>
+                                                    <label class="control-label col-sm-2 col-lg-2 ">Ubicacion</label>
                                                     <div class="col-sm-10 col-lg-10 ">
                                                         <div class="row">
                                                             <div class="col-sm-12 col-lg-12">
                                                                 <div class="input-group">
-                                                                    {{form.ciudad}}
+                                                                    {{ form.ciudad }}
                                                                     <span class="input-group-addon">
                                                                         <i class="glyphicon glyphicon-search"></i>
                                                                     </span>
-                                                                    {{form.localidad}}
+                                                                    {{ form.localidad }}
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -88,6 +88,9 @@
                                                 <div class="row">
                                                     {{ form.tipo_comida|bootstrap_horizontal }}
                                                 </div>
+                                                <div class="row">
+                                                    {{ form.background|bootstrap_horizontal }}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -102,6 +105,7 @@
                                                         <i class="fa fa-map-marked-alt fw"></i>
                                                         <a role="button" data-toggle="collapse" href="#mapa-row" aria-expanded="false" aria-controls="mapa-row" title="Añade un mapa a este restaurante">
                                                             Mapa
+                                                            <b class="pull-right caret"></b>
                                                         </a>
                                                     </h3>
                                                 </div>
@@ -122,8 +126,12 @@
                                         </div>
                                     </div>
                                     <div id="datos_buttons" class="text-center">
-                                        <button class="btn btn-primary" type="submit">Enviar</button>
-                                        <button class="btn btn-danger" type="submit">Cancelar</button>
+                                        <button class="btn btn-primary" type="submit">
+                                            Enviar
+                                        </button>
+                                        <a href="javascript:history.back()" class="btn btn-danger" >
+                                            Cancelar
+                                        </a>
                                     </div>
                                 </form>
                             </div>
@@ -141,5 +149,7 @@
         $(document).ready(function(){
             $("#id_mapa").attr("onkeyup", "reloadIframe(\"id_mapa\")");
         });
+        $("select").prop('class', "form-control");
+        $("#id_background").prop('class', "");
     </script>
 {% endblock sb_admin_custom_js %}

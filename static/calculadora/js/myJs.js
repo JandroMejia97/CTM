@@ -85,8 +85,8 @@ function getLocalidades(id, seleccion){
             $("#"+seleccion).append('<option value="" selected="">---------</option>');
             $.each(data.response, function(index, value){
                 $("#"+seleccion).append(
-                    "<option id='"+value.pk + "' value='" +
-                    value.pk + "'>" + value.nombre + "</option>");
+                    "<option id='"+value.id + "' value='" +
+                    value.id + "'>" + value.nombre + "</option>");
             });
             $("#"+seleccion).removeAttr('disabled');
         }else{
@@ -169,7 +169,7 @@ function updateElementIndex(elemento, prefijoForm, indice){
     }
 }
 
-function cloneMore(prefijoFila, classFormSet, isRow){
+function cloneMore(prefijoFila, classFormSet){
     var idFilaOriginal = '#'+prefijoFila+'-row';
     var nuevaFila = $(idFilaOriginal).clone(true);
     var total = parseInt($('#id_'+classFormSet+'-TOTAL_FORMS').val()); // Obteniendo la cantidad actual de formularios
@@ -194,7 +194,7 @@ function cloneMore(prefijoFila, classFormSet, isRow){
             id = id.replace('-' + (total-1) + '-', '-' + total + '-');
             $(this).attr({
                 'id': id,
-                'onclick': "cloneMore('"+prefijoFilaNueva+"', '"+classFormSet+"', true)"
+                'onclick': "cloneMore('"+prefijoFilaNueva+"', '"+classFormSet+"')"
             });
         }
     })
@@ -209,10 +209,8 @@ function cloneMore(prefijoFila, classFormSet, isRow){
             });
         }
     })
-    .empty().append('<i class="fa fa-trash-alt fw"></i>');
-    if(isRow){
-        anteriorFila.find('span').removeClass('btn-primary').addClass('btn-danger')
-    }
+    .empty().append('<i class="fa fa-trash-alt fw"></i>')
+    .removeClass('btn-primary').addClass('btn-danger');
     total++;
     $('#id_'+classFormSet+'-TOTAL_FORMS').val(total);
     $(idFilaOriginal).after(nuevaFila);
