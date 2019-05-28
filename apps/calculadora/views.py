@@ -48,13 +48,14 @@ class RestauranteCreateView(LoginRequiredMixin, CreateView):
     def get(self, request, *args, **kwargs):
         super(RestauranteCreateView, self).get(self, request, *args, **kwargs)
         context = self.get_context_data(**kwargs)
-        context['carta_formset'] = nestedformset_factory(
+        context['ciudades'] = Ciudad.objects.all()
+        """context['carta_formset'] = nestedformset_factory(
             parent_model=Restaurante,
             model=Carta,
             form=CartaForm,
             min_num=1,
             max_num=5,
-            extra=0,
+            extra=1,
             can_delete=False,
             nested_formset=inlineformset_factory(
                 parent_model=Carta,
@@ -62,30 +63,37 @@ class RestauranteCreateView(LoginRequiredMixin, CreateView):
                 form=ProductoForm,
                 min_num=1,
                 max_num=20,
-                extra=2,
+                extra=1,
                 can_delete=False,
             )
         )
         # context['carta_formset'] = CartaInlineFormSet(request.GET or None, prefix='carta', queryset=Carta.objects.all())
-        # context['producto_formset'] = ProductoInlineFormSet(request.GET or None, prefix='producto')
+        # context['producto_formset'] = ProductoInlineFormSet(request.GET or None, prefix='producto')"""
         return self.render_to_response(context)
     
     def post(self, request, *args, **kwargs):
         form_class = self.get_form_class()
         restaurante_form = self.get_form(form_class)
-        carta_formset = CartaFormSet(request.POST, prefix='seccion')
-        producto_formset = ProductoFormSet(request.POST, prefix='producto')
-        if restaurante_form.is_valid() and carta_formset.is_valid() and producto_formset.is_valid():
-            restaurante = Restaurante.objects.update_or_create(
+        # carta_formset = CartaFormSet(request.POST, prefix='seccion')
+        # producto_formset = ProductoFormSet(request.POST, prefix='producto')
+        # if restaurante_form.is_valid() and carta_formset.is_valid() and producto_formset.is_valid():
+        if restaurante_form.is_valid() and 'localidad' in request.POST:
+            localidad = int(request.POST['localidad'])
+            localidad = Division.objects.get(pk=localidad)
+            restaurante = Restaurante(
                 nombre=restaurante_form['nombre'].value(),
                 direccion=restaurante_form['direccion'].value(),
                 telefono=restaurante_form['telefono'].value(),
                 mapa=restaurante_form['mapa'].value(),
                 administrador=request.user,
-                barrio=restaurante_form['localidad'].value(),
-                tipo_comida=restaurante_form['tipo_comida'].value()
+                barrio=localidad,
+                background=restaurante_form['background'].value(),
             )
-            for carta_form in carta_formset:
+            tipos_comida = TipoComida.objects.filter(pk__in=restaurante_form['tipo_comida'].value())
+            restaurante.save()
+            for tipo_comida in tipos_comida:
+                restaurante.tipo_comida.add(tipo_comida)
+            """for carta_form in carta_formset:
                 carta = Carta.objects.update_or_create(
                     tipo=carta_form['tipo'],
                     restaurante=int(restaurante)
@@ -97,16 +105,21 @@ class RestauranteCreateView(LoginRequiredMixin, CreateView):
                         nombre=producto_form['nombre'],
                         precio_fijo=producto_form['precio_fijo']
                     )
-                    producto.save()
+                    producto.save()"""
+            restaurante.save()
             context = {
                 'messages': ['El restaurante ha sido registrado exitosamente.']
             }
-            return HttpResponseRedirect(self.success_url, context=context)
+            return HttpResponseRedirect(self.success_url)
         else:
             context = {
                 'form': restaurante_form,
-                'carta_formset': carta_formset,
-                'producto_formset': producto_formset,
+                'ciudades': Ciudad.objects.all(),
+                'messages': [
+                    'El restaurante no pudo ser registrado. Corrija los siguiente errores.',
+                ]
+                # 'carta_formset': carta_formset,
+                # 'producto_formset': producto_formset,
             }
         return self.render_to_response(context)
 

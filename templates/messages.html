@@ -1,13 +1,25 @@
-{% if messages %}
-    <div class="row">
-        <div class="col-lg-12 messages">
-            {% for message in messages %}
-                <div class="alert alert-danger alert-dismissable">
-                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                    <i class="fa fa-exclamation-triangle"></i> 
-                    {{ message|escape }}
-                </div>
-            {% endfor %}
+{% if messages or form.errors %}
+    {% for message in messages %}
+        <div class="alert alert-danger alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <i class="fa fa-exclamation-triangle"></i> 
+            {{ message|escape }}
         </div>
-    </div>
+    {% endfor %}
+    {% for field in form %}
+        {% for error in field.errors %}
+            <div class="alert alert-danger alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <i class="fa fa-exclamation-triangle"></i> 
+                {{ field.label }}: {{ error|escape }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+    {% for error in form.non_field_errors %}
+        <div class="alert alert-danger alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <i class="fa fa-exclamation-triangle"></i> 
+            {{ error|escape }}
+        </div>
+    {% endfor %}
 {% endif %}

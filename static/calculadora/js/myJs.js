@@ -210,7 +210,7 @@ function cloneMore(prefijoFila, classFormSet){
         }
     })
     .empty().append('<i class="fa fa-trash-alt fw"></i>')
-    .removeClass('btn-primary').addClass('btn-danger');
+    //.removeClass('btn-primary').addClass('btn-danger');
     total++;
     $('#id_'+classFormSet+'-TOTAL_FORMS').val(total);
     $(idFilaOriginal).after(nuevaFila);

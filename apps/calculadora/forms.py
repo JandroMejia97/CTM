@@ -1,13 +1,17 @@
 from django import forms
-from django.forms import modelformset_factory, inlineformset_factory
+from django.forms import modelformset_factory, inlineformset_factory, BaseInlineFormSet
 from django.forms.formsets import BaseFormSet
 
 from .models import *
 
 
 class RestauranteForm(forms.ModelForm):
-    ciudad = forms.ChoiceField()
-    localidad = forms.ChoiceField()
+    ciudad = forms.ChoiceField(
+        error_messages={'required': 'Por favor, seleccione la ciudad donde se ubica su restaurante.'}
+    )
+    localidad = forms.ChoiceField(
+        error_messages={'required': 'Por favor, seleccione la localidad donde se ubica su restaurante.'}
+    )
 
     class Meta:
         prefix = 'restaurante'
@@ -58,6 +62,14 @@ class RestauranteForm(forms.ModelForm):
             ),
             help_text='Seleccione su ciudad'
         )
+        if 'ciudad' in self.data:
+            try:
+                ciudad = int(self.data.get('ciudad'))
+                self.fields['localidad'].queryset = Division.objects.filter(ciudad=ciudad)
+            except (ValueError, TypeError):
+                pass
+        elif self.instance.pk:
+            self.fields['localidad'].queryset = self.instance.ciudad.localidad_set.order_by('nombre')
     
 
 class TipoCartaForm(forms.ModelForm):
@@ -114,6 +126,7 @@ class ProductoForm(forms.ModelForm):
             })
         
         self.fields['precio_fijo'].widget.attrs.update({'min': '0.01'})
+
 
 class BaseProductoFormSet(BaseFormSet):
 
@@ -186,3 +199,19 @@ ProductoInlineFormSet = inlineformset_factory(
     can_delete=False,
     min_num=1
 )
+
+class BaseCartaFormset(BaseInlineFormSet):
+
+    def add_fields(self, form, index):
+        super(BaseCartaFormset, self).add_fields(form, index)
+        try:
+            instance = self.get_queryset()[index]
+            pk_value =  instance.pk
+        except IndexError:
+            instance = None
+            pk_value = hash(form.prefix)
+        
+        form.nested = [
+            
+        ]
+        return super()
