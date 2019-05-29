@@ -141,7 +141,7 @@ class RestauranteAdmin(admin.ModelAdmin):
     ]
     fields = [ 
         'nombre',
-        'logo',
+        'background',
         'administrador',
         'telefono',
         'tipo_comida',

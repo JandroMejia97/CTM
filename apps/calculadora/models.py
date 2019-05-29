@@ -474,9 +474,6 @@ class Carta(models.Model):
     def __str__(self):
         return self.tipo.nombre
 
-    def save(self, *args, **kwargs):
-        super(Carta, self).save(*args, **kwargs)
-
     class Meta:
         verbose_name = 'Carta'
         verbose_name_plural = 'Cartas'

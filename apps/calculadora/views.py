@@ -49,35 +49,14 @@ class RestauranteCreateView(LoginRequiredMixin, CreateView):
         super(RestauranteCreateView, self).get(self, request, *args, **kwargs)
         context = self.get_context_data(**kwargs)
         context['ciudades'] = Ciudad.objects.all()
-        """context['carta_formset'] = nestedformset_factory(
-            parent_model=Restaurante,
-            model=Carta,
-            form=CartaForm,
-            min_num=1,
-            max_num=5,
-            extra=1,
-            can_delete=False,
-            nested_formset=inlineformset_factory(
-                parent_model=Carta,
-                model=Producto,
-                form=ProductoForm,
-                min_num=1,
-                max_num=20,
-                extra=1,
-                can_delete=False,
-            )
-        )
-        # context['carta_formset'] = CartaInlineFormSet(request.GET or None, prefix='carta', queryset=Carta.objects.all())
-        # context['producto_formset'] = ProductoInlineFormSet(request.GET or None, prefix='producto')"""
+        context['carta_formset'] = CartaFormset()
         return self.render_to_response(context)
     
     def post(self, request, *args, **kwargs):
         form_class = self.get_form_class()
         restaurante_form = self.get_form(form_class)
-        # carta_formset = CartaFormSet(request.POST, prefix='seccion')
-        # producto_formset = ProductoFormSet(request.POST, prefix='producto')
-        # if restaurante_form.is_valid() and carta_formset.is_valid() and producto_formset.is_valid():
-        if restaurante_form.is_valid() and 'localidad' in request.POST:
+        carta_formset = CartaFormset(request.POST)          
+        if restaurante_form.is_valid() and carta_formset.is_valid():
             localidad = int(request.POST['localidad'])
             localidad = Division.objects.get(pk=localidad)
             restaurante = Restaurante(
@@ -93,19 +72,23 @@ class RestauranteCreateView(LoginRequiredMixin, CreateView):
             restaurante.save()
             for tipo_comida in tipos_comida:
                 restaurante.tipo_comida.add(tipo_comida)
-            """for carta_form in carta_formset:
-                carta = Carta.objects.update_or_create(
-                    tipo=carta_form['tipo'],
-                    restaurante=int(restaurante)
-                )
-                carta.save()
-                for producto_form in producto_formset:
-                    producto = Producto.objects.update_or_create(
-                        carta=carta,
-                        nombre=producto_form['nombre'],
-                        precio_fijo=producto_form['precio_fijo']
+            for carta_form in carta_formset:
+                if carta_form.is_valid():
+                    tipo = int(carta_form['tipo'].value())
+                    tipo_carta = TipoCarta.objects.get(pk=tipo)
+                    carta = Carta(
+                        tipo=tipo_carta,
+                        restaurante=restaurante
                     )
-                    producto.save()"""
+                    carta.save()
+                    for producto_form in carta_form.nested:
+                        if producto_form.is_valid():
+                            producto = Producto(
+                            carta=carta,
+                            nombre=producto_form['nombre'],
+                            precio_fijo=float(producto_form['precio_fijo'].value())
+                        )
+                        producto.save()
             restaurante.save()
             context = {
                 'messages': ['El restaurante ha sido registrado exitosamente.']
@@ -117,9 +100,8 @@ class RestauranteCreateView(LoginRequiredMixin, CreateView):
                 'ciudades': Ciudad.objects.all(),
                 'messages': [
                     'El restaurante no pudo ser registrado. Corrija los siguiente errores.',
-                ]
-                # 'carta_formset': carta_formset,
-                # 'producto_formset': producto_formset,
+                ],
+                'carta_formset': carta_formset,
             }
         return self.render_to_response(context)
 

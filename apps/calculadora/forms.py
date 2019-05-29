@@ -90,6 +90,9 @@ class CartaForm(forms.ModelForm):
         fields = [
             'tipo'
         ]
+        exclude = [
+            '__all__'
+        ]
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -97,8 +100,14 @@ class CartaForm(forms.ModelForm):
             self.fields[field].widget.attrs.update({
                 'placeholder': self.fields[field].label,
                 'title': self.fields[field].help_text,
-                'class': 'form-control'
+                'class': 'form-control',
+                'required': 'required'
             })
+        self.fields['tipo'] = forms.ModelChoiceField(
+            queryset=TipoCarta.objects.all(),
+            help_text='Seleccione un tipo de carta que posee este restaurante',
+            required=True
+        )
         
 
 class ProductoForm(forms.ModelForm):
@@ -122,7 +131,8 @@ class ProductoForm(forms.ModelForm):
             self.fields[field].widget.attrs.update({
                 'placeholder': self.fields[field].label,
                 'title': self.fields[field].help_text,
-                'class': 'form-control'
+                'class': 'form-control',
+                'required': 'required'
             })
         
         self.fields['precio_fijo'].widget.attrs.update({'min': '0.01'})
@@ -166,52 +176,49 @@ class BaseProductoFormSet(BaseFormSet):
                         code='missing_nombre'
                     )
 
-CartaFormSet = modelformset_factory(
-    model=Carta,
-    form=CartaForm,
-    min_num=1,
-    max_num=5,
-    extra=2,
-)
-CartaInlineFormSet = inlineformset_factory(
-    parent_model=Restaurante,
-    model=Carta,
-    extra=1,
-    fields=('tipo',),
-    formset=CartaFormSet,
-    can_delete=False,
-    min_num=1,
-)
-ProductoFormSet = modelformset_factory(
-    model=Producto,
-    form=ProductoForm,
-    formset=BaseProductoFormSet,
-    min_num=1,
-    max_num=20,
-    extra=2,
-)
-ProductoInlineFormSet = inlineformset_factory(
+ProductoFormset = inlineformset_factory(
     parent_model=Carta,
     model=Producto,
-    extra=2,
+    form=ProductoForm,
     fields=('nombre', 'precio_fijo',),
-    formset=ProductoFormSet,
-    can_delete=False,
-    min_num=1
+    min_num=1,
+    extra=1,
+    can_delete=False
 )
 
 class BaseCartaFormset(BaseInlineFormSet):
 
     def add_fields(self, form, index):
         super(BaseCartaFormset, self).add_fields(form, index)
-        try:
-            instance = self.get_queryset()[index]
-            pk_value =  instance.pk
-        except IndexError:
-            instance = None
-            pk_value = hash(form.prefix)
-        
-        form.nested = [
+        form.nested = ProductoFormset(
+            instance=form.instance,
+            data=form.data if form.is_bound else None,
+            files=form.files if form.is_bound else None,
+            prefix='producto-%s-%s'% (
+                form.prefix,
+                ProductoFormset.get_default_prefix()
+            )
+        )
+
+    def clean(self):
+        super(BaseCartaFormset, self).clean()
+        if any(self.errors):
+            return
+        for carta_form in self.forms:
+            if carta_form.cleaned_data['tipo'] is None:
+                raise forms.ValidationError('Debe añadir al menos una carta su restaurante')
+            for nested_form in carta_form.nested:
+                if not nested_form.is_valid():
+                    raise forms.ValidationError('Debe ingresar el nombre de cada producto')
             
-        ]
-        return super()
+
+CartaFormset = inlineformset_factory(
+    parent_model=Restaurante,
+    model=Carta,
+    form=CartaForm,
+    fields=('tipo',),
+    formset=BaseCartaFormset,
+    extra=0,
+    min_num=1,
+    can_delete=False
+)

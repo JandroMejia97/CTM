@@ -94,11 +94,9 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- <div id="carta_formset">
-                                        {% comment %}
+                                    <div id="carta_formset">
                                         {% include 'calculadora/restaurante_carta_add.html' %}
-                                        {% endcomment %}
-                                    </div> -->
+                                    </div>
                                     <div class="row">
                                         <div class="col-lg-12">
                                             <div class="panel panel-default">
@@ -151,7 +149,7 @@
         $(document).ready(function(){
             $("#id_mapa").attr("onkeyup", "reloadIframe(\"id_mapa\")");
         });
-        $("select").prop('class', "form-control");
+        $('select').prop('required', "required");
         $("#id_background").prop('class', "");
     </script>
 {% endblock sb_admin_custom_js %}

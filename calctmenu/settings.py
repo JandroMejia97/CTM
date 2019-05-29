@@ -149,6 +149,9 @@ USE_TZ = True
 # 
 AUTH_USER_MODEL = 'calculadora.User'
 
+# This is the default backend. Email will be sent through a SMTP server.
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 # This URL is redirected to login.html when the user wants to identify himself
 LOGIN_URL = '/sign-in/'
 
