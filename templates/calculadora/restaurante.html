@@ -155,5 +155,8 @@
         $('input').prop('disabled', 'disabled');
         $('select').prop('disabled', 'disabled');
         {% endif %}
+        {% if update %}
+        $('id_barrio').removeAttr('disabled');
+        {% endif %}
     </script>
 {% endblock sb_admin_custom_js %}

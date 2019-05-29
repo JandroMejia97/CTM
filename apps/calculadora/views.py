@@ -48,24 +48,22 @@ class RestauranteCreateView(LoginRequiredMixin, CreateView):
     def get(self, request, *args, **kwargs):
         super(RestauranteCreateView, self).get(self, request, *args, **kwargs)
         context = self.get_context_data(**kwargs)
-        context['ciudades'] = Ciudad.objects.all()
         context['carta_formset'] = CartaFormset()
         return self.render_to_response(context)
     
     def post(self, request, *args, **kwargs):
         form_class = self.get_form_class()
         restaurante_form = self.get_form(form_class)
-        carta_formset = CartaFormset(request.POST)          
+        carta_formset = CartaFormset(request.POST)
         if restaurante_form.is_valid() and carta_formset.is_valid():
-            localidad = int(request.POST['localidad'])
-            localidad = Division.objects.get(pk=localidad)
             restaurante = Restaurante(
                 nombre=restaurante_form['nombre'].value(),
                 direccion=restaurante_form['direccion'].value(),
                 telefono=restaurante_form['telefono'].value(),
                 mapa=restaurante_form['mapa'].value(),
                 administrador=request.user,
-                barrio=localidad,
+                barrio=Division.objects.get(pk=int(request.POST['barrio'])),
+                ciudad=Ciudad.objects.get(pk=int(request.POST['ciudad'])),
                 background=restaurante_form['background'].value(),
             )
             tipos_comida = TipoComida.objects.filter(pk__in=restaurante_form['tipo_comida'].value())
@@ -97,7 +95,6 @@ class RestauranteCreateView(LoginRequiredMixin, CreateView):
         else:
             context = {
                 'form': restaurante_form,
-                'ciudades': Ciudad.objects.all(),
                 'messages': [
                     'El restaurante no pudo ser registrado. Corrija los siguiente errores.',
                 ],
@@ -123,11 +120,10 @@ class RestauranteUpdateView(LoginRequiredMixin, UpdateView):
     def get(self, request, *args, **kwargs):
         super(RestauranteUpdateView, self).get(self, request, *args, **kwargs)
         context = self.get_context_data(**kwargs)
-        context['ciudades'] = Ciudad.objects.all()
-        context['restaurante_form'] = RestauranteForm(instance=context['restaurante'])
+        context['form'] = RestauranteForm(instance=context['restaurante'])
         carta = Carta.objects.filter(restaurante=context['restaurante'])
-        context['carta_formset'] = CartaFormset(request.GET, instance=carta)
-        context['detail'] = True
+        context['carta_formset'] = CartaFormset(instance=context['restaurante'])
+        context['update'] = True
         return self.render_to_response(context)
     
     def post(self, request, *args, **kwargs):

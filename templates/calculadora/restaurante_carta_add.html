@@ -11,10 +11,10 @@
                         <h3 class="panel-title">
                             <i class="fa fa-puzzle-piece fw"></i>
                             Sección
-                            <a class="pull-right" role="button" data-toggle="collapse" href="#{{ carta_form.prefix }}" aria-expanded="false" aria-controls="{{ carta_form.prefix }}" title="Añade productos a esta sección">
+                            <!-- <a class="pull-right" role="button" data-toggle="collapse" href="#{{ carta_form.prefix }}" aria-expanded="false" aria-controls="{{ carta_form.prefix }}" title="Añade productos a esta sección">
                                 Productos
                                 <b class="caret"></b>
-                            </a>
+                            </a> -->
                             {% if forloop.last %}
                                 <!--
                                     <span id="add-{{ carta_form.prefix }}-btn" type="button"  class="pull-right" onclick="cloneMore('{{ carta_form.prefix }}', '{{ carta_formset.prefix }}', false)">
@@ -36,7 +36,7 @@
                                 {{ carta_form|bootstrap_horizontal }}
                             </div>
                         </div>
-                        <div id="{{ carta_form.prefix }}" class="row collapse">
+                        <div id="{{ carta_form.prefix }}" class="row">
                             <div class="col-lg-12">
                                 <legend>
                                     Productos de la sección

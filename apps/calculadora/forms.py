@@ -28,19 +28,15 @@ class RestauranteForm(forms.ModelForm):
                 'placeholder': self.fields[field].label,
                 'title': self.fields[field].help_text,
                 'class': 'form-control'
-                }
-            )
+            })
         self.fields['background'].widget.attrs.update({
-            'placeholder': self.fields[field].label,
-            'title': self.fields[field].help_text,
             'class': ''
-            }
-        )
+            })
         self.fields['ciudad'] = forms.ModelChoiceField(
             queryset=Ciudad.objects.all(),
             widget=forms.Select(
                 attrs={
-                    'onchange':'getLocalidades("id_ciudad", "id_localidad")',
+                    'onchange':'getLocalidades("id_ciudad", "id_barrio")',
                     'class': 'form-control'
                 }
             ),
@@ -63,7 +59,10 @@ class RestauranteForm(forms.ModelForm):
             except (ValueError, TypeError):
                 pass
         elif self.instance.pk:
-            self.fields['barrio'].queryset = self.instance.ciudad
+            self.fields['ciudad'].queryset = Ciudad.objects.all()
+            self.fields['ciudad'].initial = self.instance.ciudad
+            self.fields['barrio'].queryset = Division.objects.filter(ciudad=self.instance.ciudad)
+            self.fields['barrio'].initial = self.instance.barrio
     
 
 class TipoCartaForm(forms.ModelForm):
@@ -176,7 +175,7 @@ ProductoFormset = inlineformset_factory(
     form=ProductoForm,
     fields=('nombre', 'precio_fijo',),
     min_num=1,
-    extra=1,
+    extra=0,
     can_delete=False
 )
 
