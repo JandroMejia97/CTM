@@ -105,49 +105,29 @@ class RestauranteCreateView(LoginRequiredMixin, CreateView):
             }
         return self.render_to_response(context)
 
-    def form_valid(self, form, carta_formset, producto_formset):
-        self.object = form.save()
-        self.object.administrador = self.request.user
-        carta_formset.instance = self.object
-        carta_formset.save()
-        producto_formset.instance = self.object
-        producto_formset.save()
-        context = {
-            'message': 'El restaurante ha sido registrado exitosamente.'
-        }
-        return HttpResponseRedirect(self.success_url, context=context)
-    
-    def form_invalid(self, form, carta_formset, producto_formset):
-        return self.render_to_response(
-            self.get_context_data(
-                form=form,
-                carta_formset=carta_formset,
-                producto_formset=producto_formset
-            )
-        )
 
-
-class RestauranteUpdateView(TemplateView):
-    template_name = 'calculadora/restaurante_update.html'
+class RestauranteUpdateView(LoginRequiredMixin, UpdateView):
+    model = Restaurante
+    template_name = 'calculadora/restaurante.html'
+    form_class = RestauranteForm
+    success_url = reverse_lazy('calculadora:restaurantes')
     
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+        context = super(RestauranteUpdateView, self).get_context_data(**kwargs)
         context['restaurante'] = Restaurante.objects.get(
             pk=self.kwargs['pk'],
             administrador=self.request.user
         )
-        context['cartas'] = Carta.objects.filter(restaurante=context['restaurante'])
-        for carta in context['cartas']:
-            context['productos'].append(
-                Producto.objects.filter(carta=carta)
-            )
         return context
 
     def get(self, request, *args, **kwargs):
+        super(RestauranteUpdateView, self).get(self, request, *args, **kwargs)
         context = self.get_context_data(**kwargs)
+        context['ciudades'] = Ciudad.objects.all()
         context['restaurante_form'] = RestauranteForm(instance=context['restaurante'])
-        context['producto_formset'] = ProductoForm(instance=context['producto'])
-        context['tipo_carta'] = TipoCartaForm
+        carta = Carta.objects.filter(restaurante=context['restaurante'])
+        context['carta_formset'] = CartaFormset(request.GET, instance=carta)
+        context['detail'] = True
         return self.render_to_response(context)
     
     def post(self, request, *args, **kwargs):

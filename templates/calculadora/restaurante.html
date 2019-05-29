@@ -67,7 +67,7 @@
                                                                     <span class="input-group-addon">
                                                                         <i class="glyphicon glyphicon-search"></i>
                                                                     </span>
-                                                                    {{ form.localidad }}
+                                                                    {{ form.barrio }}
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -151,5 +151,9 @@
         });
         $('select').prop('required', "required");
         $("#id_background").prop('class', "");
+        {% if detail %}
+        $('input').prop('disabled', 'disabled');
+        $('select').prop('disabled', 'disabled');
+        {% endif %}
     </script>
 {% endblock sb_admin_custom_js %}

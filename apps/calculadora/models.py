@@ -364,11 +364,20 @@ class Restaurante(models.Model):
         help_text='Si lo desea, puede generar el mapa de su ubicación en Google Maps. Vea el tutorial para más información',
         verbose_name='Mapa'
     )
-    barrio = models.ForeignKey(
-        Division,
+    ciudad = models.ForeignKey(
+        Ciudad,
         related_name='ubicado_en',
         on_delete=models.DO_NOTHING,
-        blank=True,
+        blank=False,
+        null=True,
+        help_text='Seleccione la ciudad a la que pertenece este restaurante',
+        verbose_name='Ciudad',
+    )
+    barrio = models.ForeignKey(
+        Division,
+        related_name='se_localiza_en',
+        on_delete=models.DO_NOTHING,
+        blank=False,
         null=True,
         help_text='Seleccione el barrio o división política de su ciudad en la que está ubicado el restaurante.',
         verbose_name='Barrio/Division'

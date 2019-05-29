@@ -6,12 +6,6 @@ from .models import *
 
 
 class RestauranteForm(forms.ModelForm):
-    ciudad = forms.ChoiceField(
-        error_messages={'required': 'Por favor, seleccione la ciudad donde se ubica su restaurante.'}
-    )
-    localidad = forms.ChoiceField(
-        error_messages={'required': 'Por favor, seleccione la localidad donde se ubica su restaurante.'}
-    )
 
     class Meta:
         prefix = 'restaurante'
@@ -23,7 +17,7 @@ class RestauranteForm(forms.ModelForm):
             'mapa',
             'tipo_comida',
             'ciudad',
-            'localidad',
+            'barrio',
             'background'
         ]
 
@@ -52,7 +46,7 @@ class RestauranteForm(forms.ModelForm):
             ),
             help_text='Seleccione su ciudad'
         )
-        self.fields['localidad'] = forms.ModelChoiceField(
+        self.fields['barrio'] = forms.ModelChoiceField(
             queryset=Division.objects.none(),
             widget=forms.Select(
                 attrs={
@@ -65,11 +59,11 @@ class RestauranteForm(forms.ModelForm):
         if 'ciudad' in self.data:
             try:
                 ciudad = int(self.data.get('ciudad'))
-                self.fields['localidad'].queryset = Division.objects.filter(ciudad=ciudad)
+                self.fields['barrio'].queryset = Division.objects.filter(ciudad=ciudad)
             except (ValueError, TypeError):
                 pass
         elif self.instance.pk:
-            self.fields['localidad'].queryset = self.instance.ciudad.localidad_set.order_by('nombre')
+            self.fields['barrio'].queryset = self.instance.ciudad
     
 
 class TipoCartaForm(forms.ModelForm):
@@ -211,7 +205,6 @@ class BaseCartaFormset(BaseInlineFormSet):
                 if not nested_form.is_valid():
                     raise forms.ValidationError('Debe ingresar el nombre de cada producto')
             
-
 CartaFormset = inlineformset_factory(
     parent_model=Restaurante,
     model=Carta,
