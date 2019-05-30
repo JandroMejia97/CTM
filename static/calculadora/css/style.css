@@ -22,7 +22,10 @@ body{
   position: absolute;
   top: 65%;
 }
-
+.carta {
+  margin-bottom: 0px !important;
+  border-radius: 0% !important;
+}
 .image{
   background-repeat: no-repeat; 
   overflow: hidden;

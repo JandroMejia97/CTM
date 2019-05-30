@@ -1,0 +1,311 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    Detalle Restaurante: {{ restaurante }}
+{% endblock title %}
+{% block custom_css %}
+    <link href="{% static 'calculadora/css/style.css' %}" rel="stylesheet" type="text/css">  
+{% endblock custom_css %}
+{% block messages %}
+    {% for error in errors %}
+        <div class="alert alert-danger alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <i class="fa fa-exclamation-triangle"></i>  {{ error }}
+        </div>
+    {% endfor %}
+{% endblock messages %}
+{% block content %}
+    <!-- Cabecera de página -->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">
+                    Restaurante: {{ restaurante }}
+                </h1>
+                <ol class="breadcrumb">
+                    <li>
+                        <i class="fa fa-home"></i>
+                        <a href="{% url 'calculadora:home' %}">
+                            Inicio
+                        </a>
+                    </li>
+                    <li>
+                        <i class="fa fa-utensils"></i>
+                        <a href="{% url 'calculadora:restaurantes' %}">
+                            Restaurantes
+                        </a>
+                    </li>
+                    <li class="active">
+                        <i class="fa fa-eye"></i>
+                        Detalle Restaurante: {{ restaurante }}
+                    </li>
+                </ol>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            <i class="fa fa-utensils fw">
+                                Resturante
+                            </i>
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        {% if restaurante.background %}
+                            <div class="image image-fluid" style="background-image: url('{{ restaurante.background.url }}')">
+                                <div class="d-block over over-border fondo-izquierda" >
+                                    <div class="text-left over-text">
+                                        <h1>{{ restaurante|upper }}</h1>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="list-group list-group-horizontal" id="list-tab" role="tablist">
+                                    <a class="list-group-item list-group-item-action active" id="list-datos-list" data-toggle="list" href="#list-datos" role="tab" aria-controls="datos">
+                                        Datos
+                                    </a>
+                                    <a class="list-group-item list-group-item-action" id="list-mapa-list" data-toggle="list" href="#list-mapa" role="tab" aria-controls="mapa">
+                                        Mapa
+                                    </a>
+                                    <a class="list-group-item list-group-item-action" id="list-cartas-list" data-toggle="list" href="#list-cartas" role="tab" aria-controls="cartas">
+                                        Cartas
+                                    </a>
+                                    <a class="list-group-item list-group-item-action" id="list-productos-list" data-toggle="list" href="#list-productos" role="tab" aria-controls="productos">
+                                        Productos
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="tab-content" id="nav-tabContent">
+                                    <div class="tab-pane fade" id="list-datos" role="tabpanel" aria-labelledby="list-datos-list">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="panel panel-default">
+                                                    <div class="panel-heading">
+                                                        <h3 class="panel-title">
+                                                            <i class="fa fa-database fw"></i>
+                                                            Datos
+                                                            <a href="" onclick="enabledInputs('datos_form', 'datos_buttons')">
+                                                                <i class="pull-right fa fa-edit fw"></i>
+                                                            </a>
+                                                        </h3>
+                                                    </div>
+                                                    <div class="panel-body">
+                                                        <div class="table-responsive">
+                                                            <table class="table table-hover">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <th>
+                                                                            Nombre
+                                                                        </th>
+                                                                        <td>
+                                                                            {{ restaurante }}
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th>
+                                                                            Ubicación
+                                                                        </th>
+                                                                        <td>
+                                                                            {{ restaurante.ciudad }} 
+                                                                            <i class="fa fa-chevron-right fw"></i>
+                                                                            {{ restaurante.barrio }}
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th>
+                                                                            Dirección
+                                                                        </th>
+                                                                        <td>
+                                                                            {{ restaurante.direccion }}
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th>
+                                                                            Telefono
+                                                                        </th>
+                                                                        <td>
+                                                                            {{ restaurante.telefono }}
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th>
+                                                                        Tipos de Comida
+                                                                        </th>
+                                                                        <td>
+                                                                            <ul>
+                                                                                {% for tipo_comida in restaurante.tipo_comida.all %}
+                                                                                    <li>{{ tipo_comida }}</li>
+                                                                                {% endfor %}
+                                                                            </ul>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="list-mapa" role="tabpanel" aria-labelledby="list-mapa-list">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="panel panel-default">
+                                                    <div class="panel-heading">
+                                                        <h3 class="panel-title">
+                                                            <i class="fa fa-map-marked-alt fw"></i>
+                                                            Mapa
+                                                        </h3>
+                                                    </div>
+                                                    <div class="panel-body">
+                                                        <div class="row">
+                                                            <div class="col-lg-12">
+                                                                <div class="embed-responsive embed-responsive-4by3" id="iframe">
+                                                                    {% if restaurante.mapa %}
+                                                                        {{ restaurante.mapa|safe }}
+                                                                    {% else %}
+                                                                        <div class="alert alert-danger alert-dismissable">
+                                                                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                                                            <i class="fa fa-sad-cry"></i>
+                                                                            Lo sentimos, aún no hay un mapa disponible para este restaurante
+                                                                        </div>
+                                                                    {% endif %}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="list-cartas" role="tabpanel" aria-labelledby="list-cartas-list">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="accordion" id="accordion-block">
+                                                    <div class="panel panel-default">
+                                                        <div class="panel-heading">
+                                                            <h3 class="panel-title">
+                                                                <i class="fa fa-puzzle-piece fw"></i>
+                                                                Secciones del Menú
+                                                            </h3>
+                                                        </div>
+                                                        <div class="panel-body">
+                                                            {% if productos %}
+                                                                {% regroup productos by carta as carta_list %}
+                                                                {% for carta in carta_list %}
+                                                                    <div class="panel panel-default carta">
+                                                                        <div class="panel-heading collapsed" id="header{{ forloop.counter }}" type="button" data-toggle="collapse" data-target="#collapse{{ forloop.counter }}">
+                                                                            <h2 class="mb-0 panel-title">
+                                                                                <div class="row">
+                                                                                    <div class="col-xs-2 col-sm-1 col-md-1 col-lg-1">
+                                                                                        <span class="pull-left glyphicon glyphicon-menu-down" aria-hidden="true"></span>        
+                                                                                    </div>
+                                                                                    <div class="col-xs-10 col-sm-11 col-md-11 col-lg-11">
+                                                                                        <strong>
+                                                                                            {{ carta.grouper }}
+                                                                                        </strong>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </h2>
+                                                                        </div>
+                                                                        <div id="collapse{{ forloop.counter }}" class="collapse" aria-labelledby="header{{ forloop.counter }}" data-parent="#accordion-block">
+                                                                            <div class="panel-body">
+                                                                                {% for producto in carta.list %}
+                                                                                    <div class="row">
+                                                                                        <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+                                                                                            <div class="row">
+                                                                                                <div class="col-lg-12">
+                                                                                                    {{ producto.nombre }}
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="row">
+                                                                                                <div class="col-lg-12">
+                                                                                                    <small>
+                                                                                                        <p class="text-muted font-italic">
+                                                                                                            {{ producto.descripcion|truncatewords:"5"|default:"-----" }}
+                                                                                                        </p>
+                                                                                                    </small>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                                                                            <div class="input-group input-group-sm">
+                                                                                                <div class="input-group-addon">
+                                                                                                    <i class="fa fa-minus-circle"></i>
+                                                                                                </div>
+                                                                                                <input type="number" class="form-control" id="cant{{ forloop.counter }}" value="0" min="0" step="1">
+                                                                                                <div class="input-group-addon">
+                                                                                                    <i class="fa fa-plus-circle"></i>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                                                                                            $ {{ producto.precio_fijo }}
+                                                                                        </div>
+                                                                                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                                                                                            <i class="pull-right fa fa-edit fw"></i>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                {% endfor %}
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                {% endfor %}
+                                                            {% else %}
+                                                                <div class="alert alert-danger alert-dismissable">
+                                                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                                                    <i class="fa fa-sad-cry"></i>
+                                                                    Lo sentimos, aún no hay productos disponibles para este restaurante.
+                                                                </div>
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="list-productos" role="tabpanel" aria-labelledby="list-productos-list">
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block sb_admin_custom_js %}
+    <script src="{% static 'calculadora/js/myJs.js' %}"></script>
+    <script>
+        $('#list-tab a').on('click', function (e) {
+            e.preventDefault()
+            $(this).tab('show');
+            $('#list-tab a').removeClass('active');
+            $(this).addClass('active');
+        });
+        $(document).ready(function(){
+            $('#list-datos-list').tab('show');
+            // Add angle-up icon for collapse element which is open by default
+            $(".collapse.show").each(function(){
+                $(this).prev(".panel-heading").find(".glyphicon").addClass("glyphicon-menu-up").removeClass("glyphicon-menu-down");
+            });
+            
+            // Toggle angle-down angle-up icon on show hide of collapse element
+            $(".collapse").on('show.bs.collapse', function(){
+                $(this).prev(".panel-heading").find(".glyphicon").removeClass("glyphicon-menu-down").addClass("glyphicon-menu-up");
+            }).on('hide.bs.collapse', function(){
+                $(this).prev(".panel-heading").find(".glyphicon").removeClass("glyphicon-menu-up").addClass("glyphicon-menu-down");
+            });
+        });
+    </script>
+{% endblock sb_admin_custom_js %}

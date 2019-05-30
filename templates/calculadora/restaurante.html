@@ -1,7 +1,11 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title %}
-    Nuevo restaurante
+    {% if update %}
+        Editar Restaurante: {{ form.nombre.value }}
+    {% else %}
+        Nuevo restaurante
+    {% endif %}
 {% endblock title %}
 {% block custom_css %}
     <link href="{% static 'calculadora/css/style.css' %}" rel="stylesheet" type="text/css">  
@@ -14,7 +18,11 @@
             <div class="row">
                 <div class="col-lg-12">
                     <h1 class="page-header">
-                        Nuevo estaurante
+                        {% if update %}
+                            Restaurante: <strong>{{ form.nombre.value }}</strong>
+                        {% else %}
+                            Nuevo estaurante
+                        {% endif %}
                     </h1>
                     <ol class="breadcrumb">
                         <li>
@@ -26,8 +34,13 @@
                             <a href="{% url 'calculadora:restaurantes' %}">Restaurantes</a>
                         </li>
                         <li class="active">
-                            <i class="fa fa-plus-circle"></i>
-                            Nuevo Restaurante
+                            {% if update %}
+                                <i class="fa fa-edit"></i>
+                                Editar Restaurante
+                            {% else %}
+                                <i class="fa fa-plus-circle"></i>
+                                Nuevo Restaurante
+                            {% endif %}
                         </li>
                     </ol>
                 </div>
@@ -127,7 +140,7 @@
                                     </div>
                                     <div id="datos_buttons" class="text-center">
                                         <button class="btn btn-primary" type="submit">
-                                            Enviar
+                                            Guardar
                                         </button>
                                         <a href="javascript:history.back()" class="btn btn-danger" >
                                             Cancelar

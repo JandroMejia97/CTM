@@ -13,6 +13,6 @@ urlpatterns = [
     path('ciudades/<int:pk>/restaurantes/', views.RestaurantesListView.as_view(), name='ciudades-restaurantes'),
     path('restaurantes/', views.RestaurantesListView.as_view(), name='restaurantes'),
     path('restaurantes/agregar/', views.RestauranteCreateView.as_view(), name='nuevo-restaurante'),
-    path('restaurantes/detalle/<int:pk>/', views.RestauranteUpdateView.as_view(), name='detalle-restaurante'),
+    path('restaurantes/detalle/<int:pk>/', views.RestauranteDetailView.as_view(), name='detalle-restaurante'),
     path('restaurantes/editar/<int:pk>/', views.RestauranteUpdateView.as_view(), name='editar-restaurante'),
 ]

@@ -83,7 +83,7 @@ class RestauranteCreateView(LoginRequiredMixin, CreateView):
                         if producto_form.is_valid():
                             producto = Producto(
                             carta=carta,
-                            nombre=producto_form['nombre'],
+                            nombre=producto_form['nombre'].value(),
                             precio_fijo=float(producto_form['precio_fijo'].value())
                         )
                         producto.save()
@@ -139,7 +139,18 @@ class RestauranteUpdateView(LoginRequiredMixin, UpdateView):
         else:
             context = {'errors': restaurante_form.errors}
         return self.render_to_response(context)
-        
+
+
+class RestauranteDetailView(DetailView):
+    model = Restaurante
+    context_object_name = 'restaurante'
+    template_name = 'calculadora/restaurante_detail_template.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(RestauranteDetailView, self).get_context_data(**kwargs)
+        context['cartas'] = Carta.objects.filter(restaurante=context['restaurante'])
+        context['productos'] = Producto.objects.filter(carta__in=context['cartas'])
+        return context
 
 def home(request):
     ciudades = Ciudad.objects.all()
