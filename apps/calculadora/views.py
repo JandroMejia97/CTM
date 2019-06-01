@@ -11,32 +11,57 @@ from django.urls import reverse_lazy
 from django.http.response import JsonResponse
 from django.template.loader import render_to_string
 
-from nested_formset import nestedformset_factory
+from operator import itemgetter
+from itertools import groupby
 
 from .forms import *
 from .models import *
 
 
-class RestaurantesListView(LoginRequiredMixin, ListView):
+class RestaurantesListView(ListView):
     model = Restaurante
     context_object_name = 'restaurantes'
-    template_name = 'calculadora/restaurantes.html'
+    template_name = 'calculadora/restaurantes_admin.html'
 
     def get_queryset(self):
-        if('pk' in self.kwargs):
+        if 'pk' in self.kwargs:
             barrios =  Division.objects.filter(ciudad=self.kwargs['pk'])
-            return Restaurante.objects.filter(pk__in=barrios)
-        else:
+            return Restaurante.objects.filter(barrio__in=barrios)
+        elif self.request.user.is_authenticated:
             return Restaurante.objects.filter(administrador=self.request.user)
 
     def get_context_data(self, **kwargs):
         context = super(RestaurantesListView, self).get_context_data(**kwargs)
-        cartas = Carta.objects.filter(restaurante__in=context['restaurantes'])
-        productos = Producto.objects.filter(carta__in=cartas)
-        context['cant_restaurantes'] = context['restaurantes'].count()
-        context['cant_cartas'] = cartas.count()
-        context['cant_productos'] = productos.count()
+        if 'pk' in self.kwargs:
+            context['ciudad'] = Ciudad.objects.get(pk=self.kwargs['pk'])
+            regrouped = {}
+            """for restaurante in context['restaurantes']:
+                tipo_comida_key = '_'.join([str(tipo_comida.pk) for tipo_comida in restaurante.tipo_comida.all()])
+                if not tipo_comida_key in regrouped:
+                    regrouped[tipo_comida_key] = {'tipos_comida': restaurante.tipo_comida.all(), 'restaurantes': []}
+                regrouped[tipo_comida_key]['restaurantes'].append(restaurante)"""
+
+            key = itemgetter('tipo_comida')
+            iter = groupby(context['restaurantes'], key=key)
+
+            #for key, group in iter:
+                
+
+            context['tipos_comida'] = regrouped
+        elif self.request.user.is_authenticated:
+            cartas = Carta.objects.filter(restaurante__in=context['restaurantes'])
+            productos = Producto.objects.filter(carta__in=cartas)
+            context['cant_restaurantes'] = context['restaurantes'].count()
+            context['cant_cartas'] = cartas.count()
+            context['cant_productos'] = productos.count()
         return context
+
+    def get_template_names(self):
+        if 'pk' in self.kwargs:
+            template_name = 'calculadora/restaurantes.html'
+        else:
+            template_name = self.template_name
+        return template_name
 
 
 class RestauranteCreateView(LoginRequiredMixin, CreateView):

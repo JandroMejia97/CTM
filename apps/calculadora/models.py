@@ -406,6 +406,9 @@ class Restaurante(models.Model):
         self.administrador = request.user
         super(Restaurante, self).save(*args, **kwargs)
 
+    def get_tipo_comida(self):
+        return ", ".join([t.nombre for t in self.tipo_comida.all()])
+
     """def path_and_rename(self, instance, filename):
         ext = filename.split('.')[-1]
         filename = 'logo{}.{}'.format(instance.nombre, ext)
@@ -421,6 +424,7 @@ class Restaurante(models.Model):
     class Meta:
         verbose_name = 'Restaurante'
         verbose_name_plural = 'Restaurantes'
+        ordering = ['nombre']
 
 
 class TipoCarta(models.Model):

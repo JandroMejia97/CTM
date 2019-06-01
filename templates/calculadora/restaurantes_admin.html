@@ -1,0 +1,254 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    Mis Restaurantes
+{% endblock title %}
+{% block custom_css %}
+    <link href="{% static 'calculadora/css/style.css' %}" rel="stylesheet" type="text/css">
+{% endblock custom_css %}
+{% block messages %}
+    {% for error in errors %}
+      <div class="alert alert-danger alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <i class="fa fa-exclamation-triangle"></i>  {{ error }}
+      </div>
+    {% endfor %}
+{% endblock messages %}
+{% block content %}
+  {% load bootstrap %}
+  <!-- Cabecera de página -->
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-12">
+        <h1 class="page-header">
+          Mis Restaurantes
+        </h1>
+        <ol class="breadcrumb">
+          <li>
+            <i class="fa fa-home"></i>
+            <a href="{% url 'calculadora:home' %}">Inicio</a>
+          </li>
+          <li class="active">
+            <i class="fa fa-utensils"></i>
+            Restaurantes
+          </li>
+        </ol>
+      </div>
+    </div>
+    <!-- Alertas -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="alert bold alert-info">
+                <i class="fas fw fa-plus-circle"></i>
+                <a href="{% url 'calculadora:nuevo-restaurante' %}">
+                    <strong>¡Click Aquí para agregar un nuevo restaurante!</strong>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-4 col-md-6">
+            <div class="panel panel-green">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <i class="fa fa-utensils fa-5x"></i>
+                        </div>
+                        <div class="col-xs-9 text-right">
+                            <div class="huge">
+                                {{ cant_restaurantes }}
+                            </div>
+                            <div>
+                                Restaurantes
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <a href="">
+                    <div class="panel-footer">
+                        <span class="pull-left">
+                            Ver detalle
+                        </span>
+                        <span class="pull-right">
+                            <i class="fa fa-arrow-circle-right"></i>
+                        </span>
+                        <div class="clearfix"></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <i class="fa fa-cookie-bite fa-5x"></i>
+                        </div>
+                        <div class="col-xs-9 text-right">
+                            <div class="huge">
+                                {{ cant_cartas }}
+                            </div>
+                            <div>
+                                Cartas
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <a href="">
+                    <div class="panel-footer">
+                        <span class="pull-left">
+                            Ver detalle
+                        </span>
+                        <span class="pull-right">
+                            <i class="fa fa-arrow-circle-right"></i>
+                        </span>
+                        <div class="clearfix"></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6">
+            <div class="panel panel-red">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <i class="fa fa-hamburger fa-5x"></i>
+                        </div>
+                        <div class="col-xs-9 text-right">
+                            <div class="huge">
+                                {{ cant_productos }}
+                            </div>
+                            <div>
+                                Productos
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <a href="">
+                    <div class="panel-footer">
+                        <span class="pull-left">
+                            Ver detalle
+                        </span>
+                        <span class="pull-right">
+                            <i class="fa fa-arrow-circle-right"></i>
+                        </span>
+                        <div class="clearfix"></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <i class="fa fa-utensils fw"></i> 
+                    Restaurantes
+                </h3>
+            </div>
+            <div class="panel-body">
+                {% if restaurantes %}
+                    <div class="form-group row">
+                        <div class="col-xs-4 pull-right">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="glyphicon glyphicon-search"></i>
+                                </span>
+                                <input type="text" class="form-control" id="restaurante_filtro" placeholder="Buscar por..." onkeyup='filterTable("restaurante_filtro","restaurantes")'>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover table-striped">
+                            <thead>
+                                <tr>
+                                    <th  class="text-center">
+                                        Nombre
+                                    </th>
+                                    <th  class="text-center">
+                                        Localidad
+                                    </th>
+                                    <th  class="text-center">
+                                        Dirección
+                                    </th>
+                                    <th  class="text-center">
+                                        Teléfono
+                                    </th>
+                                    <th  class="text-center">
+                                        ¿Tiene Mapa?
+                                    </th>
+                                    <th  class="text-center">
+                                        Operaciones
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody id="restaurantes">
+                                {% for restaurante in restaurantes %}
+                                    <tr>
+                                        <td>
+                                            <a href="/restaurantes/detalle/{{restaurante.pk}}/">
+                                                {{ restaurante.nombre|default:"---" }}
+                                            </a>
+                                        </td>
+                                        <td>
+                                            {{ restaurante.barrio|default:"---" }}
+                                        </td>
+                                        <td>
+                                            {{ restaurante.direccion|default:"---" }}
+                                        </td>
+                                        <td>
+                                            {{ restaurante.telefono|default:"---" }}
+                                        </td>
+                                        <td>
+                                            {% if restaurante.mapa %}
+                                                Sí
+                                            {% else %}
+                                                No
+                                            {% endif %}
+                                        </td>
+                                        <td class="text-center">
+                                            <a class="fas fa-w fa-eye" name="ver" href="/restaurantes/detalle/{{ restaurante.pk }}/" onclick="" style="color:gray !important"></a>
+                                            <a class="fas fa-w fa-edit" name="editar" href="/restaurantes/editar/{{ restaurante.pk }}/" onclick="" style="color:gray !important"></a>
+                                            <a class="fas fa-w fa fa-trash" name="eliminar" href="#" onclick="" style="color:gray !important"></a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="alert alert-danger alert-dismissable">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        <i class="fa fa-exclamation-triangle"></i> 
+                        ¡Oopps! 
+                        <strong>
+                            {% if user.first_name and user.last_name %}
+                                {{ user.first_name }} {{ user.last_name }}
+                            {% elif user.first_name %}
+                                {{ user.first_name }}
+                            {% else %}
+                                {{ user.username }}
+                            {% endif %}
+                        </strong>
+                        parece que aún no has registrado ningún restaurante
+                    </div>
+                    <div class="alert alert-info alert-dismissable">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        <i class="fa fa-info-circle"></i> 
+                        <a href="{% url 'calculadora:nuevo-restaurante' %}">
+                            ¡Click aquí!
+                        </a> 
+                        Para agregar un nuevo restaurante
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}
+
+{% block sb_admin_custom_js %}
+    <script src="{% static 'calculadora/js/myJs.js' %}"></script>
+{% endblock sb_admin_custom_js %}

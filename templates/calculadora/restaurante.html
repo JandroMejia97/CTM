@@ -101,7 +101,7 @@
                                                 <div class="row">
                                                     {{ form.tipo_comida|bootstrap_horizontal }}
                                                 </div>
-                                                <div class="row">
+                                                <div class="row text-break">
                                                     {{ form.background|bootstrap_horizontal }}
                                                 </div>
                                             </div>
@@ -163,7 +163,7 @@
             $("#id_mapa").attr("onkeyup", "reloadIframe(\"id_mapa\")");
         });
         $('select').prop('required', "required");
-        $("#id_background").prop('class', "");
+        $("#id_background").removeAttr('class');
         {% if detail %}
         $('input').prop('disabled', 'disabled');
         $('select').prop('disabled', 'disabled');
