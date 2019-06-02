@@ -140,8 +140,8 @@
                                                                         </th>
                                                                         <td>
                                                                             <ul>
-                                                                                {% for tipo_comida in restaurante.tipo_comida.all %}
-                                                                                    <li>{{ tipo_comida }}</li>
+                                                                                {% for comida in restaurante.comidas.all %}
+                                                                                    <li>{{ comida }}</li>
                                                                                 {% endfor %}
                                                                             </ul>
                                                                         </td>
@@ -202,7 +202,7 @@
                                                         <div class="alert alert-info alert-dismissable">
                                                             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                                                             <i class="fa fa-info-circle"></i> 
-                                                            <a href="{% url 'calculadora:nuevo-restaurante' %}">
+                                                            <a href="{% url 'calculadora:nueva-carta' restaurante.pk %}">
                                                                 ¡Click aquí!
                                                             </a> 
                                                             Para agregar una nueva carta a este restaurante
@@ -270,16 +270,6 @@
                                                             </h3>
                                                         </div>
                                                         <div class="panel-body">
-                                                            <!-- <div class="row">
-                                                                <div class="col-lg-12">
-                                                                    <div class="alert bold alert-info">
-                                                                        <i class="fas fw fa-plus-circle"></i>
-                                                                        <a href="{% comment %}{% url 'calculadora:nuevo-carta' %}{% endcomment %}">
-                                                                            <strong>¡Click Aquí para agregar una carta a este restaurante!</strong>
-                                                                        </a>
-                                                                    </div>
-                                                                </div>
-                                                            </div> -->
                                                             {% if productos %}
                                                                 {% regroup productos by carta as carta_list %}
                                                                 {% for carta in carta_list %}

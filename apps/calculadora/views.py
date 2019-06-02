@@ -39,9 +39,10 @@ class RestaurantesListView(ListView):
             group = {}
             for comida in comidas:
                 restaurante_key = '_'.join([str(restaurante.pk) for restaurante in comida.restaurante_set.all()])
-                if not restaurante_key in group:
+                if not restaurante_key in group and restaurante_key != '':
                     group[restaurante_key]={'restaurantes': comida.restaurante_set.all(), 'comidas':[]}
-                group[restaurante_key]['comidas'].append(comida)    
+                if restaurante_key != '':
+                    group[restaurante_key]['comidas'].append(comida)    
             context['group'] = group
         elif self.request.user.is_authenticated:
             cartas = Carta.objects.filter(restaurante__in=context['restaurantes'])
@@ -175,17 +176,20 @@ class RestauranteDetailView(DetailView):
 
 class CartaCreateView(LoginRequiredMixin, CreateView):
     model = Carta
-    template_name = 'calculadora/carta_detail_template.html'
+    template_name = 'calculadora/carta_create_template.html'
     form_class = CartaForm
 
     def get_context_data(self, **kwargs):
-        context = super(CartaUpdateView, self).get_context_data(**kwargs)
+        context = super(CartaCreateView, self).get_context_data(**kwargs)
         if self.request.POST:
             context['form'] = CartaForm(self.request.POST, instance=self.object)
             context['producto_formset'] = ProductoFormset(self.request.POST, instance=self.object)
         else:
             context['form'] = CartaForm(instance=self.object)
             context['producto_formset'] = ProductoFormset(instance=self.object)
+
+        if 'pk' in self.kwargs:
+            context['restaurante'] = Restaurante.objects.get(pk=self.kwargs['pk'])
         return context
     
     def post(self, request, *args, **kwargs):
@@ -197,11 +201,12 @@ class CartaCreateView(LoginRequiredMixin, CreateView):
             return self.form_valid(form, producto_formset)
         else:
             return self.form_invalid(form, producto_formset)
-        return super().post(request, *args, **kwargs)
+        return super(CartaCreateView, self).post(request, *args, **kwargs)
 
     def form_valid(self, form, producto_formset):
-        carta,result = Carta.objects.create(
+        carta, result = Carta.objects.update_or_create(
             tipo=TipoCarta.objects.get(pk=int(form['tipo'].value())),
+            restaurante=Restaurante.objects.get(pk=self.kwargs['pk'])
         )
         carta.save()
         self.object = carta
@@ -253,7 +258,7 @@ class CartaUpdateView(LoginRequiredMixin, UpdateView):
         return super().post(request, *args, **kwargs)
 
     def form_valid(self, form, producto_formset):
-        carta,result = Carta.objects.update_or_create(
+        carta, result = Carta.objects.update_or_create(
             tipo=TipoCarta.objects.get(pk=int(form['tipo'].value()))
         )
         carta.save()

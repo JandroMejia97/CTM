@@ -491,6 +491,7 @@ class Carta(models.Model):
         verbose_name = 'Carta'
         verbose_name_plural = 'Cartas'
         ordering = ['restaurante', 'tipo']
+        unique_together = (('tipo', 'restaurante'),)
 
 
 class Producto(models.Model):

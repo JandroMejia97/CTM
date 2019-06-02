@@ -19,7 +19,7 @@
                 <div class="col-lg-12">
                     <h1 class="page-header">
                         {% if update %}
-                            Restaurante: <strong>{{ form.nombre.value }}</strong>
+                            <strong>{{ form.nombre.value }}</strong>
                         {% else %}
                             Nuevo estaurante
                         {% endif %}
@@ -99,7 +99,7 @@
                                                     {{ form.direccion|bootstrap_horizontal }}
                                                 </div>
                                                 <div class="row">
-                                                    {{ form.tipo_comida|bootstrap_horizontal }}
+                                                    {{ form.comidas|bootstrap_horizontal }}
                                                 </div>
                                                 <div class="row text-break">
                                                     {{ form.background|bootstrap_horizontal }}
