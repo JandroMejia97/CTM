@@ -15,4 +15,9 @@ urlpatterns = [
     path('restaurantes/agregar/', views.RestauranteCreateView.as_view(), name='nuevo-restaurante'),
     path('restaurantes/detalle/<int:pk>/', views.RestauranteDetailView.as_view(), name='detalle-restaurante'),
     path('restaurantes/editar/<int:pk>/', views.RestauranteUpdateView.as_view(), name='editar-restaurante'),
+    path('restaurantes/detalle/carta/agregar/', views.CartaUpdateView.as_view(), name='nueva-carta'),
+    path('restaurantes/detalle/carta/detalle/<int:pk>/', views.CartaUpdateView.as_view(), {'detalle': True}, name='detalle-carta'),
+    path('restaurantes/detalle/carta/editar/<int:pk>', views.CartaUpdateView.as_view(), {'detalle': False}, name='editar-carta'),
+    path('restaurantes/detalle/producto/detalle/<int:pk>/', views.ProductoUpdateView.as_view(), {'detalle': True}, name='detalle-producto'),
+    path('restaurantes/detalle/producto/editar/<int:pk>/', views.ProductoUpdateView.as_view(), {'detalle': False}, name='editar-producto'),
 ]

@@ -122,7 +122,7 @@
                                             <div class="panel-heading">
                                                 <h3 class="panel-title">
                                                     <i class="fa fa-hotdog fw">
-                                                        Cartas
+                                                        Productos
                                                     </i>
                                                     <a href="">
                                                         <i class="pull-right fa fa-edit fw"></i>
@@ -134,7 +134,7 @@
                                                     <div class="col-lg-12">
                                                         <div class="accordion" id="accordion-block">
                                                             {% if productos %}
-                                                            {% regroup productos by carta as carta_list %}
+                                                                {% regroup productos by carta as carta_list %}
                                                                 {% for carta in carta_list %}
                                                                     <div class="panel panel-default">
                                                                         <div class="panel-heading" id="header{{ forloop.counter }}">
@@ -222,19 +222,5 @@
 
 {% block sb_admin_custom_js %}
     <script src="{% static 'calculadora/js/myJs.js' %}"></script>
-    <script>
-        $(document).ready(function(){
-            // Add angle-up icon for collapse element which is open by default
-            $(".collapse.show").each(function(){
-                $(this).prev(".card-header").find(".fas").addClass("fa-angle-up").removeClass("fa-angle-down");
-            });
-            
-            // Toggle angle-down angle-up icon on show hide of collapse element
-            $(".collapse").on('show.bs.collapse', function(){
-                $(this).prev(".card-header").find(".fas").removeClass("fa-angle-down").addClass("fa-angle-up");
-            }).on('hide.bs.collapse', function(){
-                $(this).prev(".card-header").find(".fas").removeClass("fa-angle-up").addClass("fa-angle-down");
-            });
-        });
-    </script>
+    
 {% endblock sb_admin_custom_js %}

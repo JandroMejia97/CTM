@@ -91,7 +91,7 @@
                                                         <h3 class="panel-title">
                                                             <i class="fa fa-database fw"></i>
                                                             Datos
-                                                            <a href="" onclick="enabledInputs('datos_form', 'datos_buttons')">
+                                                            <a href="">
                                                                 <i class="pull-right fa fa-edit fw"></i>
                                                             </a>
                                                         </h3>
@@ -162,6 +162,9 @@
                                                         <h3 class="panel-title">
                                                             <i class="fa fa-map-marked-alt fw"></i>
                                                             Mapa
+                                                            <a href="">
+                                                                <i class="pull-right fa fa-edit fw"></i>
+                                                            </a>
                                                         </h3>
                                                     </div>
                                                     <div class="panel-body">
@@ -188,15 +191,95 @@
                                     <div class="tab-pane fade" id="list-cartas" role="tabpanel" aria-labelledby="list-cartas-list">
                                         <div class="row">
                                             <div class="col-lg-12">
+                                                <div class="panel panel-default">
+                                                    <div class="panel-heading">
+                                                        <h3 class="panel-title">
+                                                            <i class="fa fa-database fw"></i>
+                                                            Secciones del menú del Restaurante
+                                                        </h3>
+                                                    </div>
+                                                    <div class="panel-body">
+                                                        <div class="alert alert-info alert-dismissable">
+                                                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                                            <i class="fa fa-info-circle"></i> 
+                                                            <a href="{% url 'calculadora:nuevo-restaurante' %}">
+                                                                ¡Click aquí!
+                                                            </a> 
+                                                            Para agregar una nueva carta a este restaurante
+                                                        </div>
+                                                        {% if cartas %}
+                                                            <div class="table-responsive">
+                                                                <table class="table table-hover">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>Carta</th>
+                                                                            <th class="text-center">Productos</th>
+                                                                            <th class="text-center">Acciones</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        {% for carta in cartas %}
+                                                                            <tr>
+                                                                                <td>
+                                                                                    {{ carta.tipo }}
+                                                                                </td>
+                                                                                <td class="text-center">
+                                                                                    {{ carta.num_products }}
+                                                                                </td>
+                                                                                <td class="text-center">
+                                                                                    <a class="fas fa-w fa-eye " name="ver" href="{% url 'calculadora:detalle-carta' carta.pk %}" style="color:gray !important"></a>
+                                                                                    <a class="fas fa-w fa-edit" name="editar" href="{% url 'calculadora:editar-carta' carta.pk %}" style="color:gray !important"></a>
+                                                                                    <!-- <a class="fas fa-w fa fa-trash" name="eliminar" href="#" onclick="" style="color:gray !important"></a> -->
+                                                                                </td>
+                                                                            </tr>
+                                                                        {% endfor %}
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        {% else %}
+                                                            <div class="alert alert-danger alert-dismissable">
+                                                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                                                <i class="fa fa-exclamation-triangle"></i> 
+                                                                ¡Oopps! 
+                                                                <strong>
+                                                                    {% if user.first_name and user.last_name %}
+                                                                        {{ user.first_name }} {{ user.last_name }}
+                                                                    {% elif user.first_name %}
+                                                                        {{ user.first_name }}
+                                                                    {% else %}
+                                                                        {{ user.username }}
+                                                                    {% endif %}
+                                                                </strong>
+                                                                parece que aún no has registrado ninguna carta para el restaurante {{restaurante}}
+                                                            </div>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="list-productos" role="tabpanel" aria-labelledby="list-productos-list">
+                                        <div class="row">
+                                            <div class="col-lg-12">
                                                 <div class="accordion" id="accordion-block">
                                                     <div class="panel panel-default">
                                                         <div class="panel-heading">
                                                             <h3 class="panel-title">
                                                                 <i class="fa fa-puzzle-piece fw"></i>
-                                                                Secciones del Menú
+                                                                Menú del Restaurante
                                                             </h3>
                                                         </div>
                                                         <div class="panel-body">
+                                                            <!-- <div class="row">
+                                                                <div class="col-lg-12">
+                                                                    <div class="alert bold alert-info">
+                                                                        <i class="fas fw fa-plus-circle"></i>
+                                                                        <a href="{% comment %}{% url 'calculadora:nuevo-carta' %}{% endcomment %}">
+                                                                            <strong>¡Click Aquí para agregar una carta a este restaurante!</strong>
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
+                                                            </div> -->
                                                             {% if productos %}
                                                                 {% regroup productos by carta as carta_list %}
                                                                 {% for carta in carta_list %}
@@ -211,6 +294,14 @@
                                                                                         <strong>
                                                                                             {{ carta.grouper }}
                                                                                         </strong>
+                                                                                        {%comment%}
+                                                                                        <a href="{% url 'calculadora:detalle-carta' carta.pk %}">
+                                                                                            <i class="pull-right fa fa-eye fw"></i>
+                                                                                        </a>
+                                                                                        <a href="{% url 'calculadora:editar-producto' carta.pk %}">
+                                                                                            <i class="pull-right fa fa-edit fw"></i>
+                                                                                        </a>
+                                                                                        {%endcomment%}
                                                                                     </div>
                                                                                 </div>
                                                                             </h2>
@@ -219,7 +310,7 @@
                                                                             <div class="panel-body">
                                                                                 {% for producto in carta.list %}
                                                                                     <div class="d-flex align-content-center align-items-center">
-                                                                                        <div class="col-xs-4 col-sm-5 col-md-5 col-lg-5">
+                                                                                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                                                                                             <div class="row">
                                                                                                 <div class="col-lg-12">
                                                                                                     {{ producto.nombre }}
@@ -228,31 +319,36 @@
                                                                                             <div class="row">
                                                                                                 <div class="col-lg-12">
                                                                                                     <small>
-                                                                                                        <p class="text-muted font-italic">
-                                                                                                            {{ producto.descripcion|truncatewords:"5"|default:"-----" }}
+                                                                                                        <p class="text-muted">
+                                                                                                            {{ producto.descripcion|default_if_none:"-----"|truncatewords:"10" }}
                                                                                                         </p>
                                                                                                     </small>
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
-                                                                                        <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+                                                                                        <!-- <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
                                                                                             <div class="d-flex justify-content-between">    
                                                                                                 <span class="col-1 fa-stack">
                                                                                                     <i class="far fa-circle fa-stack-2x"></i>
                                                                                                     <i class="fas fa-minus fa-stack-1x"></i>
                                                                                                 </span>            
-                                                                                                <input type="number" class="col-2 form-control" id="cant{{ forloop.counter }}" value="0" min="0" step="1">
+                                                                                                <input type="number" class="form-control" id="cant{{ forloop.counter }}" value="0" min="0">
                                                                                                 <span class="col-1 fa-stack">
                                                                                                     <i class="far fa-circle fa-stack-2x"></i>
                                                                                                     <i class="fas fa-plus fa-stack-1x"></i>
                                                                                                 </span>
                                                                                             </div>
+                                                                                        </div> -->
+                                                                                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                                                                            {{ producto.precio_fijo }} €
                                                                                         </div>
-                                                                                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                                                                                            $ {{ producto.precio_fijo }}
-                                                                                        </div>
-                                                                                        <div class="col-xs-2 col-sm-1 col-md-1 col-lg-1">
-                                                                                            <i class="pull-right fa fa-edit fw"></i>
+                                                                                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                                                                            <a href="{% url 'calculadora:detalle-producto' producto.pk %}">
+                                                                                                <i class="fa fa-eye fw"></i>
+                                                                                            </a>
+                                                                                            <a href="{% url 'calculadora:editar-producto' producto.pk %}">
+                                                                                                <i class="fa fa-edit fw"></i>
+                                                                                            </a>
                                                                                         </div>
                                                                                     </div>
                                                                                 {% endfor %}
@@ -272,9 +368,6 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="tab-pane fade" id="list-productos" role="tabpanel" aria-labelledby="list-productos-list">
-                                        
                                     </div>
                                 </div>
                             </div>

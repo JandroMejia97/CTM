@@ -137,14 +137,14 @@ class RestauranteAdmin(admin.ModelAdmin):
         'telefono',
         'ciudad',
         'barrio',
-        'get_tipo_comida'
+        'get_comidas'
     ]
     fields = [ 
         'nombre',
         'background',
         'administrador',
         'telefono',
-        'tipo_comida',
+        'comidas',
         'ciudad',
         'barrio',
         'latitud',

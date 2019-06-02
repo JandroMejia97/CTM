@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    {{ form.nombre.value }}
+{% endblock title %}
+{% block custom_css %}
+    <link href="{% static 'calculadora/css/style.css' %}" rel="stylesheet" type="text/css">  
+{% endblock custom_css %}
+{% block content %}
+    {% load bootstrap %}
+    <!-- Cabecera de página -->
+    <div class="container-fluid">
+        {% block title_page %}
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">
+                        Producto: <strong>{{ form.nombre.value }}</strong>
+                        <a href="javascript:history.back()" class="pull-right btn btn-danger" >
+                            Regresar
+                        </a>
+                    </h1>
+                    <ol class="breadcrumb">
+                        <li>
+                            <i class="fa fa-home"></i>
+                            <a href="{% url 'calculadora:home' %}">Inicio</a>
+                        </li>
+                        <li>
+                            <i class="fa fa-utensils"></i>
+                            <a href="{% url 'calculadora:restaurantes' %}">Restaurantes</a>
+                        </li>
+                        <li>
+                            <i class="fa fa-utensils"></i>
+                            <a href="{% url 'calculadora:detalle-restaurante'  producto.carta.restaurante.pk %}">{{ producto.carta.restaurante }}</a>
+                        </li>
+                        <li>
+                            <i class="fa fa-concierge-bell"></i>
+                            <a href="{% url 'calculadora:detalle-restaurante'  producto.carta.restaurante.pk %}">{{ producto.carta.tipo }}</a>
+                        </li>
+                        <li class="active">
+                            {% if detalle %}
+                                <i class="fa fa-eye"></i>
+                                Visualizar Producto
+                            {% else %}
+                                <i class="fa fa-edit"></i>
+                                Editar Producto
+                            {% endif %}
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        {% endblock title_page %}
+        {% block messages %}
+            <div class="row">
+                <div class="col-lg-12 messages">
+                    {% include 'messages.html' %}
+                </div>
+            </div>
+        {% endblock messages %}
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            <i class="fa fa-utensils fw"></i>
+                            Producto
+                            {% if detalle %}
+                                <i class="pull-right fa fa-edit fw fa-1-3x" onclick="enabledInputs('datos_form', 'datos_buttons')" title="Click aquí para editar"></i>
+                            {% endif %}
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <form method="POST" id="datos_form">
+                                    {% csrf_token %}
+                                    {{ form|bootstrap_horizontal }}
+                                    <div id="datos_buttons" class="text-center">
+                                        <button class="btn btn-primary" type="submit">
+                                            Guardar
+                                        </button>
+                                        <a href="javascript:history.back()" class="btn btn-danger" >
+                                            Cancelar
+                                        </a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block sb_admin_custom_js %}
+    <script src="{% static 'calculadora/js/myJs.js' %}"></script>
+    <script>
+        $(document).ready(function(){
+            {% if detalle %}
+                $("#datos_form input").prop('disabled', !$("#datos_form input").prop('disabled'));
+                $("#datos_form select").prop('disabled', !$("#datos_form select").prop('disabled'));
+                $("#datos_form textarea").prop('disabled', !$("#datos_form textarea").prop('disabled'));
+                $("#datos_buttons").prop('hidden', !$("#datos_buttons").prop('hidden'));
+            {% endif %}
+        });
+    </script>
+{% endblock sb_admin_custom_js %}

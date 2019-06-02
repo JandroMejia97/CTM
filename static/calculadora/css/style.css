@@ -18,8 +18,12 @@ body{
     border-radius: 0;
     background: #f1f1f1;
 }
-.fa-stack { font-size: 0.75em !important; }
-  i { vertical-align: middle !important; }
+.fa-stack { 
+  font-size: 0.75em !important; 
+}
+i {
+    vertical-align: middle !important; 
+}
 .fondo-izquierda{
   position: absolute;
   top: 65%;

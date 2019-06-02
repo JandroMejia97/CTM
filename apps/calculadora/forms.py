@@ -15,7 +15,7 @@ class RestauranteForm(forms.ModelForm):
             'telefono',
             'direccion',
             'mapa',
-            'tipo_comida',
+            'comidas',
             'ciudad',
             'barrio',
             'background'

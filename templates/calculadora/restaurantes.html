@@ -27,9 +27,7 @@
         <div class="row">
             <div class="accordion" id="accordion-block">
                 {% if restaurantes %}
-                {{tipos_comida}}
-                    {% regroup restaurantes by tipo_comida as tipo_comida_list %}
-                    {% for tipo_comida in tipo_comida_list %}
+                    {% for key, item in group.items %}
                         <div class="panel panel-default carta">
                             <div class="panel-heading collapsed" id="header{{ forloop.counter }}" type="button" data-toggle="collapse" data-target="#collapse{{ forloop.counter }}">
                                 <h2 class="mb-0 panel-title">
@@ -39,7 +37,9 @@
                                         </div>
                                         <div class="col-xs-10 col-sm-11 col-md-11 col-lg-11 text-break">
                                             <strong>
-                                                {{ tipo_comida }}
+                                                {% for comida in item.comidas %}
+                                                    {{comida}}
+                                                {% endfor %}
                                             </strong>
                                         </div>
                                     </div>
@@ -47,7 +47,7 @@
                             </div>
                             <div class="collapse" id="collapse{{ forloop.counter }}" aria-labelledby="header{{ forloop.counter }}" data-parent="#accordion-block">
                                 <div class="">
-                                    {% for restaurante in tipo_comida.list %}
+                                    {% for restaurante in item.restaurantes %}
                                         <div class="image image-fluid" style="background-image: url('{{ restaurante.background.url }}')" onclick="redirect('')">
                                             <div class="d-block over fondo-izquierda">
                                                 <div class="text-left over-text">

@@ -105,6 +105,8 @@ function getLocalidades(id, seleccion){
   }
 function enabledInputs(formId, buttonsId){
     $("#"+formId+" input").prop('disabled', !$("#"+formId+" input").prop('disabled'));
+    $("#"+formId+" textarea").prop('disabled', !$("#"+formId+" textarea").prop('disabled'));
+    $("#"+formId+" select").prop('disabled', !$("#"+formId+" select").prop('disabled'));
     $("#"+buttonsId).prop('hidden', !$("#"+buttonsId).prop('hidden'));
 }
 function reloadIframe(inputId){

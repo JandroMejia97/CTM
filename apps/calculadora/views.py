@@ -1,5 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
+from django.db.models import Sum, Count
 from django.forms import formset_factory, inlineformset_factory
 from django.shortcuts import render, render_to_response, reverse, HttpResponse, HttpResponseRedirect
 from django.views.defaults import page_not_found
@@ -34,20 +35,14 @@ class RestaurantesListView(ListView):
         context = super(RestaurantesListView, self).get_context_data(**kwargs)
         if 'pk' in self.kwargs:
             context['ciudad'] = Ciudad.objects.get(pk=self.kwargs['pk'])
-            regrouped = {}
-            """for restaurante in context['restaurantes']:
-                tipo_comida_key = '_'.join([str(tipo_comida.pk) for tipo_comida in restaurante.tipo_comida.all()])
-                if not tipo_comida_key in regrouped:
-                    regrouped[tipo_comida_key] = {'tipos_comida': restaurante.tipo_comida.all(), 'restaurantes': []}
-                regrouped[tipo_comida_key]['restaurantes'].append(restaurante)"""
-
-            key = itemgetter('tipo_comida')
-            iter = groupby(context['restaurantes'], key=key)
-
-            #for key, group in iter:
-                
-
-            context['tipos_comida'] = regrouped
+            comidas = TipoComida.objects.all()
+            group = {}
+            for comida in comidas:
+                restaurante_key = '_'.join([str(restaurante.pk) for restaurante in comida.restaurante_set.all()])
+                if not restaurante_key in group:
+                    group[restaurante_key]={'restaurantes': comida.restaurante_set.all(), 'comidas':[]}
+                group[restaurante_key]['comidas'].append(comida)    
+            context['group'] = group
         elif self.request.user.is_authenticated:
             cartas = Carta.objects.filter(restaurante__in=context['restaurantes'])
             productos = Producto.objects.filter(carta__in=cartas)
@@ -94,7 +89,7 @@ class RestauranteCreateView(LoginRequiredMixin, CreateView):
             tipos_comida = TipoComida.objects.filter(pk__in=restaurante_form['tipo_comida'].value())
             restaurante.save()
             for tipo_comida in tipos_comida:
-                restaurante.tipo_comida.add(tipo_comida)
+                restaurante.comidas.add(tipo_comida)
             for carta_form in carta_formset:
                 if carta_form.is_valid():
                     tipo = int(carta_form['tipo'].value())
@@ -173,9 +168,145 @@ class RestauranteDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(RestauranteDetailView, self).get_context_data(**kwargs)
-        context['cartas'] = Carta.objects.filter(restaurante=context['restaurante'])
+        context['cartas'] = Carta.objects.filter(restaurante=context['restaurante']).annotate(num_products=Count('producto'))
         context['productos'] = Producto.objects.filter(carta__in=context['cartas'])
         return context
+
+
+class CartaCreateView(LoginRequiredMixin, CreateView):
+    model = Carta
+    template_name = 'calculadora/carta_detail_template.html'
+    form_class = CartaForm
+
+    def get_context_data(self, **kwargs):
+        context = super(CartaUpdateView, self).get_context_data(**kwargs)
+        if self.request.POST:
+            context['form'] = CartaForm(self.request.POST, instance=self.object)
+            context['producto_formset'] = ProductoFormset(self.request.POST, instance=self.object)
+        else:
+            context['form'] = CartaForm(instance=self.object)
+            context['producto_formset'] = ProductoFormset(instance=self.object)
+        return context
+    
+    def post(self, request, *args, **kwargs):
+        self.object = None
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        producto_formset = ProductoFormset(self.request.POST)
+        if form.is_valid() and producto_formset.is_valid():
+            return self.form_valid(form, producto_formset)
+        else:
+            return self.form_invalid(form, producto_formset)
+        return super().post(request, *args, **kwargs)
+
+    def form_valid(self, form, producto_formset):
+        carta,result = Carta.objects.create(
+            tipo=TipoCarta.objects.get(pk=int(form['tipo'].value())),
+        )
+        carta.save()
+        self.object = carta
+        producto_formset.instance = carta
+        producto_formset.save()
+        return HttpResponseRedirect(self.get_success_url())
+
+    def form_invalid(self, form, producto_formset):
+        return self.render_to_response(
+            self.get_context_data(
+                form=form,
+                producto_formset=producto_formset
+            )
+        )
+
+    def get_success_url(self):
+        return reverse('calculadora:detalle-restaurante', kwargs={'pk':self.object.restaurante.pk})
+
+
+
+class CartaUpdateView(LoginRequiredMixin, UpdateView):
+    model = Carta
+    template_name = 'calculadora/carta_detail_template.html'
+    form_class = CartaForm
+
+    def get_context_data(self, **kwargs):
+        context = super(CartaUpdateView, self).get_context_data(**kwargs)
+        if self.request.POST:
+            if 'detalle' in self.kwargs:
+                context['detalle'] = self.kwargs['detalle']
+                context['form'] = CartaForm(self.request.POST, instance=self.object)
+                context['producto_formset'] = ProductoFormset(self.request.POST, instance=self.object)
+        else:
+            if 'detalle' in self.kwargs:
+                context['detalle'] = self.kwargs['detalle']
+                context['form'] = CartaForm(instance=self.object)
+                context['producto_formset'] = ProductoFormset(instance=self.object)
+        return context
+    
+    def post(self, request, *args, **kwargs):
+        self.object = None
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        producto_formset = ProductoFormset(self.request.POST)
+        if form.is_valid() and producto_formset.is_valid():
+            return self.form_valid(form, producto_formset)
+        else:
+            return self.form_invalid(form, producto_formset)
+        return super().post(request, *args, **kwargs)
+
+    def form_valid(self, form, producto_formset):
+        carta,result = Carta.objects.update_or_create(
+            tipo=TipoCarta.objects.get(pk=int(form['tipo'].value()))
+        )
+        carta.save()
+        self.object = carta
+        producto_formset.instance = carta
+        producto_formset.save()
+        return HttpResponseRedirect(self.get_success_url())
+
+    def form_invalid(self, form, producto_formset):
+        return self.render_to_response(
+            self.get_context_data(
+                form=form,
+                producto_formset=producto_formset
+            )
+        )
+
+    def get_success_url(self):
+        return reverse('calculadora:detalle-restaurante', kwargs={'pk':self.object.restaurante.pk})
+
+
+class ProductoCreateView(LoginRequiredMixin, CreateView):
+    model = Producto
+    template_name = 'calculadora/producto_detail_template.html'
+    fields = [
+        'nombre',
+        'descripcion',
+        'precio_fijo'
+    ]
+
+    def get_success_url(self):
+        return reverse('calculadora:detalle-restaurante', kwargs={'pk':self.object.carta.restaurante.pk})
+
+
+
+class ProductoUpdateView(LoginRequiredMixin, UpdateView):
+    model = Producto
+    template_name = 'calculadora/producto_detail_template.html'
+    fields = [
+        'nombre',
+        'descripcion',
+        'precio_fijo'
+    ]
+
+    def get_context_data(self, **kwargs):
+        context = super(ProductoUpdateView, self).get_context_data(**kwargs)
+        if 'detalle' in self.kwargs:
+            context['detalle'] = self.kwargs['detalle']
+        context['producto'] = Producto.objects.get(pk=self.kwargs['pk'])
+        return context
+
+    def get_success_url(self):
+        return reverse('calculadora:detalle-restaurante', kwargs={'pk':self.object.carta.restaurante.pk})
+        
 
 def home(request):
     ciudades = Ciudad.objects.all()

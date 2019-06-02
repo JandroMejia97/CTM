@@ -391,10 +391,9 @@ class Restaurante(models.Model):
         help_text='Usuario que añadió este restaurante',
         verbose_name='¿Quién lo registró?'
     )
-    tipo_comida = models.ManyToManyField(
+    comidas = models.ManyToManyField(
         TipoComida,
         help_text='Seleccione el/los tipos de comida servidos en este restaurante',
-        related_name='restaurantes',
         verbose_name='Tipo de comida',
         blank=False
     )
@@ -406,8 +405,8 @@ class Restaurante(models.Model):
         self.administrador = request.user
         super(Restaurante, self).save(*args, **kwargs)
 
-    def get_tipo_comida(self):
-        return ", ".join([t.nombre for t in self.tipo_comida.all()])
+    def get_comidas(self):
+        return ", ".join([t.nombre for t in self.comidas.all()])
 
     """def path_and_rename(self, instance, filename):
         ext = filename.split('.')[-1]
@@ -461,6 +460,7 @@ class TipoCarta(models.Model):
     class Meta:
         verbose_name = 'Tipo de Carta'
         verbose_name_plural = 'Tipos de Carta'
+        ordering = ['nombre']
 
 
 class Carta(models.Model):
@@ -490,6 +490,7 @@ class Carta(models.Model):
     class Meta:
         verbose_name = 'Carta'
         verbose_name_plural = 'Cartas'
+        ordering = ['restaurante', 'tipo']
 
 
 class Producto(models.Model):
