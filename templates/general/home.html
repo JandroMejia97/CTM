@@ -12,7 +12,7 @@
     {% for ciudad in ciudades %}
         <div>
             {% if ciudad.foto %}
-                <div class="image image-fluid" style="background-image: url('{{ ciudad.foto.url }}')" onclick="redirect('ciudades/{{ciudad.pk}}/restaurantes/')">
+                <div class="image image-fluid" style="background-image: url('{{ ciudad.foto.url }}')" onclick="redirect('{% url 'calculadora:ciudades-restaurantes' ciudad.pk %}')">
                     <div class="d-block over over-border fondo-izquierda" >
                         <div class="text-left over-text">
                             <h1>{{ ciudad|upper }}</h1>
@@ -95,9 +95,5 @@
     </div>
 {% endblock content %}
 {% block sb_admin_custom_js %}
-    <script>
-        function redirect(url){
-            window.location = url;
-        }
-    </script>
+    <script src="{% static 'calculadora/js/myJs.js' %}"></script>
 {% endblock sb_admin_custom_js %}

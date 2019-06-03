@@ -24,6 +24,10 @@ body{
 i {
     vertical-align: middle !important; 
 }
+.span-fa {
+  font-size: 1em !important;
+  color: #2a5a82 !important;
+}
 .fondo-izquierda{
   position: absolute;
   top: 65%;

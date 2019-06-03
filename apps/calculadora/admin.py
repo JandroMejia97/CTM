@@ -256,10 +256,12 @@ admin.site.register(Detalle, DetalleAdmin)
 class RedSocialAdmin(admin.ModelAdmin):
     list_display = [
         'nombre',
-        'url'
+        'url',
+        'clase_fa'
     ]
     fields = [
         'nombre',
+        'clase_fa',
         'url'
     ]
 

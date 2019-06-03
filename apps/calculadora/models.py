@@ -726,6 +726,13 @@ class RedSocial(models.Model):
         help_text='Dirección URL de la red social, en el formato: "https://www.redsocial.com"',
         verbose_name='Dirección URL'
     )
+    clase_fa = models.CharField(
+        max_length=15,
+        blank=False,
+        null=True,
+        help_text='Clase CSS de la red social para font-awesome. Ejemplo: facebook',
+        verbose_name='Clase CSS'
+    )
 
     def __str__(self):
         return self.nombre

@@ -243,3 +243,34 @@ function deleteForm(prefijoFila, classFormSet){
         }
     }
 }
+function redirect(url){
+    window.location = url;
+}
+
+function plusCounter(idCounter){
+    var counter = $('#'+idCounter);
+    var valueCounter = parseInt(counter.text());
+    valueCounter++;
+    counter.text(valueCounter);
+    getTotal();
+}
+function minusCounter(idCounter){
+    var counter = $('#'+idCounter);
+    var valueCounter = parseInt(counter.text());
+    if(valueCounter>0)
+        valueCounter--;
+    counter.text(valueCounter);
+    getTotal();
+}
+function getTotal(){
+    var cantidades = $('.cantidad');
+    var precios = $('.precio');
+    var subTotal = 0;
+    var total=0;
+    for(var i = 0; i < cantidades.length; i++){
+        precio = $(precios.get(i)).text().replace(',', '.');
+        total += parseFloat(precio)*parseInt($(cantidades.get(i)).text());
+    }
+    total = parseFloat(Math.round(total * 100) / 100).toFixed(2);
+    $('#total').text(String(total).replace('.', ','));
+}

@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    {{ restaurante.ciudad }} - {{ restaurante }}
+{% endblock title %}
+{% block custom_css %}
+    <link href="{% static 'calculadora/css/style.css' %}" rel="stylesheet" type="text/css">
+{% endblock custom_css %}
+{% block content %}
+    <div class="image image-fluid" style="background-image: url('{{ restaurante.background.url }}')">
+        <div class="d-block over fondo-izquierda">
+            <div class="text-left over-text">
+                <h1>{{ restaurante|upper }}</h1>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="accordion" id="accordion-block">
+                {% if productos %}
+                    {% regroup productos by carta as carta_list %}
+                    {% for carta in carta_list %}
+                        <div class="panel panel-default carta">
+                            <div class="panel-heading collapsed shadow-sm" id="header{{ forloop.counter }}"  type="button" data-toggle="collapse" data-target="#collapse{{ forloop.counter }}">
+                                <h2 class="mb-0 panel-title">
+                                    <div class="row">
+                                        <div class="col-xs-2 col-sm-1 col-md-1 col-lg-1">
+                                            <span class="pull-left glyphicon glyphicon-menu-down" aria-hidden="true"></span>        
+                                        </div>
+                                        <div class="col-xs-10 col-sm-11 col-md-11 col-lg-11 text-break">
+                                            <strong class="text-primary">
+                                                {{ carta.grouper }}
+                                            </strong>
+                                            <strong class="pull-right">
+                                                <!-- Sub-Total:  -->
+                                                <span id="subTotal{{ forloop.counter }}" class="subtotal">
+                                                    <!-- 0,00€ -->
+                                                </span>
+                                            </strong>
+                                        </div>
+                                    </div>
+                                </h2>
+                            </div>
+                            <div id="collapse{{ forloop.counter }}" class="collapse" aria-labelledby="header{{ forloop.counter }}" data-parent="#accordion-block">
+                                <div class="">
+                                    <div class="row">
+                                        <div class="pr-0 col-xs-3 col-xs-offset-6 col-sm-3 col-sm-offset-3 col-md-3 col-md-offset-2 col-lg-3 col-lg-offset-3">
+                                            <p class="text-center text-muted font-weight-bold">
+                                                <small>
+                                                    Unidades
+                                                </small>
+                                            </p>
+                                        </div>
+                                        <div class="px-0 col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                            <p class="text-muted font-weight-bold">
+                                                <small>
+                                                    Precio
+                                                </small>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    {% for producto in carta.list %}
+                                        <div class="d-flex align-items-center">
+                                            <div class="pl-3 pr-2 py-0 col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                                <div class="row">
+                                                    <div class="col-lg-12 text-primary">
+                                                        {{ producto.nombre }}
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <small>
+                                                            <p class="text-muted">
+                                                                {{ producto.descripcion|default_if_none:"-----"|default:"-----"|truncatewords:"5" }}
+                                                            </p>
+                                                        </small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="px-2 py-0 col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <span class="col-1 fa-stack span-fa" role="button" onclick="minusCounter('cant{{ forloop.parentloop.counter }}{{ forloop.counter }}')">
+                                                        <i class="far fa-circle fw fa-stack-2x"></i>
+                                                        <i class="fas fa-minus fw fa-stack-1x"></i>
+                                                    </span>            
+                                                    <p id="cant{{ forloop.parentloop.counter }}{{ forloop.counter }}" class="cantidad font-weight-bold h4">
+                                                        0
+                                                    </p>
+                                                    <span class="col-1 fa-stack span-fa" role="button" onclick="plusCounter('cant{{ forloop.parentloop.counter }}{{ forloop.counter }}')">
+                                                        <i class="far fa-circle fw fa-stack-2x"></i>
+                                                        <i class="fas fa-plus fw fa-stack-1x"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="px-2 py-0 col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                                <div class="d-flex justify-content-between align-items-center text-break">
+                                                    <p class="font-weight-bold h4">
+                                                        <span id="precio{{ forloop.parentloop.counter }}{{ forloop.counter }}" class="precio">{{ producto.precio_fijo }}</span>€
+                                                    </p>
+                                                    <a href="{% url 'calculadora:editar-producto' producto.pk %}" class="text-decoration-none pull-right">
+                                                        <i class="fa fa-pencil-alt fw fa-1-4x"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-6 col-xs-offset-6 col-sm-4 col-sm-offset-8 col-md-4 col-md-offset-8 col-lg-4 col-lg-offset-8">
+                <p class="pull-right font-weight-bold h4 border-bottom border-secondary shadow-sm">
+                    Total: 
+                    <span id="total">
+                        0,00
+                    </span> 
+                    €
+                </p>
+            </div>
+        </div>
+        {% if perfiles %}
+            <div class="d-flex justify-content-round justify-content-center">
+                {% for perfil in perfiles %}
+                    <a href="{{ perfil.url_perfil }}" class="text-decoration-none">
+                        <i class="fab fa-fw fa-{{ perfil.red_social.clase_fa }} fa-3x"></i>
+                    </a>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+{% endblock content %}
+{% block sb_admin_custom_js %}
+    <script src="{% static 'calculadora/js/myJs.js' %}"></script>
+    <script>
+        $(document).ready(function(){
+            // Add angle-up icon for collapse element which is open by default
+            $(".collapse.show").each(function(){
+                $(this).prev(".panel-heading").find(".glyphicon").addClass("glyphicon-menu-up").removeClass("glyphicon-menu-down");
+            });
+            
+            // Toggle angle-down angle-up icon on show hide of collapse element
+            $(".collapse").on('show.bs.collapse', function(){
+                $(this).prev(".panel-heading").find(".glyphicon").removeClass("glyphicon-menu-down").addClass("glyphicon-menu-up");
+            }).on('hide.bs.collapse', function(){
+                $(this).prev(".panel-heading").find(".glyphicon").removeClass("glyphicon-menu-up").addClass("glyphicon-menu-down");
+            });
+        });
+    </script>
+{% endblock sb_admin_custom_js %}

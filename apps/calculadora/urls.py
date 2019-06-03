@@ -36,6 +36,11 @@ urlpatterns = [
         name='ciudades-restaurantes'
     ),
     path(
+        'ciudades/<int:ciudad_pk>/restaurantes/<int:restaurante_pk>/carta/',
+        views.ProductoListView.as_view(),
+        name='ciudades-restaurante-carta'
+    ),
+    path(
         'restaurantes/',
         views.RestaurantesListView.as_view(),
         name='restaurantes'

@@ -226,7 +226,6 @@ class CartaCreateView(LoginRequiredMixin, CreateView):
         return reverse('calculadora:detalle-restaurante', kwargs={'pk':self.object.restaurante.pk})
 
 
-
 class CartaUpdateView(LoginRequiredMixin, UpdateView):
     model = Carta
     template_name = 'calculadora/carta_detail_template.html'
@@ -277,6 +276,22 @@ class CartaUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_success_url(self):
         return reverse('calculadora:detalle-restaurante', kwargs={'pk':self.object.restaurante.pk})
+
+
+class ProductoListView(ListView):
+    model = Producto
+    context_object_name = 'productos'
+    template_name = 'calculadora/restaurante_producto_list_template.html'
+
+    def get_queryset(self):
+        cartas = Carta.objects.filter(restaurante=self.kwargs['restaurante_pk'])
+        return Producto.objects.filter(carta__in=cartas)
+
+    def get_context_data(self, **kwargs):
+        context = super(ProductoListView, self).get_context_data(**kwargs)
+        context['restaurante'] = Restaurante.objects.get(pk=self.kwargs['restaurante_pk'])
+        context['perfiles'] = Perfil.objects.filter(restaurante=context['restaurante'])
+        return context
 
 
 class ProductoCreateView(LoginRequiredMixin, CreateView):

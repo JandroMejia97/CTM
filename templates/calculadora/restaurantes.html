@@ -48,7 +48,7 @@
                             <div class="collapse" id="collapse{{ forloop.counter }}" aria-labelledby="header{{ forloop.counter }}" data-parent="#accordion-block">
                                 <div class="">
                                     {% for restaurante in item.restaurantes %}
-                                        <div class="image image-fluid" style="background-image: url('{{ restaurante.background.url }}')" onclick="redirect('')">
+                                        <div class="image image-fluid" style="background-image: url('{{ restaurante.background.url }}')" onclick="redirect('{% url 'calculadora:ciudades-restaurante-carta' restaurante.ciudad.pk restaurante.pk %}')">
                                             <div class="d-block over fondo-izquierda">
                                                 <div class="text-left over-text">
                                                     <h1>{{ restaurante|upper }}</h1>
@@ -65,3 +65,21 @@
         </div>
     </div>
 {% endblock content %}
+{% block sb_admin_custom_js %}
+    <script src="{% static 'calculadora/js/myJs.js' %}"></script>
+    <script>
+        $(document).ready(function(){
+            // Add angle-up icon for collapse element which is open by default
+            $(".collapse.show").each(function(){
+                $(this).prev(".panel-heading").find(".glyphicon").addClass("glyphicon-menu-up").removeClass("glyphicon-menu-down");
+            });
+            
+            // Toggle angle-down angle-up icon on show hide of collapse element
+            $(".collapse").on('show.bs.collapse', function(){
+                $(this).prev(".panel-heading").find(".glyphicon").removeClass("glyphicon-menu-down").addClass("glyphicon-menu-up");
+            }).on('hide.bs.collapse', function(){
+                $(this).prev(".panel-heading").find(".glyphicon").removeClass("glyphicon-menu-up").addClass("glyphicon-menu-down");
+            });
+        });
+    </script>
+{% endblock sb_admin_custom_js %}
