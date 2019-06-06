@@ -1,3 +1,20 @@
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+var csrftoken = getCookie('csrftoken');
+
 function filterTable(idInput, idTable){
     filter = document.getElementById(idInput).value.toUpperCase();
     $("#"+idTable+" tr").filter(function(){
@@ -13,7 +30,7 @@ function filterSelect(idInput, idSelect){
 };
 
 function addMessage(message){
-    if(message.user.first_name && message.user.last_name){
+    /*if(message.user.first_name && message.user.last_name){
         var user=message.user.first_name+' '+message.user.last_name;
     }
     else{
@@ -43,7 +60,7 @@ function addMessage(message){
                 +"</div>"
             +"</a>"
         +"</li>"
-    );
+    );*/
     if(message.alert=='exclamation'){
         $(".messages").append(
             "<div class='alert alert-danger alert-dismissable'>"
@@ -271,6 +288,92 @@ function getTotal(){
         precio = $(precios.get(i)).text().replace(',', '.');
         total += parseFloat(precio)*parseInt($(cantidades.get(i)).text());
     }
-    total = parseFloat(Math.round(total * 100) / 100).toFixed(2);
-    $('#total').text(String(total).replace('.', ','));
+    total = redondear(total, 2);
+    $('#total').text(reemplazar(String(total), '.', ','));
+}
+function redondear(numero, decimales){
+    return parseFloat(Math.round(numero * 100) / 100).toFixed(decimales);
+}
+function reemplazar(cadena, valorBuscado, valorNuevo){
+    return cadena.replace(valorBuscado, valorNuevo)
+}
+function getUpdatePrecioForm(url){
+    $.ajax({
+        url: url,
+        type: 'GET',
+        success: function(data){
+            console.log("SUCCESS");
+            $("#updatePrecio").html(data)
+            .modal('show');
+        },
+    }).fail(function() {
+        console.log("error");
+    }).always(function(data) {
+        console.log("complete");
+    });
+}
+function sendPrecio(url){
+    precio = parseFloat(reemplazar($('#nuevoPrecio').text(), ',', '.'));
+    if(precio>0){
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: {
+                'precio': precio,
+                'csrfmiddlewaretoken': csrftoken
+            },
+            success: function(data){
+                console.log("SUCCESS");
+                textHtml = '<div class="row messages"></div>'
+                $('#accordion-row').before(textHtml);
+                $('.messages').html(data);
+                $("#updatePrecio").empty().modal('hide');
+            }
+        }).fail(function() {
+            console.log("error");
+        }).always(function(data) {
+            console.log("complete");
+        });
+    }
+}
+function sendAprobacion(url, aprobado, counter){
+    $.ajax({
+        url: url,
+        type: 'GET',
+        data: {
+            'aprodabo': aprobado
+        },
+        success: function(data){
+            console.log("SUCCESS");
+            if(aprobado){
+                $('#aprobado'+counter).removeClass('inactivo').addClass('activo');
+                $('#desaprobado'+counter).removeClass('activo').addClass('inactivo');
+            }else{
+                $('#aprobado'+counter).removeClass('activo').addClass('inactivo');
+                $('#desaprobado'+counter).removeClass('inactivo').addClass('activo');
+            }
+            textHtml = '<div class="row messages"></div>'
+            $('#accordion-row').before(textHtml);
+            $('.messages').html(data);
+        },
+    }).fail(function() {
+        console.log("error");
+    }).always(function(data) {
+        console.log("complete");
+    });
+}
+
+function getPrecio(){
+    var decenas = parseInt(document.getElementById('decenaInput').value)*10;
+    var unidades = parseInt(document.getElementById('unidadInput').value);
+    var decimas= parseInt(document.getElementById('decimaInput').value)/10;
+    var centesimas = parseInt(document.getElementById('centesimaInput').value)/100;
+
+    $('#decenaLabel').text(decenas);
+    $('#unidadLabel').text(unidades);
+    $('#decimaLabel').text(reemplazar(String(redondear(decimas, 2)), '.', ','));
+    $('#centesimaLabel').text(reemplazar(String(redondear(centesimas, 2)), '.', ','));
+    precio = decenas + unidades + decimas + centesimas;
+    precio = redondear(precio, 2)
+    $('#nuevoPrecio').empty().text(reemplazar(String(precio), '.', ','));
 }

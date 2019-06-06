@@ -82,6 +82,19 @@ def import_currencies(request):
         )
     return HttpResponse('Los datos de los divisas han sido importados exitosamente')
 
+def import_products(request):
+    url = os.getcwd()+'/data/calculadora_producto2.csv'
+    data = pd.read_csv(url,  encoding="ISO-8859-1", engine='python')
+    for row in data.itertuples(index=False):
+        c = Carta.objects.get(pk=int(row.carta_id))
+        p = Producto.objects.update_or_create(
+            nombre=row.nombre,
+            descripcion=row.descripcion,
+            precio_fijo=row.precio_fijo,
+            carta=c
+        )
+    return HttpResponse('Los datos de los productos han sido importados exitosamente')
+
 def import_country(request):
     url = os.getcwd()+'/data/country_new.csv'
     data = pd.read_csv(url, encoding="ISO-8859-1", engine='python')
@@ -99,7 +112,6 @@ def import_country(request):
         c = Continente.objects.get(
             codigo=row.Continent
         )
-
         p = Pais.objects.update_or_create(
             nombre=row.official_name_es,
             iso_3166_1_2=row.ISO3166_1_Alpha_2,

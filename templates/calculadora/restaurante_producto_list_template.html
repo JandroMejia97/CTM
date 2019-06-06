@@ -15,14 +15,14 @@
         </div>
     </div>
     <div class="container-fluid">
-        <div class="row">
+        <div class="row" id="accordion-row">
             <div class="accordion" id="accordion-block">
                 {% if productos %}
                     {% regroup productos by carta as carta_list %}
                     {% for carta in carta_list %}
                         <div class="panel panel-default carta">
                             <div class="panel-heading collapsed shadow-sm" id="header{{ forloop.counter }}"  type="button" data-toggle="collapse" data-target="#collapse{{ forloop.counter }}">
-                                <h2 class="mb-0 panel-title">
+                                <h2 class="mb-1 panel-title">
                                     <div class="row">
                                         <div class="col-xs-2 col-sm-1 col-md-1 col-lg-1">
                                             <span class="pull-left glyphicon glyphicon-menu-down" aria-hidden="true"></span>        
@@ -43,8 +43,8 @@
                             </div>
                             <div id="collapse{{ forloop.counter }}" class="collapse" aria-labelledby="header{{ forloop.counter }}" data-parent="#accordion-block">
                                 <div class="">
-                                    <div class="row">
-                                        <div class="pr-0 col-xs-3 col-xs-offset-6 col-sm-3 col-sm-offset-3 col-md-3 col-md-offset-2 col-lg-3 col-lg-offset-3">
+                                    <div class="d-flex align-items-center">
+                                        <div class="px-0 col-xs-3 col-xs-offset-6 col-sm-3 col-sm-offset-6 col-md-3 col-md-offset-6 col-lg-3 col-lg-offset-6">
                                             <p class="text-center text-muted font-weight-bold">
                                                 <small>
                                                     Unidades
@@ -93,11 +93,11 @@
                                                 </div>
                                             </div>
                                             <div class="px-2 py-0 col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                                                <div class="d-flex justify-content-between align-items-center text-break">
+                                                <div class="d-flex justify-content-around align-items-center text-break">
                                                     <p class="font-weight-bold h4">
-                                                        <span id="precio{{ forloop.parentloop.counter }}{{ forloop.counter }}" class="precio">{{ producto.precio_fijo }}</span>€
+                                                        <span id="precio{{ forloop.parentloop.counter }}{{ forloop.counter }}" class="precio">{{ producto.precio_actual }}</span> &euro;
                                                     </p>
-                                                    <a href="{% url 'calculadora:editar-producto' producto.pk %}" class="text-decoration-none pull-right">
+                                                    <a href="#" class="text-decoration-none" onclick="getUpdatePrecioForm('{% url 'calculadora:form-update-precio' producto.pk %}')">
                                                         <i class="fa fa-pencil-alt fw fa-1-4x"></i>
                                                     </a>
                                                 </div>
@@ -151,3 +151,8 @@
         });
     </script>
 {% endblock sb_admin_custom_js %}
+{% block modals %}
+<div class="modal fade" id="updatePrecio" role="dialog" aria-hidden="true">
+
+</div>
+{% endblock modals %}

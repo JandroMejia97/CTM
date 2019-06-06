@@ -31,6 +31,16 @@ urlpatterns = [
         name='formset-producto'
     ),
     path(
+        'ajax/precio/actualizar/<int:pk>/',
+        views.get_update_precio_form,
+        name='form-update-precio'
+    ),
+    path(
+        'ajax/precio/aprobacion/<int:pk>/<int:aprobado>/',
+        views.set_aprobacion,
+        name='aprobar-precio'
+    ),
+    path(
         'ciudades/<int:pk>/restaurantes/',
         views.RestaurantesListView.as_view(),
         name='ciudades-restaurantes'

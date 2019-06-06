@@ -10,4 +10,5 @@ urlpatterns = [
     path('idiomas/', views.import_language, name='lang'),
     path('monedas/', views.import_currencies, name='currency'),
     path('paises/', views.import_country, name='country'),
+    path('productos/', views.import_products, name='products'),
 ]

@@ -6,6 +6,8 @@ from django.utils.translation import gettext_lazy as _
 
 from phonenumber_field.modelfields import PhoneNumberField
 
+import datetime
+
 
 class User(AbstractUser):
     foto = models.ImageField(
@@ -542,6 +544,22 @@ class Producto(models.Model):
     def __str__(self):
         return self.nombre
 
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+        super(Producto, self).save(force_insert=force_insert, force_update=force_update, using=using, update_fields=update_fields)
+        precio = Precio(
+            monto=self.precio_fijo,
+            producto=self,
+            usuario=self.carta.restaurante.administrador
+        )
+        precio.save()
+
+    def get_precio_actual(self):
+        return Precio.objects.filter(producto=self).order_by('-aprobaciones').first()
+    
+    def __init__(self, *args, **kwargs):
+        super(Producto, self).__init__(*args, **kwargs)
+        self.precio_actual = self.get_precio_actual()
+
     class Meta:
         verbose_name = 'Producto'
         verbose_name_plural = 'Productos'
@@ -596,8 +614,8 @@ class Precio(models.Model):
         MonedaOficial,
         related_name='dado_en',
         on_delete=models.DO_NOTHING,
-        blank=False,
-        null=False,
+        blank=True,
+        null=True,
         help_text='Moneda en la que se ha registrado este precio',
         verbose_name='Moneda'
     )
@@ -611,12 +629,35 @@ class Precio(models.Model):
         verbose_name='Agregado por'
     )
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.estado = (self.get_aprobaciones().count() > self.get_desaprobaciones().count())
+        self.usuario_aprobo = None
+        self.usuario_desaprobo = None
+
     def __str__(self):
         return str(self.monto)
+    
+    def get_aprobaciones(self):
+        return Aprobacion.objects.filter(precio=self, aprobado=True)
+    
+    def get_desaprobaciones(self):
+        return Aprobacion.objects.filter(precio=self, aprobado=False)
+
+    def get_usuarios_aprobaron(self):
+        return User.objects.filter(pk__in=[aprobacion.usuario.pk for aprobacion in self.get_aprobaciones()])
+    
+    def get_usuarios_desaprobaron(self):
+        return User.objects.filter(pk__in=[desaprobacion.usuario.pk for desaprobacion in self.get_desaprobaciones()])
+    
+    def get_tiempo_transcurrido(self):
+        hoy = datetime.datetime.now(datetime.timezone.utc)
+        return hoy-self.fecha_adicion
 
     class Meta:
         verbose_name = 'Precio'
         verbose_name_plural = 'Precios'
+        ordering = ['-fecha_adicion']
 
 
 class Compra(models.Model):

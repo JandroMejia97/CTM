@@ -1,0 +1,123 @@
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+            <h4 class="modal-title">AÑADE EL PRECIO DEL PRODUCTO: {{ producto|upper }}</h4>
+        </div>
+        <div class="modal-body">
+            <form action="POST">
+                <div class="d-flex justify-content-around align-items-center slidecontainer">
+                    <div class="row">
+                        <div class="col-6 d-flex">
+                            Decena: <span id="decenaLabel"></span>
+                        </div>
+                        <div class="col-12">
+                            <input id="decenaInput" class="slider" type="range" min="0" max="9" step="1" value="0" data-orientation="vertical" onchange="getPrecio()">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6 d-flex">
+                            Unidad: <span id="unidadLabel"></span>
+                        </div>
+                        <div class="col-12">
+                            <input id="unidadInput" class="slider" type="range" min="0" max="9" step="1" value="0" data-orientation="vertical" onchange="getPrecio()">
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-around align-items-center slidecontainer">
+                    <div class="row">
+                        <div class="col-6 d-flex">
+                            Décima: <span id="decimaLabel"></span>
+                        </div>
+                        <div class="col-12">
+                            <input id="decimaInput" class="slider" type="range" min="0" max="9" step="1" value="0" data-orientation="vertical" onchange="getPrecio()">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6 d-flex">
+                            Centésima: <span id="centesimaLabel"></span>
+                        </div>
+                        <div class="col-12">
+                            <input id="centesimaInput" class="slider" type="range" min="0" max="9" step="1" value="0" data-orientation="vertical" onchange="getPrecio()">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <h3 class="font-weight-bold h3 text-center">
+                            PRECIO: 
+                            <span id="nuevoPrecio">0,00</span> &euro;
+                        </h3>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <a class="btn btn-primary" href="#" onclick="sendPrecio('{% url 'calculadora:form-update-precio' producto.pk %}')">CONFIRMAR</a>
+                    </div>
+                </div>
+            </form>
+            <div class="text-center">
+                <p class="d-block small">
+                    ¿Eres un restaurante? <a href="{% url 'calculadora:nuevo-restaurante' %}">¡Haz clíc aquí!</a>
+                </p>
+            </div>
+        </div>
+        <div class="modal-footer shadow-sm">
+            <div class="row">
+                <div class="col-12">
+                    <p>(*) Otros usuarios han añadido estos precios: </p>
+                    <div class="row">
+                        <div class="col-12 messages">
+                        </div>
+                    </div>
+                    {% for precio in precios %}
+                        <div class="d-flex justify-content-center align-items-center">
+                            <div class="px-0 col-6">
+                                <p class="text-left">
+                                    <strong>
+                                        {% if user.first_name and user.last_name %}
+                                            {{ user.first_name }} {{ user.last_name }}
+                                        {% elif user.first_name %}
+                                            {{ user.first_name }} 
+                                        {% else %}
+                                            {{ user.username }} 
+                                        {% endif %}
+                                    </strong>
+                                    añadió este precio el {{ precio.fecha_adicion|date:"d/m/Y" }}
+                                </p>
+                            </div>
+                            <div class="px-0 col-3">
+                                <p class="font-weight-bold h3">
+                                    {{ precio }} &euro;
+                                </p>
+                            </div>
+                            <div class="px-0 col-3 font-weight-bold h3">
+                                {% ifnotequal precio.usuario_aprobo None %}
+                                    <a href="#" class="text-decoration-none" onclick="sendAprobacion('{% url 'calculadora:aprobar-precio' precio.pk 1 %}', true, {{ forloop.counter }})"  title="Aprobar precio">
+                                        <i id="aprobado{{ forloop.counter }}" class="far fa-thumbs-up fa-fw fa-1-3x {% if precio.usuario_aprobo %} activo {% else %} inactivo {% endif %}"></i>
+                                    </a>
+                                {% else %}
+                                    <a href="#" class="text-decoration-none" onclick="sendAprobacion('{% url 'calculadora:aprobar-precio' precio.pk 1 %}', true, {{ forloop.counter }})"  title="Aprobar precio">
+                                        <i id="aprobado{{ forloop.counter }}" class="far fa-thumbs-up fa-fw fa-1-3x inactivo"></i>
+                                    </a>
+                                {% endifnotequal %}
+                                {% ifnotequal precio.usuario_aprobo None %}
+                                    <a href="#" class="text-decoration-none" onclick="sendAprobacion('{% url 'calculadora:aprobar-precio' precio.pk 0 %}', false, {{ forloop.counter }})"   title="Desaprobar precio">
+                                        <i id="desaprobado{{ forloop.counter }}" class="far fa-thumbs-down fa-fw fa-1-3x {% if precio.usuario_desaprobo %} activo {% else %} inactivo {% endif %}"></i>
+                                    </a>
+                                {% else %}
+                                    <a href="#" class="text-decoration-none" onclick="sendAprobacion('{% url 'calculadora:aprobar-precio' precio.pk 0 %}', false, {{ forloop.counter }})"   title="Desaprobar precio">
+                                        <i id="desaprobado{{ forloop.counter }}" class="far fa-thumbs-down fa-fw fa-1-3x inactivo"></i>
+                                    </a>
+                                {% endifnotequal %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+        </div>
+    </div>
+</div>

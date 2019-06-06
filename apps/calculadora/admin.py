@@ -188,6 +188,7 @@ class ProductoAdmin(admin.ModelAdmin):
     list_display = [
         'nombre',
         'precio_fijo',
+        'descripcion',
         'carta'
     ]
     fields = [

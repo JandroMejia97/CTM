@@ -372,6 +372,65 @@ def get_producto_form(request):
         html = render_to_string('calculadora/restaurante_producto_add.html', context=context)
         return HttpResponse(html)
 
+def get_update_precio_form(request, pk):
+    if request.method == 'POST':
+        nuevo_precio = request.POST['precio']
+        producto = Producto.objects.get(pk=pk)
+        precio = Precio.objects.create(
+            usuario=request.user,
+            producto=producto,
+            monto=nuevo_precio
+        )
+        context = {
+            'messages': ['El nuevo precio fue registrado exitosamente, a la espera de ser aprobado por otros usuarios.'],
+            'success': True
+        }
+        html = render_to_string(request=request, template_name='messages.html', context=context)
+        return HttpResponse(html)
+    else:
+        producto = Producto.objects.get(pk=pk)
+        precios = Precio.objects.filter(producto=producto)[:3]
+        aprobaciones = Aprobacion.objects.filter(usuario=request.user, precio__in=precios)
+        for precio in precios:
+            precio.usuario_aprobo = (request.user in precio.get_usuarios_aprobaron())
+            precio.usuario_desaprobo = (request.user in precio.get_usuarios_desaprobaron())
+        context = {
+            'precios': precios,
+            'producto': producto, 
+            'aprobaciones': aprobaciones
+        }
+        html = render_to_string(request=request, template_name='calculadora/restaurante_update_precio_template.html', context=context)
+        return HttpResponse(html)
+
+def set_aprobacion(request, pk, aprobado):
+    precio = Precio.objects.get(pk=pk)
+    if Aprobacion.objects.filter(usuario=request.user, precio=precio).exists():
+        aprobacion = Aprobacion.objects.get(
+            usuario=request.user,
+            precio=precio
+        )
+    else:
+        aprobacion = Aprobacion(
+            usuario=request.user,
+            precio=precio
+        )
+    aprobacion.aprobado = aprobado
+    aprobacion.save()
+    precio.aprobaciones = Aprobacion.objects.filter(precio=precio, aprobado=True).count()
+    precio.aprobaciones = Aprobacion.objects.filter(precio=precio, aprobado=True).count()
+    precio.save()
+    messages = []
+    if aprobado:
+        messages.append('Su aprobación a este precio fue registrada exitosamente.')
+    else: 
+        messages.append('Su desaprobación a este precio fue registrada exitosamente.')
+    context = {
+            'messages': messages,
+            'success': True
+        }
+    html = render_to_string(request=request, template_name='messages.html', context=context)
+    return HttpResponse(html)
+
 def get_paises(request):
     if request.method == 'GET':
         sendData = request.GET['id']

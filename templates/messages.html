@@ -1,6 +1,6 @@
 {% if messages or form.errors %}
     {% for message in messages %}
-        <div class="alert alert-danger alert-dismissable">
+        <div class="my-0 alert alert-{% if success %}success{% else%}danger{% endif %} alert-dismissable">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
             <i class="fa fa-exclamation-triangle"></i> 
             {{ message|escape }}
@@ -8,7 +8,7 @@
     {% endfor %}
     {% for field in form %}
         {% for error in field.errors %}
-            <div class="alert alert-danger alert-dismissable">
+            <div class="my-0 alert alert-danger alert-dismissable">
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                 <i class="fa fa-exclamation-triangle"></i> 
                 {{ field.label }}: {{ error|escape }}
@@ -16,21 +16,21 @@
         {% endfor %}
     {% endfor %}
     {% for error in form.non_field_errors %}
-        <div class="alert alert-danger alert-dismissable">
+        <div class="my-0 alert alert-danger alert-dismissable">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
             <i class="fa fa-exclamation-triangle"></i> 
             {{ error|escape }}
         </div>
     {% endfor %}
     {% for error in carta_formset.non_field_errors %}
-        <div class="alert alert-danger alert-dismissable">
+        <div class="my-0 alert alert-danger alert-dismissable">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
             <i class="fa fa-exclamation-triangle"></i> 
             {{ error|escape }}
         </div>
     {% endfor %}
     {% for error in carta_formset.nested.non_field_errors %}
-        <div class="alert alert-danger alert-dismissable">
+        <div class="my-0 alert alert-danger alert-dismissable">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
             <i class="fa fa-exclamation-triangle"></i> 
             {{ error|escape }}
