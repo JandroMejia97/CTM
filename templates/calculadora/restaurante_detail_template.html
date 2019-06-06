@@ -68,14 +68,17 @@
                                     <a class="list-group-item list-group-item-action active" id="list-datos-list" data-toggle="list" href="#list-datos" role="tab" aria-controls="datos">
                                         Datos
                                     </a>
-                                    <a class="list-group-item list-group-item-action" id="list-mapa-list" data-toggle="list" href="#list-mapa" role="tab" aria-controls="mapa">
+                                    <!-- <a class="list-group-item list-group-item-action" id="list-mapa-list" data-toggle="list" href="#list-mapa" role="tab" aria-controls="mapa">
                                         Mapa
-                                    </a>
+                                    </a> -->
                                     <a class="list-group-item list-group-item-action" id="list-cartas-list" data-toggle="list" href="#list-cartas" role="tab" aria-controls="cartas">
                                         Cartas
                                     </a>
                                     <a class="list-group-item list-group-item-action" id="list-productos-list" data-toggle="list" href="#list-productos" role="tab" aria-controls="productos">
                                         Productos
+                                    </a>
+                                    <a class="list-group-item list-group-item-action" id="list-redes-list" data-toggle="list" href="#list-redes" role="tab" aria-controls="redes">
+                                        Redes Sociales
                                     </a>
                                 </div>
                             </div>
@@ -149,37 +152,35 @@
                                                                 </tbody>
                                                             </table>
                                                         </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="tab-pane fade" id="list-mapa" role="tabpanel" aria-labelledby="list-mapa-list">
-                                        <div class="row">
-                                            <div class="col-lg-12">
-                                                <div class="panel panel-default">
-                                                    <div class="panel-heading">
-                                                        <h3 class="panel-title">
-                                                            <i class="fa fa-map-marked-alt fw"></i>
-                                                            Mapa
-                                                            <a href="">
-                                                                <i class="pull-right fa fa-edit fw"></i>
-                                                            </a>
-                                                        </h3>
-                                                    </div>
-                                                    <div class="panel-body">
                                                         <div class="row">
                                                             <div class="col-lg-12">
-                                                                <div class="embed-responsive embed-responsive-4by3" id="iframe">
-                                                                    {% if restaurante.mapa %}
-                                                                        {{ restaurante.mapa|safe }}
-                                                                    {% else %}
-                                                                        <div class="alert alert-danger alert-dismissable">
-                                                                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                                                                            <i class="fa fa-sad-cry"></i>
-                                                                            Lo sentimos, aún no hay un mapa disponible para este restaurante
+                                                                <div class="panel panel-default">
+                                                                    <div class="panel-heading">
+                                                                        <h3 class="panel-title">
+                                                                            <i class="fa fa-map-marked-alt fw"></i>
+                                                                            Mapa
+                                                                            <a href="">
+                                                                                <i class="pull-right fa fa-edit fw"></i>
+                                                                            </a>
+                                                                        </h3>
+                                                                    </div>
+                                                                    <div class="panel-body">
+                                                                        <div class="row">
+                                                                            <div class="col-lg-12">
+                                                                                <div class="embed-responsive embed-responsive-4by3" id="iframe">
+                                                                                    {% if restaurante.mapa %}
+                                                                                        {{ restaurante.mapa|safe }}
+                                                                                    {% else %}
+                                                                                        <div class="alert alert-danger alert-dismissable">
+                                                                                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                                                                            <i class="fa fa-sad-cry"></i>
+                                                                                            Lo sentimos, aún no hay un mapa disponible para este restaurante
+                                                                                        </div>
+                                                                                    {% endif %}
+                                                                                </div>
+                                                                            </div>
                                                                         </div>
-                                                                    {% endif %}
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -227,9 +228,9 @@
                                                                                     {{ carta.num_products }}
                                                                                 </td>
                                                                                 <td class="text-center">
-                                                                                    <a class="fas fa-w fa-eye " name="ver" href="{% url 'calculadora:detalle-carta' carta.pk %}" style="color:gray !important"></a>
-                                                                                    <a class="fas fa-w fa-edit" name="editar" href="{% url 'calculadora:editar-carta' carta.pk %}" style="color:gray !important"></a>
-                                                                                    <!-- <a class="fas fa-w fa fa-trash" name="eliminar" href="#" onclick="" style="color:gray !important"></a> -->
+                                                                                    <a class="fas fa-w fa-eye text-decoration-none" name="ver" href="{% url 'calculadora:detalle-carta' carta.pk %}" style="color:gray !important"></a>
+                                                                                    <a class="fas fa-w fa-edit text-decoration-none" name="editar" href="{% url 'calculadora:editar-carta' carta.pk %}" style="color:gray !important"></a>
+                                                                                    <!-- <a class="fas fa-w fa fa-trash text-decoration-none" name="eliminar" href="#" onclick="" style="color:gray !important"></a> -->
                                                                                 </td>
                                                                             </tr>
                                                                         {% endfor %}
@@ -353,6 +354,48 @@
                                                                     Lo sentimos, aún no hay productos disponibles para este restaurante.
                                                                 </div>
                                                             {% endif %}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="list-redes" role="tabpanel" aria-labelledby="list-redes-list">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="panel panel-default">
+                                                    <div class="panel-heading">
+                                                        <h3 class="panel-title">
+                                                            <i class="fa fa-thumbtack fw"></i>
+                                                            Redes Sociales
+                                                            <a href="">
+                                                                <i class="pull-right fa fa-edit fw"></i>
+                                                            </a>
+                                                        </h3>
+                                                    </div>
+                                                    <div class="panel-body">
+                                                        <div class="table-responsive">
+                                                            <table class="table table-hover">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Red Social</th>
+                                                                        <th>Usuario</th>
+                                                                        <th>Operaciones</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    {% for perfil in perfiles %}
+                                                                        <tr>
+                                                                            <td>{{ perfil.red_social }}</td>
+                                                                            <td><a href="{{ perfil }}" target="_blank">{{ perfil.usuario }}</a></td>
+                                                                            <td>
+                                                                                <a class="fas fa-w fa-eye text-decoration-none" name="ver" href="{% url 'calculadora:detalle-perfil' perfil.pk %}" style="color:gray !important"></a>
+                                                                                <a class="fas fa-w fa-edit text-decoration-none" name="editar" href="{% url 'calculadora:editar-perfil' perfil.pk %}" style="color:gray !important"></a>
+                                                                            </td>
+                                                                        </tr>
+                                                                    {% endfor %}
+                                                                </tbody>
+                                                            </table>
                                                         </div>
                                                     </div>
                                                 </div>

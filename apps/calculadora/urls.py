@@ -99,4 +99,16 @@ urlpatterns = [
         {'detalle': False},
         name='editar-producto'
     ),
+    path(
+        'restaurantes/detalle/perfil/detalle/<int:pk>/',
+        views.PerfilUpdateView.as_view(),
+        {'detalle': True},
+        name='detalle-perfil'
+    ),
+    path(
+        'restaurantes/detalle/perfil/editar/<int:pk>/',
+        views.PerfilUpdateView.as_view(),
+        {'detalle': False},
+        name='editar-perfil'
+    ),
 ]

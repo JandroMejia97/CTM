@@ -794,7 +794,7 @@ class Perfil(models.Model):
         max_length=100,
         blank=False,
         null=False,
-        help_text='Dirección URL de su perfil de la red social, en el formato similar a: "https//www.redsocial.com/miperfil"',
+        help_text='Dirección URL de su perfil de la red social, en el formato similar a: "https://www.redsocial.com/miperfil"',
         verbose_name='Dirección URL del perfil'
     )
     red_social = models.ForeignKey(

@@ -171,6 +171,7 @@ class RestauranteDetailView(DetailView):
         context = super(RestauranteDetailView, self).get_context_data(**kwargs)
         context['cartas'] = Carta.objects.filter(restaurante=context['restaurante']).annotate(num_products=Count('producto'))
         context['productos'] = Producto.objects.filter(carta__in=context['cartas'])
+        context['perfiles'] = Perfil.objects.filter(restaurante=context['restaurante'])
         return context
 
 
@@ -327,6 +328,25 @@ class ProductoUpdateView(LoginRequiredMixin, UpdateView):
     def get_success_url(self):
         return reverse('calculadora:detalle-restaurante', kwargs={'pk':self.object.carta.restaurante.pk})
         
+
+class PerfilUpdateView(LoginRequiredMixin, UpdateView):
+    model = Perfil
+    template_name = 'calculadora/perfil_detail_template.html'
+    fields = [
+        'red_social',
+        'usuario',
+        'url_perfil'
+    ]
+    
+    def get_context_data(self, **kwargs):
+        context = super(PerfilUpdateView, self).get_context_data(**kwargs)
+        if 'detalle' in self.kwargs:
+            context['detalle'] = self.kwargs['detalle']
+        context['perfil'] = self.object
+        return context
+    
+    def get_success_url(self):
+        return reverse('calculadora:detalle-perfil', kwargs={'pk':self.object.restaurante.pk})
 
 def home(request):
     ciudades = Ciudad.objects.all()
