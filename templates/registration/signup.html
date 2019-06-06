@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    Registro
+{% endblock title %}
+{% block custom_css %}
+    <link href="{% static 'calculadora/css/style.css' %}" rel="stylesheet" type="text/css">  
+{% endblock custom_css %}
+{% block content %}
+    {% load bootstrap %}
+    <!-- Cabecera de página -->
+    <div class="container-fluid">
+        {% block title_page %}
+            <div class="row">
+                <div class="col-lg-12">
+                    <h2 class="page-header">
+                        Registro de Usuario
+                        <a href="javascript:history.back()" class="pull-right btn btn-danger" >
+                            Regresar
+                        </a>
+                    </h2>
+                    <ol class="breadcrumb">
+                        <li>
+                            <i class="fa fa-home"></i>
+                            <a href="{% url 'calculadora:home' %}">Inicio</a>
+                        </li>
+                        <li class="active">
+                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                            Regístrate
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        {% endblock title_page %}
+        {% block messages %}
+            <div class="row">
+                <div class="col-lg-12 messages">
+                    {% include 'messages.html' %}
+                </div>
+            </div>
+        {% endblock messages %}
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            <i class="fa fa-utensils fw"></i>
+                            Registro
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <form method="POST" id="datos_form">
+                                    {% csrf_token %}
+                                    {{ form|bootstrap_horizontal }}
+                                    <div id="datos_buttons" class="text-center">
+                                        <button class="btn btn-primary" type="submit">
+                                            Guardar
+                                        </button>
+                                        <a href="javascript:history.back()" class="btn btn-danger" >
+                                            Cancelar
+                                        </a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

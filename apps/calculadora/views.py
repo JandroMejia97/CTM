@@ -1,5 +1,8 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import Group
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Sum, Count
 from django.forms import formset_factory, inlineformset_factory
 from django.shortcuts import render, render_to_response, reverse, HttpResponse, HttpResponseRedirect
@@ -17,6 +20,32 @@ from itertools import groupby
 
 from .forms import *
 from .models import *
+
+
+class UserCreateView(CreateView):
+    model = User
+    template_name = 'registration/signup.html'
+    form_class = UserForm
+    success_url = reverse_lazy('login')
+
+    def post(self, request, *args, **kwargs):
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=password)
+            login(request, user)
+            if user.is_restaurante:
+                grupo = Group.objects.get(name='Administrador de Restaurante')
+                grupo.user_set.add(user)
+            return self.get_success_url()
+        else:
+            context = {
+                'form': form
+            }
+            self.render_to_response(context)
 
 
 class RestaurantesListView(ListView):
@@ -244,6 +273,8 @@ class CartaUpdateView(LoginRequiredMixin, UpdateView):
                 context['detalle'] = self.kwargs['detalle']
                 context['form'] = CartaForm(instance=self.object)
                 context['producto_formset'] = ProductoFormset(instance=self.object)
+        if 'restaurante_pk' in self.kwargs:
+            context['restaurante'] = Restaurante.objects.get(pk=self.kwargs['restaurante_pk'])
         return context
     
     def post(self, request, *args, **kwargs):
@@ -255,11 +286,12 @@ class CartaUpdateView(LoginRequiredMixin, UpdateView):
             return self.form_valid(form, producto_formset)
         else:
             return self.form_invalid(form, producto_formset)
-        return super().post(request, *args, **kwargs)
+        return super(CartaUpdateView, self).post(request, *args, **kwargs)
 
     def form_valid(self, form, producto_formset):
         carta, result = Carta.objects.update_or_create(
-            tipo=TipoCarta.objects.get(pk=int(form['tipo'].value()))
+            tipo=TipoCarta.objects.get(pk=int(form['tipo'].value())),
+            restaurante=Restaurante.objects.get(pk=self.kwargs['restaurante_pk']),
         )
         carta.save()
         self.object = carta

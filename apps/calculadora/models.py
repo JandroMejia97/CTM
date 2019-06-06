@@ -17,6 +17,13 @@ class User(AbstractUser):
         help_text='Cargue una foto de perfil',
         verbose_name='Foto de perfil'
     )
+    is_restaurante = models.BooleanField(
+        blank=True,
+        null=True,
+        verbose_name='¿Eres un restaurante?',
+        help_text='Selecciona "Sí" si eres el administrador de un restaurante',
+        default=False
+    )
     fecha_nacimiento = models.DateField(
         blank=True,
         null=True,

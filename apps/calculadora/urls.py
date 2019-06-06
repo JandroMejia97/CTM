@@ -41,6 +41,11 @@ urlpatterns = [
         name='aprobar-precio'
     ),
     path(
+        'registro/',
+        views.UserCreateView.as_view(),
+        name='signup'
+    ),
+    path(
         'ciudades/<int:pk>/restaurantes/',
         views.RestaurantesListView.as_view(),
         name='ciudades-restaurantes'
@@ -71,18 +76,18 @@ urlpatterns = [
         name='editar-restaurante'
     ),
     path(
-        'restaurantes/detalle/<int:pk>/carta/agregar/',
+        'restaurantes/<int:pk>/carta/agregar/',
         views.CartaCreateView.as_view(),
         name='nueva-carta'
     ),
     path(
-        'restaurantes/detalle/carta/detalle/<int:pk>/',
+        'restaurantes/<int:restaurante_pk>/carta/detalle/<int:pk>/',
         views.CartaUpdateView.as_view(),
         {'detalle': True},
         name='detalle-carta'
     ),
     path(
-        'restaurantes/detalle/carta/editar/<int:pk>',
+        'restaurantes/<int:restaurante_pk>/carta/editar/<int:pk>',
         views.CartaUpdateView.as_view(),
         {'detalle': False},
         name='editar-carta'

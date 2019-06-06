@@ -228,8 +228,8 @@
                                                                                     {{ carta.num_products }}
                                                                                 </td>
                                                                                 <td class="text-center">
-                                                                                    <a class="fas fa-w fa-eye text-decoration-none" name="ver" href="{% url 'calculadora:detalle-carta' carta.pk %}" style="color:gray !important"></a>
-                                                                                    <a class="fas fa-w fa-edit text-decoration-none" name="editar" href="{% url 'calculadora:editar-carta' carta.pk %}" style="color:gray !important"></a>
+                                                                                    <a class="fas fa-w fa-eye text-decoration-none" name="ver" href="{% url 'calculadora:detalle-carta' carta.restaurante.pk carta.pk %}" style="color:gray !important"></a>
+                                                                                    <a class="fas fa-w fa-edit text-decoration-none" name="editar" href="{% url 'calculadora:editar-carta' carta.restaurante.pk  carta.pk %}" style="color:gray !important"></a>
                                                                                     <!-- <a class="fas fa-w fa fa-trash text-decoration-none" name="eliminar" href="#" onclick="" style="color:gray !important"></a> -->
                                                                                 </td>
                                                                             </tr>
