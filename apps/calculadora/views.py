@@ -114,7 +114,7 @@ class RestauranteCreateView(LoginRequiredMixin, CreateView):
                 administrador=request.user,
                 barrio=Division.objects.get(pk=int(request.POST['barrio'])),
                 ciudad=Ciudad.objects.get(pk=int(request.POST['ciudad'])),
-                background=restaurante_form['background'].value(),
+                # background=restaurante_form['background'].value(),
             )
             tipos_comida = TipoComida.objects.filter(pk__in=restaurante_form['tipo_comida'].value())
             restaurante.save()
@@ -234,7 +234,7 @@ class CartaCreateView(LoginRequiredMixin, CreateView):
         return super(CartaCreateView, self).post(request, *args, **kwargs)
 
     def form_valid(self, form, producto_formset):
-        carta, result = Carta.objects.update_or_create(
+        carta, created = Carta.objects.update_or_create(
             tipo=TipoCarta.objects.get(pk=int(form['tipo'].value())),
             restaurante=Restaurante.objects.get(pk=self.kwargs['pk'])
         )
@@ -273,8 +273,7 @@ class CartaUpdateView(LoginRequiredMixin, UpdateView):
                 context['detalle'] = self.kwargs['detalle']
                 context['form'] = CartaForm(instance=self.object)
                 context['producto_formset'] = ProductoFormset(instance=self.object)
-        if 'restaurante_pk' in self.kwargs:
-            context['restaurante'] = Restaurante.objects.get(pk=self.kwargs['restaurante_pk'])
+        context['carta'] = self.object
         return context
     
     def post(self, request, *args, **kwargs):
@@ -289,11 +288,12 @@ class CartaUpdateView(LoginRequiredMixin, UpdateView):
         return super(CartaUpdateView, self).post(request, *args, **kwargs)
 
     def form_valid(self, form, producto_formset):
-        carta, result = Carta.objects.update_or_create(
+        carta, created = Carta.objects.get_or_create(
             tipo=TipoCarta.objects.get(pk=int(form['tipo'].value())),
-            restaurante=Restaurante.objects.get(pk=self.kwargs['restaurante_pk']),
+            restaurante=Restaurante.objects.get(pk=int(form['restaurante'].value())),
         )
-        carta.save()
+        if created:
+            carta.save()
         self.object = carta
         producto_formset.instance = carta
         producto_formset.save()
@@ -359,7 +359,47 @@ class ProductoUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_success_url(self):
         return reverse('calculadora:detalle-restaurante', kwargs={'pk':self.object.carta.restaurante.pk})
+
+
+class PerfilCreateView(LoginRequiredMixin, CreateView):
+    model = Perfil
+    template_name = 'calculadora/perfil_create_template.html'
+    fields = [
+        'red_social',
+        'usuario',
+        'url_perfil'
+    ]
+
+    def get_context_data(self, **kwargs):
+        context = super(PerfilCreateView, self).get_context_data(**kwargs)
+        if 'pk' in self.kwargs:
+            context['restaurante'] = Restaurante.objects.get(pk=self.kwargs['pk'])
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = None
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
         
+    def form_valid(self, form):
+        perfil, created = Perfil.objects.update_or_create(
+            usuario=form['usuario'].value(),
+            url_perfil=form['url_perfil'].value(),
+            red_social=RedSocial.objects.get(pk=form['red_social'].value()),
+            restaurante=Restaurante.objects.get(pk=self.kwargs['pk']),
+            propietario=self.request.user,
+        )
+        perfil.save()
+        self.object = perfil
+        return HttpResponseRedirect(self.get_success_url())
+
+    def get_success_url(self):
+        return reverse('calculadora:detalle-restaurante', kwargs={'pk':self.object.restaurante.pk})
+
 
 class PerfilUpdateView(LoginRequiredMixin, UpdateView):
     model = Perfil

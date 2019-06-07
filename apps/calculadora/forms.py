@@ -86,7 +86,7 @@ class RestauranteForm(forms.ModelForm):
             'comidas',
             'ciudad',
             'barrio',
-            'background'
+            #'background'
         ]
 
     def __init__(self, *args, **kwargs):
@@ -97,9 +97,9 @@ class RestauranteForm(forms.ModelForm):
                 'title': self.fields[field].help_text,
                 'class': 'form-control'
             })
-        self.fields['background'].widget.attrs.update({
-            'class': ''
-            })
+        # self.fields['background'].widget.attrs.update({
+        #     'class': ''
+        #     })
         self.fields['ciudad'] = forms.ModelChoiceField(
             queryset=Ciudad.objects.all(),
             widget=forms.Select(
@@ -150,11 +150,9 @@ class CartaForm(forms.ModelForm):
         prefix = 'carta'
         fields = [
             'tipo',
-        ]
-        exclude = [
             'restaurante'
         ]
-        # widgets = {'restaurante': forms.HiddenInput()}
+        widgets = {'restaurante': forms.HiddenInput()}
 
     
     def __init__(self, *args, **kwargs):

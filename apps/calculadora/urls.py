@@ -116,4 +116,9 @@ urlpatterns = [
         {'detalle': False},
         name='editar-perfil'
     ),
+    path(
+        'restaurantes/<int:pk>/perfil/agregar/',
+        views.PerfilCreateView.as_view(),
+        name='nuevo-perfil'
+    )
 ]

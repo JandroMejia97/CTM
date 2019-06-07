@@ -123,6 +123,13 @@ class Ciudad(models.Model):
         help_text='Ingrese el nombre de la ciudad',
         verbose_name='Nombre',
     )
+    file_name = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True,
+        help_text='Nombre del archivo de imagen',
+        verbose_name='Archivo'
+    )
     foto = models.ImageField(
         upload_to='ciudades',
         blank=True,
@@ -321,6 +328,13 @@ class Restaurante(models.Model):
         null=False,
         help_text='Ingrese el nombre del restaurante',
         verbose_name='Nombre del Restaurante',
+    )
+    file_name = models.CharField(
+        max_length=50,
+        blank=True,
+        null=True,
+        help_text='Ingrese el nombre del backgroud del restaurante',
+        verbose_name='Background del Restaurante',
     )
     background = models.ImageField(
         upload_to='restaurantes/',

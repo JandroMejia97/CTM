@@ -182,7 +182,7 @@ MEDIA_URL = '/media/'
 
 # The absolute path to the directory where will storage the media 
 # files
-MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Heroku: Update database configuration from $DATABASE_URL
 import dj_database_url

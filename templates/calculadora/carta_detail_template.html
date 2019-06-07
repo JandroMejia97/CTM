@@ -30,7 +30,7 @@
                         </li>
                         <li>
                             <i class="fa fa-utensils"></i>
-                            <a href="{% url 'calculadora:detalle-restaurante'  carta.restaurante.pk %}">{{ carta.restaurante }}</a>
+                            <a href="{% url 'calculadora:detalle-restaurante'  form.restaurante.value %}">{{ carta.restaurante }}</a>
                         </li>
                         <li class="active">
                             {% if not detalle %}
@@ -45,13 +45,6 @@
                 </div>
             </div>
         {% endblock title_page %}
-        {% block messages %}
-            <div class="row">
-                <div class="col-lg-12 messages">
-                    {% include 'messages.html' %}
-                </div>
-            </div>
-        {% endblock messages %}
         <div class="row">
             <div class="col-lg-12">
                 <div class="panel panel-default">
