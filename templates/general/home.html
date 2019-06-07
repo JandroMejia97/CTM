@@ -11,7 +11,7 @@
     <!-- Ciudades -->
     {% for ciudad in ciudades %}
         <div>
-            {% if ciudad.foto %}
+            {% if ciudad %}
                 <div class="image image-fluid" style="background-image: url('/static/calculadora/images/ciudades/{{ ciudad.file_name }}')" onclick="redirect('{% url 'calculadora:ciudades-restaurantes' ciudad.pk %}')">
                     <div class="d-block over over-border fondo-izquierda" >
                         <div class="text-left over-text">
