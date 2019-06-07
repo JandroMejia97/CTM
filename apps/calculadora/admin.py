@@ -62,6 +62,7 @@ class CiudadAdmin(admin.ModelAdmin):
         'nombre',
         'pais',
         'foto',
+        'file_name'
     ]
 
 admin.site.register(Ciudad, CiudadAdmin)
@@ -142,6 +143,7 @@ class RestauranteAdmin(admin.ModelAdmin):
     fields = [ 
         'nombre',
         'background',
+        'file_name',
         'administrador',
         'telefono',
         'comidas',
