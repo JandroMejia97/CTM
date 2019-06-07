@@ -57,6 +57,8 @@ class CiudadAdmin(admin.ModelAdmin):
     list_display = [
         'nombre',
         'pais',
+        'file_name',
+        'foto'
     ]
     fields = [
         'nombre',
@@ -138,6 +140,8 @@ class RestauranteAdmin(admin.ModelAdmin):
         'telefono',
         'ciudad',
         'barrio',
+        'file_name',
+        'background',
         'get_comidas'
     ]
     fields = [ 

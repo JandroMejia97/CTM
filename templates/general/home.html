@@ -12,7 +12,7 @@
     {% for ciudad in ciudades %}
         <div>
             {% if ciudad.foto %}
-                <div class="image image-fluid" style="background-image: url('{{ ciudad.foto.url }}')" onclick="redirect('{% url 'calculadora:ciudades-restaurantes' ciudad.pk %}')">
+                <div class="image image-fluid" style="background-image: url('static/calculadora/images/ciudades/{{ ciudad.file_name }}')" onclick="redirect('{% url 'calculadora:ciudades-restaurantes' ciudad.pk %}')">
                     <div class="d-block over over-border fondo-izquierda" >
                         <div class="text-left over-text">
                             <h1>{{ ciudad|upper }}</h1>

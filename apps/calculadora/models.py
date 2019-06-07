@@ -204,6 +204,7 @@ class Division(models.Model):
     class Meta:
         verbose_name = 'División política de la ciudad'
         verbose_name_plural = 'División Política'
+        ordering = ['nombre', 'ciudad']
 
 
 class Continente(models.Model):
@@ -306,8 +307,8 @@ class TipoComida(models.Model):
     )
     descripcion = models.CharField(
         max_length=250,
-        blank=False,
-        null=False,
+        blank=True,
+        null=True,
         help_text='Ingrese una breve descripción de este tipo de comida',
         verbose_name='Descripción'
     )
@@ -424,6 +425,13 @@ class Restaurante(models.Model):
     def __str__(self):
         return self.nombre
 
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+        self.file_name = self.set_file_name()
+        return super(Restaurante, self).save(force_insert=force_insert, force_update=force_update, using=using, update_fields=update_fields)
+
+    def set_file_name(self):
+        return self.nombre+'.'+self.ciudad+'.'+self.barrio+'.jpg'
+    
     def save_restaurante(self, request, *args, **kwargs):
         self.administrador = request.user
         super(Restaurante, self).save(*args, **kwargs)

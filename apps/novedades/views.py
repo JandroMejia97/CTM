@@ -95,6 +95,17 @@ def import_products(request):
         )
     return HttpResponse('Los datos de los productos han sido importados exitosamente')
 
+def import_localidades(request):
+    url = os.getcwd()+'/data/localidades.csv'
+    data = pd.read_csv(url, sep=';', encoding="ISO-8859-1", engine='python')
+    for row in data.itertuples(index=False):
+        c = Ciudad.objects.get(nombre=row.ciudad)
+        d = Division.objects.update_or_create(
+            nombre=row.localidad,
+            ciudad=c
+        )
+    return HttpResponse('Los datos de las localidades han sido importados exitosamente')
+
 def import_country(request):
     url = os.getcwd()+'/data/country_new.csv'
     data = pd.read_csv(url, encoding="ISO-8859-1", engine='python')

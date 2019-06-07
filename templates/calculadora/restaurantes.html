@@ -48,7 +48,7 @@
                             <div class="collapse" id="collapse{{ forloop.counter }}" aria-labelledby="header{{ forloop.counter }}" data-parent="#accordion-block">
                                 <div class="">
                                     {% for restaurante in item.restaurantes %}
-                                        <div class="image image-fluid" style="background-image: url('{{ restaurante.background.url }}')" onclick="redirect('{% url 'calculadora:ciudades-restaurante-carta' restaurante.ciudad.pk restaurante.pk %}')">
+                                        <div class="image image-fluid" style="background-image: url('/static/calculadora/images/restaurantes/{{ restaurante.file_name }}')" onclick="redirect('{% url 'calculadora:ciudades-restaurante-carta' restaurante.ciudad.pk restaurante.pk %}')">
                                             <div class="d-block over fondo-izquierda">
                                                 <div class="text-left over-text">
                                                     <h1>{{ restaurante|upper }}</h1>
