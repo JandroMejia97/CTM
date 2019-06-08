@@ -431,7 +431,7 @@ class Restaurante(models.Model):
         return super(Restaurante, self).save(force_insert=force_insert, force_update=force_update, using=using, update_fields=update_fields)
 
     def set_file_name(self):
-        return self.nombre+'.'+self.ciudad+'.'+self.barrio+'.jpg'
+        return self.nombre+'.'+self.ciudad.nombre+'.'+self.barrio.nombre+'.jpg'
     
     def save_restaurante(self, request, *args, **kwargs):
         self.administrador = request.user
