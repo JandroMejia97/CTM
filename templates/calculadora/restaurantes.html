@@ -14,12 +14,12 @@
             </h2>
         </div>
         <div class="d-flex justify-content-between">
-            <div class="input-group">
+            <!-- <div class="input-group">
                 <input type="text" class="form-control" id="restaurante_filtro" placeholder="Buscar por..." onkeyup='filterTable("restaurante_filtro","restaurantes")'>
                 <span class="input-group-addon">
                     <i class="fa fa-sliders-h fw fa-1-4x"></i>
                 </span>
-            </div>
+            </div> -->
             <a href="{% url 'calculadora:nuevo-restaurante' %}" class="mr-4 btn btn-primary float-right">Añadir restaurante</a>
         </div>
     </div>
@@ -48,7 +48,7 @@
                             <div class="collapse" id="collapse{{ forloop.counter }}" aria-labelledby="header{{ forloop.counter }}" data-parent="#accordion-block">
                                 <div class="">
                                     {% for restaurante in item.restaurantes %}
-                                        <div class="image image-fluid" style="background-image: url('/static/calculadora/images/restaurantes/{{ restaurante.file_name }}')" onclick="redirect('{% url 'calculadora:ciudades-restaurante-carta' restaurante.ciudad.pk restaurante.pk %}')">
+                                        <div class="image image-fluid" style="background-image: url('{{ restaurante.background.url }}')" onclick="redirect('{% url 'calculadora:ciudades-restaurante-carta' restaurante.ciudad.pk restaurante.pk %}')">
                                             <div class="d-block over fondo-izquierda">
                                                 <div class="text-left over-text">
                                                     <h1>{{ restaurante|upper }}</h1>

@@ -7,7 +7,7 @@
     <link href="{% static 'calculadora/css/style.css' %}" rel="stylesheet" type="text/css">
 {% endblock custom_css %}
 {% block content %}
-    <div class="image image-fluid" style="background-image: url('/static/calculadora/images/restaurantes/{{ restaurante.file_name }}')">
+    <div class="image image-fluid" style="background-image: url('{{ restaurante.background.url }}')">
         <div class="d-block over fondo-izquierda">
             <div class="text-left over-text">
                 <h1>{{ restaurante|upper }}</h1>
