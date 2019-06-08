@@ -116,7 +116,7 @@ class RestauranteCreateView(LoginRequiredMixin, CreateView):
                 ciudad=Ciudad.objects.get(pk=int(request.POST['ciudad'])),
                 # background=restaurante_form['background'].value(),
             )
-            tipos_comida = TipoComida.objects.filter(pk__in=restaurante_form['comida'].value())
+            tipos_comida = TipoComida.objects.filter(pk__in=restaurante_form['comidas'].value())
             restaurante.save()
             for tipo_comida in tipos_comida:
                 restaurante.comidas.add(tipo_comida)
