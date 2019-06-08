@@ -162,7 +162,7 @@ class CartaForm(forms.ModelForm):
                 'placeholder': self.fields[field].label,
                 'title': self.fields[field].help_text,
                 'class': 'form-control',
-                'required': 'required'
+                'required':'required'
             })
         self.fields['tipo'] = forms.ModelChoiceField(
             queryset=TipoCarta.objects.all(),
@@ -193,7 +193,6 @@ class ProductoForm(forms.ModelForm):
                 'placeholder': self.fields[field].label,
                 'title': self.fields[field].help_text,
                 'class': 'form-control',
-                'required': 'required'
             })
         
         self.fields['precio_fijo'].widget.attrs.update({'min': '0.01'})

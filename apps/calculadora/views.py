@@ -55,8 +55,7 @@ class RestaurantesListView(ListView):
 
     def get_queryset(self):
         if 'pk' in self.kwargs:
-            barrios =  Division.objects.filter(ciudad=self.kwargs['pk'])
-            return Restaurante.objects.filter(barrio__in=barrios)
+            return Restaurante.objects.filter(ciudad=self.kwargs['pk'])
         elif self.request.user.is_authenticated:
             return Restaurante.objects.filter(administrador=self.request.user)
 
@@ -106,50 +105,34 @@ class RestauranteCreateView(LoginRequiredMixin, CreateView):
         restaurante_form = self.get_form(form_class)
         carta_formset = CartaFormset(request.POST)
         if restaurante_form.is_valid() and carta_formset.is_valid():
-            restaurante = Restaurante(
-                nombre=restaurante_form['nombre'].value(),
-                direccion=restaurante_form['direccion'].value(),
-                telefono=restaurante_form['telefono'].value(),
-                mapa=restaurante_form['mapa'].value(),
-                administrador=request.user,
-                barrio=Division.objects.get(pk=int(request.POST['barrio'])),
-                ciudad=Ciudad.objects.get(pk=int(request.POST['ciudad'])),
-                # background=restaurante_form['background'].value(),
-            )
-            tipos_comida = TipoComida.objects.filter(pk__in=restaurante_form['comidas'].value())
-            restaurante.save()
-            for tipo_comida in tipos_comida:
-                restaurante.comidas.add(tipo_comida)
-            for carta_form in carta_formset:
-                if carta_form.is_valid():
-                    tipo = int(carta_form['tipo'].value())
-                    tipo_carta = TipoCarta.objects.get(pk=tipo)
-                    carta = Carta(
-                        tipo=tipo_carta,
-                        restaurante=restaurante
-                    )
-                    carta.save()
-                    for producto_form in carta_form.nested:
-                        if producto_form.is_valid():
-                            producto = Producto(
-                            carta=carta,
-                            nombre=producto_form['nombre'].value(),
-                            precio_fijo=float(producto_form['precio_fijo'].value())
-                        )
-                        producto.save()
-            restaurante.save()
-            context = {
-                'messages': ['El restaurante ha sido registrado exitosamente.']
-            }
-            return HttpResponseRedirect(self.success_url)
+            return self.form_valid(restaurante_form, carta_formset)
         else:
-            context = {
-                'form': restaurante_form,
-                'messages': [
-                    'El restaurante no pudo ser registrado. Corrija los siguiente errores.',
-                ],
-                'carta_formset': carta_formset,
-            }
+            return self.form_invalid(restaurante_form, carta_formset)
+
+    def form_valid(self, form, carta_formset):
+        restaurante = form.save(commit=False)
+        restaurante.administrador = self.request.user
+        restaurante.save()
+        for carta_form in carta_formset:
+            if carta_form.is_valid():
+                carta = carta_form.save(commit=False)
+                carta.restaurante = restaurante
+                carta.save()
+                for producto_form in carta_form.nested:
+                    if producto_form.is_valid():
+                        producto = producto_form.save(commit=False)
+                        producto.carta = carta
+                        producto.save()
+        return HttpResponseRedirect(self.success_url)
+
+    def form_invalid(self, form, carta_formset):
+        context = {
+            'form': form,
+            'messages': [
+                'El restaurante no pudo ser registrado. Corrija los siguiente errores.',
+            ],
+            'carta_formset': carta_formset,
+        }
         return self.render_to_response(context)
 
 
@@ -161,33 +144,62 @@ class RestauranteUpdateView(LoginRequiredMixin, UpdateView):
     
     def get_context_data(self, **kwargs):
         context = super(RestauranteUpdateView, self).get_context_data(**kwargs)
-        context['restaurante'] = Restaurante.objects.get(
+        self.object = Restaurante.objects.get(
             pk=self.kwargs['pk'],
             administrador=self.request.user
         )
+        context['update'] = True
         return context
 
     def get(self, request, *args, **kwargs):
         super(RestauranteUpdateView, self).get(self, request, *args, **kwargs)
         context = self.get_context_data(**kwargs)
         context['form'] = RestauranteForm(instance=context['restaurante'])
-        carta = Carta.objects.filter(restaurante=context['restaurante'])
         context['carta_formset'] = CartaFormset(instance=context['restaurante'])
-        context['update'] = True
         return self.render_to_response(context)
     
     def post(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        restaurante_form = RestauranteForm(data=request.POST)
+        form_class = self.get_form_class()
+        restaurante_form = self.get_form(form_class)
+        carta_formset = CartaFormset(request.POST)
         if restaurante_form.is_valid():
-            restaurante = Restaurante(
-                nombre=restaurante_form['nombre'].value(),
-                direccion=restaurante_form['direccion'].value(),
-                telefono=restaurante_form['telefono'].value(),
-                administrador=request.user
-            )
+            return self.form_valid(restaurante_form, carta_formset)
         else:
-            context = {'errors': restaurante_form.errors}
+            return self.form_invalid(restaurante_form, carta_formset)
+
+    def form_valid(self, form, carta_formset):
+        form.instance.administrador = self.request.user
+        restaurante, created = Restaurante.objects.update_or_create(
+            pk=self.kwargs['pk'],
+            defaults={
+                'nombre': form['nombre'].value(),
+                'telefono': form['telefono'].value(),
+                'direccion': form['direccion'].value(),
+                'mapa': form['mapa'].value(),
+                'ciudad': Ciudad.objects.get(pk=int(form['ciudad'].value())),
+                'barrio': Division.objects.get(pk=int(form['barrio'].value())),
+                #'background': form['background'].value()
+            }
+        )
+        tipos_comida = TipoComida.objects.filter(pk__in=form['comidas'].value())
+        for tipo_comida in tipos_comida:
+            restaurante.comidas.add(tipo_comida)
+        for carta_form in carta_formset:
+            if carta_form.is_valid():
+                carta_form.instance.restaurante =  restaurante
+                carta = carta_form.save()
+                for producto_form in carta_form.nested:
+                    if producto_form.is_valid():
+                        producto_form.instance.carta = carta
+                        producto_form.save()
+        return HttpResponseRedirect(self.success_url)
+
+    def form_invalid(self, form, carta_formset):
+        context = {
+            'form': form,
+            'update': True,
+            'carta_formset': carta_formset,
+        }
         return self.render_to_response(context)
 
 
@@ -277,35 +289,38 @@ class CartaUpdateView(LoginRequiredMixin, UpdateView):
         return context
     
     def post(self, request, *args, **kwargs):
-        self.object = None
         form_class = self.get_form_class()
         form = self.get_form(form_class)
         producto_formset = ProductoFormset(self.request.POST)
-        if form.is_valid() and producto_formset.is_valid():
+        if form.is_valid():
             return self.form_valid(form, producto_formset)
         else:
             return self.form_invalid(form, producto_formset)
         return super(CartaUpdateView, self).post(request, *args, **kwargs)
 
     def form_valid(self, form, producto_formset):
-        carta, created = Carta.objects.get_or_create(
-            tipo=TipoCarta.objects.get(pk=int(form['tipo'].value())),
-            restaurante=Restaurante.objects.get(pk=int(form['restaurante'].value())),
+        carta, created = Carta.objects.update_or_create(
+            pk=self.kwargs['pk'],
+            defaults={
+                'tipo': TipoCarta.objects.get(pk=int(form['tipo'].value()))
+            }
         )
-        if created:
-            carta.save()
         self.object = carta
-        producto_formset.instance = carta
-        producto_formset.save()
+        for producto_form in producto_formset:
+            if producto_form.is_valid():                
+                producto_form.instance.carta = carta
+                producto_form.save()
         return HttpResponseRedirect(self.get_success_url())
 
     def form_invalid(self, form, producto_formset):
-        return self.render_to_response(
-            self.get_context_data(
-                form=form,
-                producto_formset=producto_formset
-            )
-        )
+        context = {
+            'form': form,
+            'detalle': self.kwargs['detalle'],
+            'producto_formset': producto_formset,
+            'carta': Carta.objects.get(pk=self.kwargs['pk'])
+        }
+        return self.render_to_response(context)
+
 
     def get_success_url(self):
         return reverse('calculadora:detalle-restaurante', kwargs={'pk':self.object.restaurante.pk})

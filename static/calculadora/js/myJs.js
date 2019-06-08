@@ -114,9 +114,6 @@ function getLocalidades(id, seleccion){
     }).fail(function() {
         console.log("error");
     }).always(function(data) {
-        cant_messages++;
-        $('#messages-count').empty().append(cant_messages);
-        addMessage(data.message);
         console.log("complete");
     });
   }

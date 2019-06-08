@@ -379,7 +379,6 @@ class Restaurante(models.Model):
         blank=True,
         null=True,
         help_text='Ingrese el número telefónico del restaurante en el formato +999999999',
-        unique=True,
         verbose_name='Número de Telefono'
     )
     mapa = models.CharField(
@@ -523,7 +522,6 @@ class Carta(models.Model):
         verbose_name = 'Carta'
         verbose_name_plural = 'Cartas'
         ordering = ['restaurante', 'tipo']
-        unique_together = (('tipo', 'restaurante'),)
 
 
 class Producto(models.Model):
