@@ -50,7 +50,7 @@ INSTALLED_APPS = [
     'djmoney',
     'file_resubmit',
     'debug_toolbar',
-    'djangoformsetjs',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -163,6 +163,7 @@ LOGOUT_REDIRECT_URL = 'calculadora:home'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
+
 
 # This lists additional directories that Django's collectstatic
 #  tool should search for static files
