@@ -53,15 +53,13 @@
                         </h3>
                     </div>
                     <div class="panel-body">
-                        {% if restaurante.background %}
-                            <div class="image image-fluid" style="background-image: url('/static/calculadora/images/restaurantes/{{ restaurante.file_name }}')">
-                                <div class="d-block over over-border fondo-izquierda" >
-                                    <div class="text-left over-text">
-                                        <h1>{{ restaurante|upper }}</h1>
-                                    </div>
+                        <div class="image image-fluid" style="background-image: url('/static/calculadora/images/restaurantes/{{ restaurante.file_name }}')">
+                            <div class="d-block over over-border fondo-izquierda" >
+                                <div class="text-left over-text">
+                                    <h1>{{ restaurante|upper }}</h1>
                                 </div>
                             </div>
-                        {% endif %}
+                        </div>
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="list-group list-group-horizontal" id="list-tab" role="tablist">
