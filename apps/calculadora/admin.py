@@ -57,14 +57,12 @@ class CiudadAdmin(admin.ModelAdmin):
     list_display = [
         'nombre',
         'pais',
-        'file_name',
         'foto'
     ]
     fields = [
         'nombre',
         'pais',
         'foto',
-        'file_name'
     ]
 
 admin.site.register(Ciudad, CiudadAdmin)
@@ -140,14 +138,12 @@ class RestauranteAdmin(admin.ModelAdmin):
         'telefono',
         'ciudad',
         'barrio',
-        'file_name',
         'background',
         'get_comidas'
     ]
     fields = [ 
         'nombre',
         'background',
-        'file_name',
         'administrador',
         'telefono',
         'comidas',
