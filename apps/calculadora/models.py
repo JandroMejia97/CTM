@@ -5,13 +5,14 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 from phonenumber_field.modelfields import PhoneNumberField
+from storage_backends import PublicMediaStorage, PrivateMediaStorage
 
 import datetime
 
 
 class User(AbstractUser):
     foto = models.ImageField(
-        upload_to='users/',
+        storage=PrivateMediaStorage(),
         blank=True,
         null=True,
         help_text='Cargue una foto de perfil',
@@ -132,6 +133,7 @@ class Ciudad(models.Model):
     )
     foto = models.ImageField(
         upload_to='ciudades',
+        storage=PublicMediaStorage(),
         blank=True,
         null=True,
         help_text='Cargue una imagen representativa de la ciudad',
@@ -339,6 +341,7 @@ class Restaurante(models.Model):
     )
     background = models.ImageField(
         upload_to='restaurantes/',
+        storage=PublicMediaStorage(),
         blank=True,
         null=True,
         help_text='Cargue una fotografía de su restaurante. Esta se usará como background',
