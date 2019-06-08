@@ -376,7 +376,8 @@ class Restaurante(models.Model):
         verbose_name='Dirección'
     )
     telefono = PhoneNumberField(
-        null=False,
+        blank=True,
+        null=True,
         help_text='Ingrese el número telefónico del restaurante en el formato +999999999',
         unique=True,
         verbose_name='Número de Telefono'

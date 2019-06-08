@@ -1,0 +1,18 @@
+nombre;descripcion;tipo_principal_id
+POSTRES;Un postre es un alimento, generalmente dulce, que se sirve al finalizar una comida;
+VINOS;Es un listado donde se recoge toda la oferta de bebidas que ofrece un establecimiento de restauracion.;
+VERDURAS Y ENSALADAS;Las ensaladas son la entrada preferida de la mayoria de los comensales, no hay nada mejor para acompaÿar un plato principal que una buena ensalada.;
+BEBIDAS;Es una relacion de bebidas que se ofrecen en el restaurante;
+BEBIDAS CON ALCOHOL;Una bebida alcoholica es aquella que contiene mas de 2.5? de alcohol.;4
+BEBIDAS SIN ALCOHOL;Bebidas que contienen menos de 2.5? de alcohol que se ofrecen en el restaurante;4
+PLATOS;Es el compendio de todos los platos que ofrece el restaurante.;
+SOPAS;Es una preparacion culinaria que consiste en un liquido con sustancia y sabor. En algunos casos posee ingredientes solidos de pequeÿo tamaÿo.;7
+GUISOS;Un guiso es la coccion en un medio semigraso de un alimento.;7
+ARROCES;Arroz preparado con distintas combinaciones de ingredientes.;7
+PESCADOS Y MARISCOS;Platos que se sirven en el restaurante y tienen como ingrediente principal pescado o mariscos.;7
+CARNES;Platos que se sirven en el restaurante y tienen como ingrediente principal carne.;7
+TARTAS;Una tarta (del frances tarte) es un postre tradicionalmente redondo compuesto de una o mas capas de masa dulce cocida al horno, decoradas con diversos;1
+CREMAS, DE CUCHARA;"Son ""mousses"", ""bavarois"" o delicadas cremas de las que emergen un dorado rizo de piel de limon o el calido aroma de la vainilla o la canela.";1
+PASTEL DE FRUTA;Es aquel pastel hecho con fruta confitada o fresca troceada, frutos secos y especias, opcionalmente mojado en licor.;1
+HELADO;Es un postre congelado hecho de leche, nata o natillas combinadas con saborizantes, edulcorantes y azucar.;1
+POSTRES VARIOS;Cuando se habla de postres se entiende alguna preparacion dulce, bien sean cremas, tartas, pasteles, helados, bombones, etc.;1

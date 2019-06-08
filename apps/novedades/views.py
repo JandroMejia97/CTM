@@ -106,6 +106,24 @@ def import_localidades(request):
         )
     return HttpResponse('Los datos de las localidades han sido importados exitosamente')
 
+def import_cartas(request):
+    url = os.getcwd()+'/data/tipocarta.csv'
+    data = pd.read_csv(url, sep=';', encoding="ISO-8859-1", engine='python')
+    for row in data.itertuples(index=False):
+        if str(row.tipo_principal_id).upper() != 'NAN':
+            tipo_principal = TipoCarta.objects.get(pk=int(row.tipo_principal_id))
+            tipo = TipoCarta.objects.update_or_create(
+                nombre=row.nombre,
+                descripcion=row.descripcion,
+                tipo_principal=tipo_principal
+            )
+        else:
+            tipo = TipoCarta.objects.update_or_create(
+                nombre=row.nombre,
+                descripcion=row.descripcion
+            )
+    return HttpResponse('Los datos de las cartas han sido importados exitosamente')
+
 def import_country(request):
     url = os.getcwd()+'/data/country_new.csv'
     data = pd.read_csv(url, encoding="ISO-8859-1", engine='python')

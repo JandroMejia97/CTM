@@ -12,4 +12,5 @@ urlpatterns = [
     path('paises/', views.import_country, name='country'),
     path('productos/', views.import_products, name='products'),
     path('localidades/', views.import_localidades, name='localidades'),
+    path('cartas/', views.import_cartas, name='cartas'),
 ]
