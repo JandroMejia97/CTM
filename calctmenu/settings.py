@@ -175,11 +175,8 @@ AWS_S3_OBJECT_PARAMETERS = {
 # AWS Static Settings
 AWS_STATIC_LOCATION = 'static'
 
-# The URL to use when referring to static files (where they
-# will be served from)
-STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_STATIC_LOCATION)
-# STATIC_URL = '/static/'
-STATICFILES_STORAGE = 'storage_backends.StaticStorage'
+# STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_STATIC_LOCATION)
+# STATICFILES_STORAGE = 'storage_backends.StaticStorage'
 
 # This lists additional directories that Django's collectstatic
 #  tool should search for static files
@@ -188,6 +185,10 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 # The absolute path to the directory where collectstatic will 
 # collect static files for deployment
 STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'static')
+
+# The URL to use when referring to static files (where they
+# will be served from)
+STATIC_URL = '/static/'
 
 # AWS Public Media Settings
 AWS_PUBLIC_MEDIA_LOCATION = 'media'
@@ -206,7 +207,7 @@ DEFAULT_FILES_STORAGE = 'storage_backends.PublicMediaStorage'
 
 # The absolute path to the directory where will storage the media 
 # files
-MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Heroku: Update database configuration from $DATABASE_URL
 import dj_database_url

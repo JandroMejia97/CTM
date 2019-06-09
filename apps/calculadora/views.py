@@ -179,7 +179,7 @@ class RestauranteUpdateView(LoginRequiredMixin, UpdateView):
                 'mapa': form['mapa'].value(),
                 'ciudad': Ciudad.objects.get(pk=int(form['ciudad'].value())),
                 'barrio': Division.objects.get(pk=int(form['barrio'].value())),
-                #'background': form['background'].value()
+                'background': form['background'].value()
             }
         )
         tipos_comida = TipoComida.objects.filter(pk__in=form['comidas'].value())

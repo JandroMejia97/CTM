@@ -86,7 +86,7 @@ class RestauranteForm(forms.ModelForm):
             'comidas',
             'ciudad',
             'barrio',
-            #'background'
+            'background'
         ]
 
     def __init__(self, *args, **kwargs):
