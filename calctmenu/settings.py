@@ -180,11 +180,11 @@ AWS_STATIC_LOCATION = 'static'
 
 # This lists additional directories that Django's collectstatic
 #  tool should search for static files
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+# STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 # The absolute path to the directory where collectstatic will 
 # collect static files for deployment
-STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # The URL to use when referring to static files (where they
 # will be served from)
