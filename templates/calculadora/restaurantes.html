@@ -28,37 +28,37 @@
             <div class="accordion" id="accordion-block">
                 {% if restaurantes %}
                     {% for key, item in group.items %}
-                        <div class="panel panel-default carta">
-                            <div class="panel-heading collapsed" id="header{{ forloop.counter }}" type="button" data-toggle="collapse" data-target="#collapse{{ forloop.counter }}">
-                                <h2 class="mb-0 panel-title">
-                                    <div class="row">
-                                        <div class="col-xs-2 col-sm-1 col-md-1 col-lg-1">
-                                            <span class="pull-left glyphicon glyphicon-menu-down" aria-hidden="true"></span>        
-                                        </div>
-                                        <div class="col-xs-10 col-sm-11 col-md-11 col-lg-11 text-break">
-                                            <strong>
-                                                {% for comida in item.comidas %}
+                        {% for comida in item.comidas %}
+                            <div class="panel panel-default carta">
+                                <div class="panel-heading collapsed" id="header{{ forloop.parentloop.counter }}" type="button" data-toggle="collapse" data-target="#collapse{{ forloop.parentloop.counter }}">
+                                    <h2 class="mb-0 panel-title">
+                                        <div class="row">
+                                            <div class="col-xs-2 col-sm-1 col-md-1 col-lg-1">
+                                                <span class="pull-left glyphicon glyphicon-menu-down" aria-hidden="true"></span>        
+                                            </div>
+                                            <div class="col-xs-10 col-sm-11 col-md-11 col-lg-11 text-break">
+                                                <strong>
                                                     {{ comida }}
-                                                {% endfor %}
-                                            </strong>
-                                        </div>
-                                    </div>
-                                </h2>
-                            </div>
-                            <div class="collapse" id="collapse{{ forloop.counter }}" aria-labelledby="header{{ forloop.counter }}" data-parent="#accordion-block">
-                                <div class="">
-                                    {% for restaurante in item.restaurantes %}
-                                        <div class="image image-fluid" style="background-image: url('{{ restaurante.background.url }}')" onclick="redirect('{% url 'calculadora:ciudades-restaurante-carta' restaurante.ciudad.pk restaurante.pk %}')">
-                                            <div class="d-block over fondo-izquierda">
-                                                <div class="text-left over-text">
-                                                    <h1>{{ restaurante|upper }}</h1>
-                                                </div>
+                                                </strong>
                                             </div>
                                         </div>
-                                    {% endfor %}
+                                    </h2>
+                                </div>
+                                <div class="collapse" id="collapse{{ forloop.parentloop.counter }}" aria-labelledby="header{{ forloop.parentloop.counter }}" data-parent="#accordion-block">
+                                    <div class="">
+                                        {% for restaurante in item.restaurantes %}
+                                            <div class="image image-fluid" style="background-image: url('{{ restaurante.background.url }}')" onclick="redirect('{% url 'calculadora:ciudades-restaurante-carta' restaurante.ciudad.pk restaurante.pk %}')">
+                                                <div class="d-block over fondo-izquierda">
+                                                    <div class="text-left over-text">
+                                                        <h1>{{ restaurante|upper }}</h1>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        {% endfor %}
                     {% endfor %}
                 {% endif %}
             </div>

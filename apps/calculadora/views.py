@@ -66,10 +66,10 @@ class RestaurantesListView(ListView):
             comidas = TipoComida.objects.all()
             group = {}
             for comida in comidas:
-                restaurante_key = '_'.join([str(restaurante.pk) for restaurante in comida.restaurante_set.all()])
-                if not restaurante_key in group and restaurante_key != '':
-                    group[restaurante_key]={'restaurantes': comida.restaurante_set.all(), 'comidas':[]}
-                if restaurante_key != '':
+                restaurante_key = str(comida.pk) + '_' + '_'.join([str(restaurante.pk) for restaurante in comida.restaurante_set.filter(ciudad=context['ciudad'])])
+                if not restaurante_key in group and len(restaurante_key) > 2:
+                    group[restaurante_key]={'restaurantes': comida.restaurante_set.filter(ciudad=context['ciudad']), 'comidas':[]}
+                if not comida in group and len(restaurante_key) > 2:
                     group[restaurante_key]['comidas'].append(comida)    
             context['group'] = group
         elif self.request.user.is_authenticated:
