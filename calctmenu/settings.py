@@ -177,9 +177,9 @@ AWS_STATIC_LOCATION = 'static'
 
 # The URL to use when referring to static files (where they
 # will be served from)
-STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_STATIC_LOCATION)
-# STATIC_URL = '/static/'
-STATICFILES_STORAGE = 'storage_backends.StaticStorage'
+# STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_STATIC_LOCATION)
+STATIC_URL = '/static/'
+# STATICFILES_STORAGE = 'storage_backends.StaticStorage'
 
 # This lists additional directories that Django's collectstatic
 #  tool should search for static files
