@@ -187,7 +187,7 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 # The absolute path to the directory where collectstatic will 
 # collect static files for deployment
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'static')
 
 # AWS Public Media Settings
 AWS_PUBLIC_MEDIA_LOCATION = 'media'
@@ -206,7 +206,7 @@ DEFAULT_FILES_STORAGE = 'storage_backends.PublicMediaStorage'
 
 # The absolute path to the directory where will storage the media 
 # files
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'media')
 
 AWS_DEFAULT_ACL = None
 
