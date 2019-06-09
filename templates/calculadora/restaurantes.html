@@ -27,6 +27,7 @@
         <div class="row">
             <div class="accordion" id="accordion-block">
                 {% if restaurantes %}
+                    {{group}}
                     {% for key, item in group.items %}
                         {% for comida in item.comidas %}
                             <div class="panel panel-default carta">
