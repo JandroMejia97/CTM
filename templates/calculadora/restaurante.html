@@ -162,6 +162,9 @@
     <script>
         $(document).ready(function(){
             $("#id_mapa").attr("onkeyup", "reloadIframe(\"id_mapa\")");
+            if ($("#id_ciudad").value() != NaN){
+                getLocalidades("id_ciudad", "id_barrio");
+            }
         });
         $("#id_background").removeAttr('class');
         {% if detail %}
