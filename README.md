@@ -4,4 +4,4 @@ Este sistema ha sido desarrollado para la StartUp Española Calcula Tu Menú. [C
 
 ## Diagrama de Clases Inicial
 
-![Diagrama de clases]()
+![Diagrama de clases](/data/DC.png "Diagrama de clases")
