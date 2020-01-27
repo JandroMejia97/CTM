@@ -45,7 +45,6 @@ INSTALLED_APPS = [
     'apps.novedades',
     'apps.calculadora',
     'bootstrapform',
-    'django_sb_admin',
     'phonenumber_field',
     'file_resubmit',
     'debug_toolbar',

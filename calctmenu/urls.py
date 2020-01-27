@@ -24,7 +24,6 @@ urlpatterns = [
     path('admin/', admin.site.urls, name='admin'),
     path('sign-in/', auth_views.LoginView.as_view(), name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
-    path('sbadmin/', include('django_sb_admin.urls'), name='sb-admin'),
     path('', include('apps.novedades.urls', 'novedades')),
     path('', include('apps.calculadora.urls', 'calculadora'))
 ]
